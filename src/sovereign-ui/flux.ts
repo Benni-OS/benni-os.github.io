@@ -1,21 +1,28 @@
+import { acquireExperienceBus } from './experience-bus';
+
 export class FluxParticles {
   private canvas: HTMLCanvasElement | null = null;
   private ctx: CanvasRenderingContext2D | null = null;
   private particles: Array<{ x: number; y: number; vx: number; vy: number; size: number; alpha: number }> = [];
 
   init(): void {
-    const canvas = document.createElement('canvas');
-    canvas.id = 'benni-flux-canvas';
-    canvas.setAttribute('aria-hidden', 'true');
-    canvas.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:1;opacity:0.4;';
-    document.body.prepend(canvas);
+    let canvas = document.getElementById('benni-flux-canvas') as HTMLCanvasElement | null;
+    if (!canvas) {
+      canvas = document.createElement('canvas');
+      canvas.id = 'benni-flux-canvas';
+      canvas.setAttribute('aria-hidden', 'true');
+      canvas.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:1;opacity:0.4;';
+      document.body.prepend(canvas);
+    }
 
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
     this.resize();
-    window.addEventListener('resize', () => this.resize());
 
-    // Generate 45 ambient quantum particles
+    const { bus } = acquireExperienceBus(window);
+    bus.onResize(() => this.resize());
+
+    this.particles = [];
     for (let i = 0; i < 45; i++) {
       this.particles.push({
         x: Math.random() * (this.canvas.width || 800),
@@ -23,11 +30,11 @@ export class FluxParticles {
         vx: (Math.random() - 0.5) * 0.3,
         vy: -0.2 - Math.random() * 0.3,
         size: 1 + Math.random() * 1.5,
-        alpha: 0.1 + Math.random() * 0.5
+        alpha: 0.1 + Math.random() * 0.5,
       });
     }
 
-    this.render();
+    bus.onFrame(() => this.render());
   }
 
   private resize(): void {
@@ -55,7 +62,5 @@ export class FluxParticles {
       this.ctx.fill();
     }
     this.ctx.globalAlpha = 1.0;
-
-    requestAnimationFrame(this.render);
   };
 }

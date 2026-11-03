@@ -1,4 +1,5 @@
 export * from './types';
+export * from './experience-bus';
 export * from './chronos';
 export * from './halo';
 export * from './lumen';
@@ -21,6 +22,7 @@ export * from './audio-visualizer';
 export * from './canvas-scrubber';
 export * from './icons';
 export * from './genesis-controller';
+export * from './orbital-gallery';
 export * from './orchestrator';
 
 import { SovereignUIOrchestrator } from './orchestrator';

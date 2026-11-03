@@ -1,3 +1,5 @@
+import { acquireExperienceBus } from './experience-bus';
+
 export class HaloEngine {
   private canvas: HTMLCanvasElement | null = null;
   private ctx: CanvasRenderingContext2D | null = null;
@@ -6,7 +8,7 @@ export class HaloEngine {
   private breathPhase: number = 0;
   private scrollVelocity: number = 0;
   private lastScrollY: number = 0;
-  private isRunning: boolean = false;
+  private unsubscribeFrame: (() => void) | null = null;
 
   init(): void {
     let existing = document.getElementById('benni-halo-canvas') as HTMLCanvasElement;
@@ -20,30 +22,30 @@ export class HaloEngine {
     this.canvas = existing;
     this.ctx = this.canvas.getContext('2d');
     this.resize();
-    window.addEventListener('resize', () => this.resize());
-    window.addEventListener('scroll', () => this.onScroll(), { passive: true });
-    this.isRunning = true;
-    this.render();
+
+    const { bus } = acquireExperienceBus(window);
+    bus.onResize(() => this.resize());
+    bus.onScroll((_, scrollY) => this.onScroll(scrollY));
+    this.unsubscribeFrame = bus.onFrame((delta) => this.render(delta));
   }
 
   private resize(): void {
     if (!this.canvas) return;
     this.width = window.innerWidth;
     this.height = window.innerHeight;
-    this.canvas.width = Math.floor(this.width / 2); // Downscaled for ultra-performance
-    this.canvas.height = Math.floor(this.height / 2);
+    this.canvas.width = Math.max(1, Math.floor(this.width / 2));
+    this.canvas.height = Math.max(1, Math.floor(this.height / 2));
   }
 
-  private onScroll(): void {
-    const currentY = window.scrollY;
+  private onScroll(currentY: number): void {
     this.scrollVelocity = Math.min(Math.abs(currentY - this.lastScrollY) * 0.05, 1.5);
     this.lastScrollY = currentY;
   }
 
-  private render = (): void => {
-    if (!this.isRunning || !this.ctx || !this.canvas) return;
+  private render = (delta: number): void => {
+    if (!this.ctx || !this.canvas) return;
 
-    this.breathPhase += 0.015;
+    this.breathPhase += Math.max(0.008, delta * 0.9);
     this.scrollVelocity *= 0.92;
 
     const w = this.canvas.width;
@@ -54,7 +56,7 @@ export class HaloEngine {
     const cy = h * 0.35 + Math.sin(this.breathPhase * 0.7) * 20;
     const baseRadius = Math.min(w, h) * (0.35 + Math.sin(this.breathPhase) * 0.05 + this.scrollVelocity * 0.1);
 
-    const grad = this.ctx.createRadialGradient(cx, cy, 0, cx, cy, baseRadius);
+    const grad = this.ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(1, baseRadius));
     grad.addColorStop(0, 'rgba(212, 175, 55, 0.22)');
     grad.addColorStop(0.35, 'rgba(212, 175, 55, 0.08)');
     grad.addColorStop(0.7, 'rgba(120, 95, 25, 0.02)');
@@ -62,7 +64,10 @@ export class HaloEngine {
 
     this.ctx.fillStyle = grad;
     this.ctx.fillRect(0, 0, w, h);
-
-    requestAnimationFrame(this.render);
   };
+
+  dispose(): void {
+    this.unsubscribeFrame?.();
+    this.unsubscribeFrame = null;
+  }
 }

@@ -16,6 +16,7 @@ import { LetheTypography } from './lethe';
 import { SpectralAberration } from './spectral';
 import { AudioVisualizerEngine } from './audio-visualizer';
 import { GenesisIdeController } from './genesis-controller';
+import { OrbitalGalleryEngine } from './orbital-gallery';
 
 export class SovereignUIOrchestrator {
   private halo = new HaloEngine();
@@ -36,10 +37,12 @@ export class SovereignUIOrchestrator {
   private spectral = new SpectralAberration();
   private audioViz = new AudioVisualizerEngine();
   private genesis = new GenesisIdeController();
+  private orbital = new OrbitalGalleryEngine();
 
   boot(): void {
     console.log('🏛️ Initializing Sovereign UI Suite (30 Orchestrated Primitives)...');
 
+    this.orbital.init();
     this.halo.init();
     this.lumen.init();
     this.magnet.init();

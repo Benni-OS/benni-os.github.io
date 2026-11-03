@@ -1,3 +1,5 @@
+import { acquireExperienceBus } from './experience-bus';
+
 export class LumenSpotlight {
   private mouseX: number = window.innerWidth / 2;
   private mouseY: number = window.innerHeight / 2;
@@ -16,12 +18,12 @@ export class LumenSpotlight {
     }
     this.spotlightEl = el;
 
-    window.addEventListener('pointermove', (e) => {
-      this.targetX = e.clientX;
-      this.targetY = e.clientY;
+    const { bus } = acquireExperienceBus(window);
+    bus.onPointerMove((clientX, clientY) => {
+      this.targetX = clientX;
+      this.targetY = clientY;
     });
-
-    this.loop();
+    bus.onFrame(() => this.loop());
   }
 
   private loop = (): void => {
@@ -29,9 +31,7 @@ export class LumenSpotlight {
     this.mouseY += (this.targetY - this.mouseY) * 0.12;
 
     if (this.spotlightEl) {
-      this.spotlightEl.style.transform = `translate3d(${this.mouseX - 200}px, ${this.mouseY - 200}px, 0)`;
+      this.spotlightEl.style.transform = `translate3d(${(this.mouseX - 200).toFixed(1)}px, ${(this.mouseY - 200).toFixed(1)}px, 0)`;
     }
-
-    requestAnimationFrame(this.loop);
   };
 }
