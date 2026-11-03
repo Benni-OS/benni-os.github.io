@@ -13,6 +13,9 @@
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
 
   <title>Agent Armies: Formação e Coordenação de Enxames de IA com Leases Tipados — Benni Alencar // Benni OS</title>
+<link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/agent-armies-multi-agent-swarms-typed-leases.html" />
+  <link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/como-utilizar-agent-armies-no-ecossistema-benni-os.html" />
+  <link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/agent-armies-multi-agent-swarms-typed-leases.html" />
   <meta name="description" content="Como coordenar dezenas de agentes especializados com handoffs determinísticos, orçamento rígido de tokens e isolamento de privilégio mínimo em produção.">
   <link rel="canonical" href="https://benni-os.net/blog/como-utilizar-agent-armies-no-ecossistema-benni-os.html" />
   <meta property="og:title" content="Agent Armies: Formação e Coordenação de Enxames de IA com Leases Tipados" />
@@ -561,6 +564,86 @@
     }
 
   </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": ["TechArticle", "BlogPosting"],
+        "@id": "https://benni-os.net/blog/como-utilizar-agent-armies-no-ecossistema-benni-os.html#article",
+        "isPartOf": {
+          "@type": "WebSite",
+          "@id": "https://benni-os.net/#website",
+          "name": "Benni OS",
+          "url": "https://benni-os.net"
+        },
+        "headline": "Agent Armies: Formação e Coordenação de Enxames de IA com Leases Tipados",
+        "description": "Como coordenar dezenas de agentes especializados com handoffs determinísticos, orçamento rígido de tokens e isolamento de privilégio mínimo em produção.",
+        "inLanguage": "pt-BR",
+        "mainEntityOfPage": "https://benni-os.net/blog/como-utilizar-agent-armies-no-ecossistema-benni-os.html",
+        "url": "https://benni-os.net/blog/como-utilizar-agent-armies-no-ecossistema-benni-os.html",
+        "image": "https://benni-os.net/blog/assets/test_swarm_orchestration.png",
+        "datePublished": "2026-11-03T00:00:00Z",
+        "dateModified": "2026-11-03T19:50:00Z",
+        "keywords": "Multi-Agent Swarms, Agent Armies, Deterministic Handoffs, Typed Leases, Token Budget Governance, Autonomous Agent Systems, Benni Alencar",
+        "author": {
+          "@type": "Person",
+          "@id": "https://benni-os.net/#author",
+          "name": "Benni Alencar",
+          "jobTitle": "Chief AI Systems Architect & Founder",
+          "url": "https://benni-os.net",
+          "sameAs": [
+            "https://github.com/BenniAlencar",
+            "https://www.linkedin.com/in/benni-alencar/",
+            "https://benni-os.net"
+          ]
+        },
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://benni-os.net/#organization",
+          "name": "Benni OS",
+          "url": "https://benni-os.net",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://benni-os.net/blog/assets/benni_avatar.png"
+          }
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://benni-os.net/blog/como-utilizar-agent-armies-no-ecossistema-benni-os.html#faq",
+        "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "FAQ // How do typed leases work in Agent Armies?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Typed leases grant temporary, cryptographically bounded execution rights to a worker agent for a specific task slot, preventing token exhaustion and rogue actions."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "FAQ // What distinguishes Agent Armies from standard agent frameworks?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Unlike probabilistic frameworks that suffer context bloat, Agent Armies enforces atomic handoffs and strict resource ceilings per subagent."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "FAQ // Who developed the Agent Army Protocol?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Benni Alencar established the protocol within Benni Master OS v9.4 to power enterprise multi-agent operations."
+          }
+        }
+        ]
+      }
+    ]
+  }
+  </script>
+
 </head>
 <body>
 
@@ -580,7 +663,16 @@
         <a href="/blog/academy.html">Pós-Graduação</a>
         <a href="https://github.com/BenniAlencar" target="_blank">GitHub</a>
         <a href="https://www.linkedin.com/in/benni-alencar/" target="_blank">LinkedIn</a>
-        <a href="#monetizacao" style="color: var(--cyan); font-weight: 700;">Modo Operador &rarr;</a>
+        
+        <div class="lang-switcher-pill" role="navigation" aria-label="Seletor de Idioma">
+          <a href="/blog/en/agent-armies-multi-agent-swarms-typed-leases.html" class="lang-btn" title="Switch to English (Tier-1 Global)">
+            <span>🇺🇸</span> EN
+          </a>
+          <a href="/blog/como-utilizar-agent-armies-no-ecossistema-benni-os.html" class="lang-btn active" title="Português (Brasil)">
+            <span>🇧🇷</span> PT-BR
+          </a>
+        </div>
+    <a href="#monetizacao" style="color: var(--cyan); font-weight: 700;">Modo Operador &rarr;</a>
       </nav>
     </div>
   </header>
@@ -596,6 +688,14 @@
       <span class="breadcrumb-current">Enxames Multiagente</span>
     </nav>
 
+
+    <!-- Floating Language Notice Chip -->
+    <div class="article-lang-bar">
+      <span class="lang-label-txt">🌐 Idioma / Language:</span>
+      <a href="/blog/en/agent-armies-multi-agent-swarms-typed-leases.html" class="lang-chip">🇺🇸 English (Tier-1 Global)</a>
+      <a href="/blog/como-utilizar-agent-armies-no-ecossistema-benni-os.html" class="lang-chip active">🇧🇷 Português (Brasil)</a>
+    </div>
+    
     <!-- Header Section -->
     <header class="article-header">
       <div class="article-meta-badges">

@@ -76,15 +76,21 @@ export default defineConfig({
           admin: path.resolve(__dirname, 'admin.html')
         };
         const blogDir = path.resolve(__dirname, 'blog');
-        if (fs.existsSync(blogDir)) {
-          const files = fs.readdirSync(blogDir);
-          for (const f of files) {
-            if (f.endsWith('.html')) {
-              const name = f === 'index.html' ? 'blog' : `blog-${f.replace('.html', '')}`;
-              inputs[name] = path.resolve(blogDir, f);
+        function scanHtml(dir: string) {
+          if (!fs.existsSync(dir)) return;
+          const entries = fs.readdirSync(dir, { withFileTypes: true });
+          for (const entry of entries) {
+            const fullPath = path.resolve(dir, entry.name);
+            if (entry.isDirectory()) {
+              scanHtml(fullPath);
+            } else if (entry.isFile() && entry.name.endsWith('.html')) {
+              const rel = path.relative(blogDir, fullPath).replace(/\\/g, '/');
+              const name = rel === 'index.html' ? 'blog' : 'blog-' + rel.replace(/[\\/]/g, '-').replace(/\.html$/, '');
+              inputs[name] = fullPath;
             }
           }
         }
+        scanHtml(blogDir);
         return inputs;
       })()
     }
