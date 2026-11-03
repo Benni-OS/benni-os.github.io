@@ -1,10 +1,209 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://benni-os.net/</loc><priority>1.0</priority><changefreq>weekly</changefreq></url>
-  <url><loc>https://benni-os.net/#actIIDossier</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://benni-os.net/#actIICorridor</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://benni-os.net/#actIIChamber</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://benni-os.net/#actIIIDecision</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://benni-os.net/#actIIIHandoff</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>
-  <url><loc>https://benni-os.net/#actIIIAdam</loc><priority>0.9</priority><changefreq>monthly</changefreq></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <url>
+    <loc>https://benni-os.net/</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/index.html</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/index.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/pt.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/index.html" />
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/pt.html</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/index.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/pt.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/index.html" />
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/en/cyber-sentinel-zero-trust-ai-agents.html</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/cyber-sentinel-zero-trust-ai-agents.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/como-utilizar-cyber-sentinel-no-ecossistema-benni-os.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/cyber-sentinel-zero-trust-ai-agents.html" />
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/como-utilizar-cyber-sentinel-no-ecossistema-benni-os.html</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/cyber-sentinel-zero-trust-ai-agents.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/como-utilizar-cyber-sentinel-no-ecossistema-benni-os.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/cyber-sentinel-zero-trust-ai-agents.html" />
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/en/control-plane-orchestration-durable-state-ai-agents.html</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/control-plane-orchestration-durable-state-ai-agents.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/como-utilizar-control-plane-no-ecossistema-benni-os.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/control-plane-orchestration-durable-state-ai-agents.html" />
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/como-utilizar-control-plane-no-ecossistema-benni-os.html</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/control-plane-orchestration-durable-state-ai-agents.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/como-utilizar-control-plane-no-ecossistema-benni-os.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/control-plane-orchestration-durable-state-ai-agents.html" />
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/en/agent-armies-multi-agent-swarms-typed-leases.html</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/agent-armies-multi-agent-swarms-typed-leases.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/como-utilizar-agent-armies-no-ecossistema-benni-os.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/agent-armies-multi-agent-swarms-typed-leases.html" />
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/como-utilizar-agent-armies-no-ecossistema-benni-os.html</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/agent-armies-multi-agent-swarms-typed-leases.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/como-utilizar-agent-armies-no-ecossistema-benni-os.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/agent-armies-multi-agent-swarms-typed-leases.html" />
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/en/nemesis-gateway-model-context-protocol-enterprise-tools.html</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/nemesis-gateway-model-context-protocol-enterprise-tools.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/como-utilizar-nemesis-gateway-no-ecossistema-benni-os.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/nemesis-gateway-model-context-protocol-enterprise-tools.html" />
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/como-utilizar-nemesis-gateway-no-ecossistema-benni-os.html</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/nemesis-gateway-model-context-protocol-enterprise-tools.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/como-utilizar-nemesis-gateway-no-ecossistema-benni-os.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/nemesis-gateway-model-context-protocol-enterprise-tools.html" />
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/en/autonomous-swarm-consensus-local-ollama-zero-cloud-cost.html</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/autonomous-swarm-consensus-local-ollama-zero-cloud-cost.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/como-utilizar-autonomous-swarm-consensus-with-local-ollama-no-ecossistema-benni-os-exec-3728.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/autonomous-swarm-consensus-local-ollama-zero-cloud-cost.html" />
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/como-utilizar-autonomous-swarm-consensus-with-local-ollama-no-ecossistema-benni-os-exec-3728.html</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/autonomous-swarm-consensus-local-ollama-zero-cloud-cost.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/como-utilizar-autonomous-swarm-consensus-with-local-ollama-no-ecossistema-benni-os-exec-3728.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/autonomous-swarm-consensus-local-ollama-zero-cloud-cost.html" />
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/en/project-adam-recursive-self-evolution-autonomous-ai-agents.html</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/project-adam-recursive-self-evolution-autonomous-ai-agents.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/como-utilizar-project-adam-no-ecossistema-benni-os-cont-2345.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/project-adam-recursive-self-evolution-autonomous-ai-agents.html" />
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/como-utilizar-project-adam-no-ecossistema-benni-os-cont-2345.html</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/project-adam-recursive-self-evolution-autonomous-ai-agents.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/como-utilizar-project-adam-no-ecossistema-benni-os-cont-2345.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/project-adam-recursive-self-evolution-autonomous-ai-agents.html" />
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/en/deterministic-handoffs-eliminating-context-drift-ai-pipelines.html</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/deterministic-handoffs-eliminating-context-drift-ai-pipelines.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/como-utilizar-project-adam-no-ecossistema-benni-os-hand-8765.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/deterministic-handoffs-eliminating-context-drift-ai-pipelines.html" />
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/como-utilizar-project-adam-no-ecossistema-benni-os-hand-8765.html</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/deterministic-handoffs-eliminating-context-drift-ai-pipelines.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/como-utilizar-project-adam-no-ecossistema-benni-os-hand-8765.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/deterministic-handoffs-eliminating-context-drift-ai-pipelines.html" />
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/en/sovereign-serverless-backend-puter-js-zero-fixed-cost.html</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/sovereign-serverless-backend-puter-js-zero-fixed-cost.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/como-utilizar-puter-backend-no-ecossistema-benni-os.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/sovereign-serverless-backend-puter-js-zero-fixed-cost.html" />
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/como-utilizar-puter-backend-no-ecossistema-benni-os.html</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/sovereign-serverless-backend-puter-js-zero-fixed-cost.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/como-utilizar-puter-backend-no-ecossistema-benni-os.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/sovereign-serverless-backend-puter-js-zero-fixed-cost.html" />
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/en/autonomous-revenue-loop-ai-funnel-optimization.html</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/autonomous-revenue-loop-ai-funnel-optimization.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/como-utilizar-revenue-loop-no-ecossistema-benni-os.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/autonomous-revenue-loop-ai-funnel-optimization.html" />
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/como-utilizar-revenue-loop-no-ecossistema-benni-os.html</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/autonomous-revenue-loop-ai-funnel-optimization.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/como-utilizar-revenue-loop-no-ecossistema-benni-os.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/autonomous-revenue-loop-ai-funnel-optimization.html" />
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/en/spatial-3d-webgl-shaders-visual-interfaces-ai-systems.html</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/spatial-3d-webgl-shaders-visual-interfaces-ai-systems.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/como-utilizar-spatial-3d-no-ecossistema-benni-os.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/spatial-3d-webgl-shaders-visual-interfaces-ai-systems.html" />
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/como-utilizar-spatial-3d-no-ecossistema-benni-os.html</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/spatial-3d-webgl-shaders-visual-interfaces-ai-systems.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/como-utilizar-spatial-3d-no-ecossistema-benni-os.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/spatial-3d-webgl-shaders-visual-interfaces-ai-systems.html" />
+  </url>
 </urlset>

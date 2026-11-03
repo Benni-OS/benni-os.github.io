@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
@@ -12,9 +13,13 @@
   <!-- Google AdSense Oficial -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
 
-  <title>Revista Benni OS // Engenharia Soberana & Sistemas de IA</title>
-  <meta name="description" content="Artigos de engenharia, arquitetura de sistemas de IA, enxames multiagente, Model Context Protocol e defesa Zero-Trust por Benni Alencar.">
+  <title>Revista Benni OS // Sovereign AI Engineering & Architecture</title>
+  <meta name="description" content="Frontier technical essays on Autonomous AI Agents, Zero-Trust Security, Model Context Protocol (MCP), and Multi-Agent Swarms by Benni Alencar.">
   <link rel="canonical" href="https://benni-os.net/blog/index.html" />
+  <link rel="alternate" hreflang="en" href="https://benni-os.net/blog/index.html" />
+  <link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/pt.html" />
+  <link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/index.html" />
+  <link rel="alternate" type="application/rss+xml" title="Benni OS Technical Journal RSS" href="https://benni-os.net/blog/feed.xml" />
   <style>
 
     :root {
@@ -101,7 +106,7 @@
     nav.nav-links {
       display: flex;
       align-items: center;
-      gap: 1.8rem;
+      gap: 1.6rem;
     }
     nav.nav-links a {
       color: var(--text-muted);
@@ -114,6 +119,37 @@
     nav.nav-links a:hover, nav.nav-links a.active {
       color: var(--cyan);
     }
+
+    /* Language Switcher Pill in Navbar */
+    .lang-switcher-pill {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 9999px;
+      padding: 3px 6px;
+      gap: 4px;
+    }
+    .lang-btn {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-family: var(--font-code);
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .lang-btn:hover { color: #fff; }
+    .lang-btn.active {
+      background: var(--cyan);
+      color: #000 !important;
+      box-shadow: 0 0 12px var(--cyan-glow);
+    }
+
     .nav-cta-btn {
       background: linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(59, 130, 246, 0.25));
       border: 1px solid var(--cyan);
@@ -128,6 +164,35 @@
       background: var(--cyan) !important;
       color: #000 !important;
       box-shadow: 0 0 20px var(--cyan-glow);
+    }
+
+    /* In-Article Floating Language Selector Chip */
+    .article-lang-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: rgba(14, 17, 26, 0.8);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      border-radius: 9999px;
+      padding: 0.35rem 0.9rem;
+      margin-bottom: 1.5rem;
+      font-family: var(--font-code);
+      font-size: 0.78rem;
+    }
+    .lang-label-txt { color: var(--text-dim); }
+    .lang-chip {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      transition: all 0.2s;
+    }
+    .lang-chip:hover { color: #fff; }
+    .lang-chip.active {
+      background: rgba(0, 240, 255, 0.15);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 240, 255, 0.3);
     }
 
     /* AdSense Container */
@@ -160,6 +225,25 @@
       flex: 1;
       width: 100%;
     }
+
+    /* FAQ Section */
+    .article-faq-section {
+      background: var(--panel);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      margin: 3.5rem 0;
+    }
+    .faq-main-heading {
+      font-family: var(--font-title);
+      font-size: 1.8rem;
+      color: #fff;
+      margin-bottom: 1.5rem;
+    }
+    .faq-item-card { border-bottom: 1px solid var(--card-border); padding: 1.2rem 0; }
+    .faq-item-card:last-child { border-bottom: none; }
+    .faq-item-q { font-weight: 700; font-size: 1.1rem; color: var(--cyan); margin-bottom: 0.5rem; }
+    .faq-item-a { color: var(--text-muted); font-size: 0.98rem; line-height: 1.65; }
 
     /* Footer */
     footer.magazine-footer {
@@ -214,10 +298,7 @@
 
 
     /* Index Specific CSS */
-    .magazine-hero-header {
-      text-align: center;
-      margin: 1.5rem 0 3rem;
-    }
+    .magazine-hero-header { text-align: center; margin: 1.5rem 0 3rem; }
     .hero-badge-pill {
       display: inline-flex;
       align-items: center;
@@ -249,11 +330,7 @@
       margin: 0 auto;
       line-height: 1.6;
     }
-
-    /* Featured Story Card (Linear / Stripe standard) */
-    .featured-story-section {
-      margin-bottom: 4rem;
-    }
+    .featured-story-section { margin-bottom: 4rem; }
     .featured-card {
       background: var(--panel);
       border: 1px solid var(--card-border);
@@ -265,33 +342,12 @@
       transition: border-color 0.3s, transform 0.3s;
       position: relative;
     }
-    .featured-card:hover {
-      border-color: rgba(255, 107, 0, 0.4);
-      transform: translateY(-4px);
-    }
-    @media (max-width: 960px) {
-      .featured-card { grid-template-columns: 1fr; }
-    }
-    .featured-cover-wrap {
-      position: relative;
-      overflow: hidden;
-      min-height: 380px;
-    }
-    .featured-cover-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.5s ease;
-    }
-    .featured-card:hover .featured-cover-img {
-      transform: scale(1.04);
-    }
-    .featured-content-wrap {
-      padding: 3rem 2.8rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
+    .featured-card:hover { border-color: rgba(255, 107, 0, 0.4); transform: translateY(-4px); }
+    @media (max-width: 960px) { .featured-card { grid-template-columns: 1fr; } }
+    .featured-cover-wrap { position: relative; overflow: hidden; min-height: 380px; }
+    .featured-cover-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .featured-card:hover .featured-cover-img { transform: scale(1.04); }
+    .featured-content-wrap { padding: 3rem 2.8rem; display: flex; flex-direction: column; justify-content: center; }
     .featured-badge {
       display: inline-flex;
       align-items: center;
@@ -315,18 +371,9 @@
       color: #fff;
       margin-bottom: 1.1rem;
     }
-    .featured-title a {
-      color: inherit;
-      text-decoration: none;
-      transition: color 0.2s;
-    }
+    .featured-title a { color: inherit; text-decoration: none; transition: color 0.2s; }
     .featured-title a:hover { color: var(--cyan); }
-    .featured-excerpt {
-      color: var(--text-muted);
-      font-size: 1.05rem;
-      line-height: 1.65;
-      margin-bottom: 2rem;
-    }
+    .featured-excerpt { color: var(--text-muted); font-size: 1.05rem; line-height: 1.65; margin-bottom: 2rem; }
     .featured-author-bar {
       display: flex;
       align-items: center;
@@ -335,11 +382,7 @@
       padding-top: 1.5rem;
       margin-top: auto;
     }
-    .author-profile-left {
-      display: flex;
-      align-items: center;
-      gap: 0.9rem;
-    }
+    .author-profile-left { display: flex; align-items: center; gap: 0.9rem; }
     .author-avatar-img {
       width: 44px;
       height: 44px;
@@ -347,16 +390,8 @@
       border: 2px solid var(--cyan);
       box-shadow: 0 0 12px var(--cyan-glow);
     }
-    .author-name-title {
-      font-weight: 600;
-      font-size: 0.95rem;
-      color: #fff;
-    }
-    .author-sub-meta {
-      font-size: 0.8rem;
-      color: var(--text-dim);
-      font-family: var(--font-code);
-    }
+    .author-name-title { font-weight: 600; font-size: 0.95rem; color: #fff; }
+    .author-sub-meta { font-size: 0.8rem; color: var(--text-dim); font-family: var(--font-code); }
     .featured-cta-link {
       display: inline-flex;
       align-items: center;
@@ -370,16 +405,8 @@
       text-decoration: none;
       transition: all 0.25s;
     }
-    .featured-cta-link:hover {
-      background: var(--cyan);
-      box-shadow: 0 0 20px var(--cyan-glow);
-      transform: translateX(3px);
-    }
-
-    /* Filter Bar */
-    .filter-section {
-      margin: 3.5rem 0 2.5rem;
-    }
+    .featured-cta-link:hover { background: var(--cyan); box-shadow: 0 0 20px var(--cyan-glow); transform: translateX(3px); }
+    .filter-section { margin: 3.5rem 0 2.5rem; }
     .filter-bar {
       display: flex;
       align-items: center;
@@ -400,27 +427,15 @@
       cursor: pointer;
       transition: all 0.2s;
     }
-    .filter-btn:hover {
-      color: #fff;
-      border-color: rgba(255, 255, 255, 0.3);
-    }
-    .filter-btn.active {
-      background: rgba(0, 240, 255, 0.12);
-      border-color: var(--cyan);
-      color: var(--cyan);
-      font-weight: 600;
-    }
-
-    /* Bento Grid */
+    .filter-btn:hover { color: #fff; border-color: rgba(255, 255, 255, 0.3); }
+    .filter-btn.active { background: rgba(0, 240, 255, 0.12); border-color: var(--cyan); color: var(--cyan); font-weight: 600; }
     .bento-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
       gap: 2rem;
       margin-bottom: 4rem;
     }
-    @media (max-width: 768px) {
-      .bento-grid { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 768px) { .bento-grid { grid-template-columns: 1fr; } }
     .bento-card {
       background: var(--panel);
       border: 1px solid var(--card-border);
@@ -430,31 +445,11 @@
       flex-direction: column;
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .bento-card:hover {
-      border-color: var(--card-border-hover);
-      transform: translateY(-5px);
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
-    }
-    .card-image-link {
-      display: block;
-      overflow: hidden;
-    }
-    .card-image-wrap {
-      position: relative;
-      width: 100%;
-      height: 220px;
-      overflow: hidden;
-      background: #000;
-    }
-    .card-thumb {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.4s ease;
-    }
-    .bento-card:hover .card-thumb {
-      transform: scale(1.05);
-    }
+    .bento-card:hover { border-color: var(--card-border-hover); transform: translateY(-5px); box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5); }
+    .card-image-link { display: block; overflow: hidden; }
+    .card-image-wrap { position: relative; width: 100%; height: 220px; overflow: hidden; background: #000; }
+    .card-thumb { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
+    .bento-card:hover .card-thumb { transform: scale(1.05); }
     .card-category-badge {
       position: absolute;
       top: 1rem;
@@ -473,18 +468,8 @@
       border-radius: 9999px;
       letter-spacing: 0.5px;
     }
-    .badge-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: currentColor;
-    }
-    .card-content {
-      padding: 1.6rem;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .card-content { padding: 1.6rem; display: flex; flex-direction: column; flex: 1; }
     .card-meta-top {
       display: flex;
       align-items: center;
@@ -494,18 +479,8 @@
       font-family: var(--font-code);
       margin-bottom: 0.75rem;
     }
-    .card-title {
-      font-size: 1.28rem;
-      font-weight: 700;
-      line-height: 1.35;
-      margin-bottom: 0.75rem;
-      color: #fff;
-    }
-    .card-title a {
-      color: inherit;
-      text-decoration: none;
-      transition: color 0.2s;
-    }
+    .card-title { font-size: 1.28rem; font-weight: 700; line-height: 1.35; margin-bottom: 0.75rem; color: #fff; }
+    .card-title a { color: inherit; text-decoration: none; transition: color 0.2s; }
     .card-title a:hover { color: var(--cyan); }
     .card-excerpt {
       color: var(--text-muted);
@@ -525,39 +500,12 @@
       padding-top: 1rem;
       margin-top: auto;
     }
-    .author-mini-avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      border: 1px solid var(--cyan);
-    }
-    .author-info-mini {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-    .author-name-text {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #fff;
-    }
-    .author-role-text {
-      font-size: 0.72rem;
-      color: var(--text-dim);
-      font-family: var(--font-code);
-    }
-    .card-read-arrow {
-      color: var(--text-dim);
-      display: flex;
-      align-items: center;
-      transition: all 0.2s;
-    }
-    .bento-card:hover .card-read-arrow {
-      color: var(--cyan);
-      transform: translateX(3px);
-    }
-
-    /* Newsletter Box */
+    .author-mini-avatar { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--cyan); }
+    .author-info-mini { display: flex; flex-direction: column; flex: 1; }
+    .author-name-text { font-size: 0.85rem; font-weight: 600; color: #fff; }
+    .author-role-text { font-size: 0.72rem; color: var(--text-dim); font-family: var(--font-code); }
+    .card-read-arrow { color: var(--text-dim); display: flex; align-items: center; transition: all 0.2s; }
+    .bento-card:hover .card-read-arrow { color: var(--cyan); transform: translateX(3px); }
     .newsletter-card {
       background: linear-gradient(135deg, rgba(14, 17, 26, 0.9), rgba(20, 24, 36, 0.9));
       border: 1px solid rgba(0, 240, 255, 0.25);
@@ -569,27 +517,10 @@
       overflow: hidden;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
     }
-    .newsletter-title {
-      font-family: var(--font-title);
-      font-size: clamp(2rem, 3.5vw, 2.8rem);
-      margin-bottom: 1rem;
-      color: #fff;
-    }
-    .newsletter-desc {
-      color: var(--text-muted);
-      font-size: 1.1rem;
-      max-width: 620px;
-      margin: 0 auto 2rem;
-    }
-    .newsletter-form {
-      display: flex;
-      gap: 0.8rem;
-      max-width: 520px;
-      margin: 0 auto;
-    }
-    @media (max-width: 600px) {
-      .newsletter-form { flex-direction: column; }
-    }
+    .newsletter-title { font-family: var(--font-title); font-size: clamp(2rem, 3.5vw, 2.8rem); margin-bottom: 1rem; color: #fff; }
+    .newsletter-desc { color: var(--text-muted); font-size: 1.1rem; max-width: 620px; margin: 0 auto 2rem; }
+    .newsletter-form { display: flex; gap: 0.8rem; max-width: 520px; margin: 0 auto; }
+    @media (max-width: 600px) { .newsletter-form { flex-direction: column; } }
     .newsletter-input {
       flex: 1;
       background: rgba(0, 0, 0, 0.5);
@@ -602,10 +533,7 @@
       outline: none;
       transition: border-color 0.2s;
     }
-    .newsletter-input:focus {
-      border-color: var(--cyan);
-      box-shadow: 0 0 15px var(--cyan-glow);
-    }
+    .newsletter-input:focus { border-color: var(--cyan); box-shadow: 0 0 15px var(--cyan-glow); }
     .newsletter-btn {
       background: var(--cyan);
       color: #000;
@@ -617,10 +545,7 @@
       cursor: pointer;
       transition: all 0.25s;
     }
-    .newsletter-btn:hover {
-      box-shadow: 0 0 25px var(--cyan-glow);
-      transform: scale(1.02);
-    }
+    .newsletter-btn:hover { box-shadow: 0 0 25px var(--cyan-glow); transform: scale(1.02); }
   </style>
   <script async type="module" crossorigin src="/assets/blog-6F3hq9O7.js"></script>
   <script type="module">import.meta.url;import("_").catch(()=>1);(async function*(){})().next();if(location.protocol!="file:"){window.__vite_is_modern_browser=true}</script>
@@ -637,11 +562,21 @@
       </a>
       <nav class="nav-links">
         <a href="/">Home</a>
-        <a href="/blog/index.html" class="active">Revista</a>
-        <a href="/blog/academy.html">Pós-Graduação</a>
+        <a href="https://benni-os.net/blog/index.html" class="active">Magazine</a>
+        <a href="/blog/academy.html">Academy</a>
         <a href="https://github.com/BenniAlencar" target="_blank">GitHub</a>
         <a href="https://www.linkedin.com/in/benni-alencar/" target="_blank">LinkedIn</a>
-        <a href="#monetizacao" class="nav-cta-btn">Modo Operador &rarr;</a>
+        
+      <div class="lang-switcher-pill" role="navigation" aria-label="Language Selector">
+        <a href="/blog/index.html" class="lang-btn active" title="English (Global Priority)">
+          <span>🇺🇸</span> EN
+        </a>
+        <a href="/blog/pt.html" class="lang-btn " title="Português (Brasil)">
+          <span>🇧🇷</span> PT-BR
+        </a>
+      </div>
+    
+        <a href="#monetizacao" class="nav-cta-btn">Operator Mode &rarr;</a>
       </nav>
     </div>
   </header>
@@ -650,58 +585,52 @@
 
     <!-- Top Billboard AdSense Container -->
     <div class="adsense-wrapper">
-      <span class="adsense-label">Publicidade // Google AdSense Billboard</span>
+      <span class="adsense-label">Advertisement // Google AdSense Billboard</span>
       <ins class="adsbygoogle"
            style="display:block"
            data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
            data-ad-slot="1122334455"
            data-ad-format="auto"
            data-full-width-responsive="true"></ins>
-      <script>
-           (adsbygoogle = window.adsbygoogle || []).push({});
-      </script>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
     <!-- Editorial Header Title -->
     <div class="magazine-hero-header">
       <div class="hero-badge-pill">
-        <span>⚡</span> TIER-1 ENGINEERING JOURNAL
+        <span>⚡</span> ⚡ TIER-1 ENGINEERING JOURNAL
       </div>
-      <h1 class="magazine-main-title">Engenharia Soberana & Arquitetura de IA</h1>
-      <p class="magazine-subtitle">
-        Ensaios técnicos de vanguarda, segurança Zero-Trust para agentes autônomos, protocolos MCP e matemática de sistemas por Benni Alencar.
-      </p>
+      <h1 class="magazine-main-title">Sovereign AI Systems & Autonomous Agent Architecture</h1>
+      <p class="magazine-subtitle">Frontier technical essays, Zero-Trust security for autonomous AI agents, Model Context Protocol governance, and distributed swarm mathematics by Benni Alencar.</p>
     </div>
 
-    <!-- Featured Story Hero Card (Cyber Sentinel) -->
+    <!-- Featured Story Hero Card -->
     <section class="featured-story-section">
       <div class="featured-card">
         <div class="featured-cover-wrap">
-          <a href="/blog/como-utilizar-cyber-sentinel-no-ecossistema-benni-os.html">
-            <img src="/blog/assets/flow_hero_cyber-sentinel.png" alt="Cyber Sentinel: Blindando Agentes de IA Contra Prompt Injection e Vazamento de Segredos" class="featured-cover-img" />
+          <a href="/blog/en/cyber-sentinel-zero-trust-ai-agents.html">
+            <img src="/blog/assets/flow_hero_cyber-sentinel.png" alt="Cyber Sentinel: Hardening Autonomous AI Agents Against Prompt Injection and Secret Exfiltration" class="featured-cover-img" />
           </a>
         </div>
         <div class="featured-content-wrap">
           <div class="featured-badge">
             <span class="badge-dot"></span>
-            DESTAQUE DA EDIÇÃO // SEGURANÇA & DEFESA
+            FEATURED ESSAY // SECURITY & DEFENSE
           </div>
           <h2 class="featured-title">
-            <a href="/blog/como-utilizar-cyber-sentinel-no-ecossistema-benni-os.html">Cyber Sentinel: Blindando Agentes de IA Contra Prompt Injection e Vazamento de Segredos</a>
+            <a href="/blog/en/cyber-sentinel-zero-trust-ai-agents.html">Cyber Sentinel: Hardening Autonomous AI Agents Against Prompt Injection and Secret Exfiltration</a>
           </h2>
-          <p class="featured-excerpt">
-            Como implementar uma camada Tier-0 de defesa Zero-Trust em 9 camadas (POD-9), interceptando ataques de injeção direta e indireta em tempo de execução.
-          </p>
+          <p class="featured-excerpt">Implementing a Tier-0 Zero-Trust defense layer across 9 discrete execution checkpoints (POD-9), intercepting direct and indirect prompt injections in real time.</p>
           <div class="featured-author-bar">
             <div class="author-profile-left">
               <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar-img" />
               <div>
                 <div class="author-name-title">Benni Alencar</div>
-                <div class="author-sub-meta">12 min de leitura • 03 Nov 2026</div>
+                <div class="author-sub-meta">12 min read • Nov 03, 2026</div>
               </div>
             </div>
-            <a href="/blog/como-utilizar-cyber-sentinel-no-ecossistema-benni-os.html" class="featured-cta-link">
-              Ler Artigo Completo &rarr;
+            <a href="/blog/en/cyber-sentinel-zero-trust-ai-agents.html" class="featured-cta-link">
+              Read Complete Paper &rarr;
             </a>
           </div>
         </div>
@@ -711,40 +640,40 @@
     <!-- Category Filter Bar -->
     <section class="filter-section">
       <div class="filter-bar">
-        <button class="filter-btn active" data-filter="all">Todos (10)</button>
-        <button class="filter-btn" data-filter="Segurança & Defesa">Segurança & Defesa</button>
-        <button class="filter-btn" data-filter="Arquitetura & MCP">Arquitetura & MCP</button>
-        <button class="filter-btn" data-filter="Enxames Multiagente">Enxames Multiagente</button>
-        <button class="filter-btn" data-filter="IA Local & Híbrida">IA Local & Híbrida</button>
-        <button class="filter-btn" data-filter="Sistemas Autônomos">Sistemas Autônomos</button>
-        <button class="filter-btn" data-filter="Monetização & Infra">Monetização & Infra</button>
-        <button class="filter-btn" data-filter="Visual & Spatial 3D">Visual & Spatial 3D</button>
+        <button class="filter-btn active" data-filter="all">All (10)</button>
+<button class="filter-btn" data-filter="Security & Defense">Security & Defense</button>
+<button class="filter-btn" data-filter="Architecture & MCP">Architecture & MCP</button>
+<button class="filter-btn" data-filter="Multi-Agent Swarms">Multi-Agent Swarms</button>
+<button class="filter-btn" data-filter="Local & Hybrid AI">Local & Hybrid AI</button>
+<button class="filter-btn" data-filter="Autonomous Systems">Autonomous Systems</button>
+<button class="filter-btn" data-filter="Monetization & Infra">Monetization & Infra</button>
+<button class="filter-btn" data-filter="Visual & Spatial 3D">Visual & Spatial 3D</button>
       </div>
     </section>
 
     <!-- Bento Grid of Remaining 9 Articles -->
     <section class="bento-grid">
 
-        <article class="bento-card" data-category="Arquitetura & MCP">
-          <a href="/blog/como-utilizar-control-plane-no-ecossistema-benni-os.html" class="card-image-link">
+        <article class="bento-card" data-category="Architecture & MCP">
+          <a href="/blog/en/control-plane-orchestration-durable-state-ai-agents.html" class="card-image-link">
             <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_control-plane.png" alt="Control Plane OS: Orquestração de Agentes com Estado Durável e Reconciliação Contínua" loading="lazy" class="card-thumb" />
+              <img src="/blog/assets/flow_hero_control-plane.png" alt="Control Plane OS: Durable State Orchestration and Infinite Loop Prevention for AI Agents" loading="lazy" class="card-thumb" />
               <div class="card-category-badge" style="--cat-color: #00ffff;">
                 <span class="badge-dot"></span>
-                Arquitetura & MCP
+                Architecture & MCP
               </div>
             </div>
           </a>
           <div class="card-content">
             <div class="card-meta-top">
-              <span class="card-read-time">15 min de leitura</span>
+              <span class="card-read-time">15 min read</span>
               <span class="card-meta-sep">•</span>
-              <span class="card-date">02 Nov 2026</span>
+              <span class="card-date">Nov 02, 2026</span>
             </div>
             <h3 class="card-title">
-              <a href="/blog/como-utilizar-control-plane-no-ecossistema-benni-os.html">Control Plane OS: Orquestração de Agentes com Estado Durável e Reconciliação Contínua</a>
+              <a href="/blog/en/control-plane-orchestration-durable-state-ai-agents.html">Control Plane OS: Durable State Orchestration and Infinite Loop Prevention for AI Agents</a>
             </h3>
-            <p class="card-excerpt">Arquitetando um plano de controle central para agentes de inteligência artificial com snapshots atômicos, memória persistente e prevenção de loops infinitos.</p>
+            <p class="card-excerpt">Architecting a centralized control plane for autonomous artificial intelligence agents with atomic snapshots, persistent graph memory, and continuous reconciliation.</p>
             <div class="card-author-bar">
               <div class="author-avatar-wrap">
                 <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-mini-avatar" />
@@ -753,34 +682,34 @@
                 <span class="author-name-text">Benni Alencar</span>
                 <span class="author-role-text">Chief AI Architect</span>
               </div>
-              <a href="/blog/como-utilizar-control-plane-no-ecossistema-benni-os.html" class="card-read-arrow" aria-label="Ler artigo">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              <a href="/blog/en/control-plane-orchestration-durable-state-ai-agents.html" class="card-read-arrow" aria-label="Read article">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
             </div>
           </div>
         </article>
         
 
-        <article class="bento-card" data-category="Enxames Multiagente">
-          <a href="/blog/como-utilizar-agent-armies-no-ecossistema-benni-os.html" class="card-image-link">
+        <article class="bento-card" data-category="Multi-Agent Swarms">
+          <a href="/blog/en/agent-armies-multi-agent-swarms-typed-leases.html" class="card-image-link">
             <div class="card-image-wrap">
-              <img src="/blog/assets/test_swarm_orchestration.png" alt="Agent Armies: Formação e Coordenação de Enxames de IA com Leases Tipados" loading="lazy" class="card-thumb" />
+              <img src="/blog/assets/test_swarm_orchestration.png" alt="Agent Armies: Coordinating Massive Multi-Agent Swarms with Typed Leases and Deterministic Handoffs" loading="lazy" class="card-thumb" />
               <div class="card-category-badge" style="--cat-color: #00ff66;">
                 <span class="badge-dot"></span>
-                Enxames Multiagente
+                Multi-Agent Swarms
               </div>
             </div>
           </a>
           <div class="card-content">
             <div class="card-meta-top">
-              <span class="card-read-time">14 min de leitura</span>
+              <span class="card-read-time">14 min read</span>
               <span class="card-meta-sep">•</span>
-              <span class="card-date">01 Nov 2026</span>
+              <span class="card-date">Nov 01, 2026</span>
             </div>
             <h3 class="card-title">
-              <a href="/blog/como-utilizar-agent-armies-no-ecossistema-benni-os.html">Agent Armies: Formação e Coordenação de Enxames de IA com Leases Tipados</a>
+              <a href="/blog/en/agent-armies-multi-agent-swarms-typed-leases.html">Agent Armies: Coordinating Massive Multi-Agent Swarms with Typed Leases and Deterministic Handoffs</a>
             </h3>
-            <p class="card-excerpt">Como coordenar dezenas de agentes especializados com handoffs determinísticos, orçamento rígido de tokens e isolamento de privilégio mínimo em produção.</p>
+            <p class="card-excerpt">How to orchestrate dozens of specialized AI agents with deterministic state handoffs, strict token budget governance, and least-privilege role isolation in production.</p>
             <div class="card-author-bar">
               <div class="author-avatar-wrap">
                 <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-mini-avatar" />
@@ -789,34 +718,34 @@
                 <span class="author-name-text">Benni Alencar</span>
                 <span class="author-role-text">Chief AI Architect</span>
               </div>
-              <a href="/blog/como-utilizar-agent-armies-no-ecossistema-benni-os.html" class="card-read-arrow" aria-label="Ler artigo">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              <a href="/blog/en/agent-armies-multi-agent-swarms-typed-leases.html" class="card-read-arrow" aria-label="Read article">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
             </div>
           </div>
         </article>
         
 
-        <article class="bento-card" data-category="Arquitetura & MCP">
-          <a href="/blog/como-utilizar-nemesis-gateway-no-ecossistema-benni-os.html" class="card-image-link">
+        <article class="bento-card" data-category="Architecture & MCP">
+          <a href="/blog/en/nemesis-gateway-model-context-protocol-enterprise-tools.html" class="card-image-link">
             <div class="card-image-wrap">
-              <img src="/blog/assets/hero-08-bridge.png" alt="Nemesis Gateway: Conectando Modelos de IA a Bancos, Nuvem e Ferramentas Corporativas" loading="lazy" class="card-thumb" />
+              <img src="/blog/assets/hero-08-bridge.png" alt="Nemesis Gateway: The Enterprise Model Context Protocol (MCP) Blueprint for Tool Federation" loading="lazy" class="card-thumb" />
               <div class="card-category-badge" style="--cat-color: #a855f7;">
                 <span class="badge-dot"></span>
-                Arquitetura & MCP
+                Architecture & MCP
               </div>
             </div>
           </a>
           <div class="card-content">
             <div class="card-meta-top">
-              <span class="card-read-time">11 min de leitura</span>
+              <span class="card-read-time">11 min read</span>
               <span class="card-meta-sep">•</span>
-              <span class="card-date">31 Out 2026</span>
+              <span class="card-date">Oct 31, 2026</span>
             </div>
             <h3 class="card-title">
-              <a href="/blog/como-utilizar-nemesis-gateway-no-ecossistema-benni-os.html">Nemesis Gateway: Conectando Modelos de IA a Bancos, Nuvem e Ferramentas Corporativas</a>
+              <a href="/blog/en/nemesis-gateway-model-context-protocol-enterprise-tools.html">Nemesis Gateway: The Enterprise Model Context Protocol (MCP) Blueprint for Tool Federation</a>
             </h3>
-            <p class="card-excerpt">O blueprint de engenharia para construir gateways universais federados sobre o padrão Model Context Protocol (MCP) com políticas de autorização em tempo real.</p>
+            <p class="card-excerpt">Engineering blueprint for building sovereign, federated gateways on top of the Model Context Protocol (MCP) with real-time authorization policies and zero cloud lock-in.</p>
             <div class="card-author-bar">
               <div class="author-avatar-wrap">
                 <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-mini-avatar" />
@@ -825,8 +754,8 @@
                 <span class="author-name-text">Benni Alencar</span>
                 <span class="author-role-text">Chief AI Architect</span>
               </div>
-              <a href="/blog/como-utilizar-nemesis-gateway-no-ecossistema-benni-os.html" class="card-read-arrow" aria-label="Ler artigo">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              <a href="/blog/en/nemesis-gateway-model-context-protocol-enterprise-tools.html" class="card-read-arrow" aria-label="Read article">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
             </div>
           </div>
@@ -836,40 +765,38 @@
         <!-- In-Feed Google AdSense Slot -->
         <div class="adsense-card-infeed" style="grid-column: 1 / -1; margin: 1.5rem 0;">
           <div class="adsense-wrapper" style="margin: 0; padding: 1.5rem 1rem;">
-            <span class="adsense-label">Publicidade // In-Feed Google AdSense</span>
+            <span class="adsense-label">Advertisement // In-Feed Google AdSense</span>
             <ins class="adsbygoogle"
                  style="display:block"
                  data-ad-format="fluid"
                  data-ad-layout-key="-fb+5w+4e-db+86"
                  data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
                  data-ad-slot="9876543210"></ins>
-            <script>
-                 (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
           </div>
         </div>
             
 
-        <article class="bento-card" data-category="IA Local & Híbrida">
-          <a href="/blog/como-utilizar-autonomous-swarm-consensus-with-local-ollama-no-ecossistema-benni-os-exec-3728.html" class="card-image-link">
+        <article class="bento-card" data-category="Local & Hybrid AI">
+          <a href="/blog/en/autonomous-swarm-consensus-local-ollama-zero-cloud-cost.html" class="card-image-link">
             <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_inference-engine.png" alt="Consenso em Enxames de IA com Modelos Locais via Ollama: Eficiência Sem Dependência de Nuvem" loading="lazy" class="card-thumb" />
+              <img src="/blog/assets/flow_hero_inference-engine.png" alt="Autonomous Swarm Consensus with Local Ollama Models: Zero-Cloud Cost Distributed AI Inference" loading="lazy" class="card-thumb" />
               <div class="card-category-badge" style="--cat-color: #eab308;">
                 <span class="badge-dot"></span>
-                IA Local & Híbrida
+                Local & Hybrid AI
               </div>
             </div>
           </a>
           <div class="card-content">
             <div class="card-meta-top">
-              <span class="card-read-time">13 min de leitura</span>
+              <span class="card-read-time">13 min read</span>
               <span class="card-meta-sep">•</span>
-              <span class="card-date">30 Out 2026</span>
+              <span class="card-date">Oct 30, 2026</span>
             </div>
             <h3 class="card-title">
-              <a href="/blog/como-utilizar-autonomous-swarm-consensus-with-local-ollama-no-ecossistema-benni-os-exec-3728.html">Consenso em Enxames de IA com Modelos Locais via Ollama: Eficiência Sem Dependência de Nuvem</a>
+              <a href="/blog/en/autonomous-swarm-consensus-local-ollama-zero-cloud-cost.html">Autonomous Swarm Consensus with Local Ollama Models: Zero-Cloud Cost Distributed AI Inference</a>
             </h3>
-            <p class="card-excerpt">Estratégias de consenso distribuído e roteamento híbrido para rodar enxames autônomos inteiros em hardware local com zero custo de inferência.</p>
+            <p class="card-excerpt">Distributed consensus strategies and hybrid routing architectures to run entire autonomous agent swarms on local consumer hardware with zero cloud inference expenditure.</p>
             <div class="card-author-bar">
               <div class="author-avatar-wrap">
                 <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-mini-avatar" />
@@ -878,34 +805,34 @@
                 <span class="author-name-text">Benni Alencar</span>
                 <span class="author-role-text">Chief AI Architect</span>
               </div>
-              <a href="/blog/como-utilizar-autonomous-swarm-consensus-with-local-ollama-no-ecossistema-benni-os-exec-3728.html" class="card-read-arrow" aria-label="Ler artigo">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              <a href="/blog/en/autonomous-swarm-consensus-local-ollama-zero-cloud-cost.html" class="card-read-arrow" aria-label="Read article">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
             </div>
           </div>
         </article>
         
 
-        <article class="bento-card" data-category="Sistemas Autônomos">
-          <a href="/blog/como-utilizar-project-adam-no-ecossistema-benni-os-cont-2345.html" class="card-image-link">
+        <article class="bento-card" data-category="Autonomous Systems">
+          <a href="/blog/en/project-adam-recursive-self-evolution-autonomous-ai-agents.html" class="card-image-link">
             <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_project-adam.png" alt="Projeto Adam: Autoevolução e Otimização Recursiva de Agentes de IA" loading="lazy" class="card-thumb" />
+              <img src="/blog/assets/flow_hero_project-adam.png" alt="Project Adam: Recursive Self-Evolution and Algorithmic Prompt Optimization for AI Agents" loading="lazy" class="card-thumb" />
               <div class="card-category-badge" style="--cat-color: #ec4899;">
                 <span class="badge-dot"></span>
-                Sistemas Autônomos
+                Autonomous Systems
               </div>
             </div>
           </a>
           <div class="card-content">
             <div class="card-meta-top">
-              <span class="card-read-time">16 min de leitura</span>
+              <span class="card-read-time">16 min read</span>
               <span class="card-meta-sep">•</span>
-              <span class="card-date">29 Out 2026</span>
+              <span class="card-date">Oct 29, 2026</span>
             </div>
             <h3 class="card-title">
-              <a href="/blog/como-utilizar-project-adam-no-ecossistema-benni-os-cont-2345.html">Projeto Adam: Autoevolução e Otimização Recursiva de Agentes de IA</a>
+              <a href="/blog/en/project-adam-recursive-self-evolution-autonomous-ai-agents.html">Project Adam: Recursive Self-Evolution and Algorithmic Prompt Optimization for AI Agents</a>
             </h3>
-            <p class="card-excerpt">Como construir loops de autoaperfeiçoamento onde agentes avaliam suas próprias execuções, refinam prompts e compilam novos nós sem intervenção humana.</p>
+            <p class="card-excerpt">Constructing self-improving feedback loops where autonomous agents critique their own execution logs, refine system prompts, and compile new workflow nodes without human intervention.</p>
             <div class="card-author-bar">
               <div class="author-avatar-wrap">
                 <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-mini-avatar" />
@@ -914,34 +841,34 @@
                 <span class="author-name-text">Benni Alencar</span>
                 <span class="author-role-text">Chief AI Architect</span>
               </div>
-              <a href="/blog/como-utilizar-project-adam-no-ecossistema-benni-os-cont-2345.html" class="card-read-arrow" aria-label="Ler artigo">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              <a href="/blog/en/project-adam-recursive-self-evolution-autonomous-ai-agents.html" class="card-read-arrow" aria-label="Read article">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
             </div>
           </div>
         </article>
         
 
-        <article class="bento-card" data-category="Engenharia de Software">
-          <a href="/blog/como-utilizar-project-adam-no-ecossistema-benni-os-hand-8765.html" class="card-image-link">
+        <article class="bento-card" data-category="Software Engineering">
+          <a href="/blog/en/deterministic-handoffs-eliminating-context-drift-ai-pipelines.html" class="card-image-link">
             <div class="card-image-wrap">
-              <img src="/blog/assets/hero-11-adam.png" alt="Handoffs Determinísticos: Eliminando Divergência de Contexto em Fluxos Complexos" loading="lazy" class="card-thumb" />
+              <img src="/blog/assets/hero-11-adam.png" alt="Deterministic Handoffs: Eliminating Context Drift in Multi-LLM Agent Pipelines" loading="lazy" class="card-thumb" />
               <div class="card-category-badge" style="--cat-color: #38bdf8;">
                 <span class="badge-dot"></span>
-                Engenharia de Software
+                Software Engineering
               </div>
             </div>
           </a>
           <div class="card-content">
             <div class="card-meta-top">
-              <span class="card-read-time">10 min de leitura</span>
+              <span class="card-read-time">10 min read</span>
               <span class="card-meta-sep">•</span>
-              <span class="card-date">28 Out 2026</span>
+              <span class="card-date">Oct 28, 2026</span>
             </div>
             <h3 class="card-title">
-              <a href="/blog/como-utilizar-project-adam-no-ecossistema-benni-os-hand-8765.html">Handoffs Determinísticos: Eliminando Divergência de Contexto em Fluxos Complexos</a>
+              <a href="/blog/en/deterministic-handoffs-eliminating-context-drift-ai-pipelines.html">Deterministic Handoffs: Eliminating Context Drift in Multi-LLM Agent Pipelines</a>
             </h3>
-            <p class="card-excerpt">Padrões de transição de estado entre múltiplos modelos de linguagem para garantir que um agente receba exatamente os dados que necessita.</p>
+            <p class="card-excerpt">State transition patterns across heterogeneous language models to ensure downstream agents receive strictly schema-validated payloads without hallucinated assumptions.</p>
             <div class="card-author-bar">
               <div class="author-avatar-wrap">
                 <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-mini-avatar" />
@@ -950,34 +877,34 @@
                 <span class="author-name-text">Benni Alencar</span>
                 <span class="author-role-text">Chief AI Architect</span>
               </div>
-              <a href="/blog/como-utilizar-project-adam-no-ecossistema-benni-os-hand-8765.html" class="card-read-arrow" aria-label="Ler artigo">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              <a href="/blog/en/deterministic-handoffs-eliminating-context-drift-ai-pipelines.html" class="card-read-arrow" aria-label="Read article">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
             </div>
           </div>
         </article>
         
 
-        <article class="bento-card" data-category="Monetização & Infra">
-          <a href="/blog/como-utilizar-puter-backend-no-ecossistema-benni-os.html" class="card-image-link">
+        <article class="bento-card" data-category="Monetization & Infra">
+          <a href="/blog/en/sovereign-serverless-backend-puter-js-zero-fixed-cost.html" class="card-image-link">
             <div class="card-image-wrap">
-              <img src="/blog/assets/test_puter_schematic.png" alt="Backend Soberano e Serverless com Puter.js: Autonomia Sem Servidores Centralizados" loading="lazy" class="card-thumb" />
+              <img src="/blog/assets/test_puter_schematic.png" alt="Sovereign Serverless AI Backends with Puter.js: Zero Fixed Infrastructure Cost" loading="lazy" class="card-thumb" />
               <div class="card-category-badge" style="--cat-color: #10b981;">
                 <span class="badge-dot"></span>
-                Monetização & Infra
+                Monetization & Infra
               </div>
             </div>
           </a>
           <div class="card-content">
             <div class="card-meta-top">
-              <span class="card-read-time">9 min de leitura</span>
+              <span class="card-read-time">9 min read</span>
               <span class="card-meta-sep">•</span>
-              <span class="card-date">27 Out 2026</span>
+              <span class="card-date">Oct 27, 2026</span>
             </div>
             <h3 class="card-title">
-              <a href="/blog/como-utilizar-puter-backend-no-ecossistema-benni-os.html">Backend Soberano e Serverless com Puter.js: Autonomia Sem Servidores Centralizados</a>
+              <a href="/blog/en/sovereign-serverless-backend-puter-js-zero-fixed-cost.html">Sovereign Serverless AI Backends with Puter.js: Zero Fixed Infrastructure Cost</a>
             </h3>
-            <p class="card-excerpt">Utilizando o Puter.js para hospedar microsserviços de IA, armazenamento KV e autenticação descentralizada com custo zero de infraestrutura fixa.</p>
+            <p class="card-excerpt">Deploying browser-native and serverless AI microservices, persistent key-value storage, and decentralized authentication with Puter.js at zero fixed monthly operational overhead.</p>
             <div class="card-author-bar">
               <div class="author-avatar-wrap">
                 <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-mini-avatar" />
@@ -986,34 +913,34 @@
                 <span class="author-name-text">Benni Alencar</span>
                 <span class="author-role-text">Chief AI Architect</span>
               </div>
-              <a href="/blog/como-utilizar-puter-backend-no-ecossistema-benni-os.html" class="card-read-arrow" aria-label="Ler artigo">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              <a href="/blog/en/sovereign-serverless-backend-puter-js-zero-fixed-cost.html" class="card-read-arrow" aria-label="Read article">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
             </div>
           </div>
         </article>
         
 
-        <article class="bento-card" data-category="Monetização & Infra">
-          <a href="/blog/como-utilizar-revenue-loop-no-ecossistema-benni-os.html" class="card-image-link">
+        <article class="bento-card" data-category="Monetization & Infra">
+          <a href="/blog/en/autonomous-revenue-loop-ai-funnel-optimization.html" class="card-image-link">
             <div class="card-image-wrap">
-              <img src="/blog/assets/hero-03-decision.png" alt="Autonomous Revenue Loop: Otimização de Funis e Conversão Operada por IA" loading="lazy" class="card-thumb" />
+              <img src="/blog/assets/hero-03-decision.png" alt="Autonomous Revenue Loop: Engineering Self-Optimizing Funnels and Automated AI Sales Operations" loading="lazy" class="card-thumb" />
               <div class="card-category-badge" style="--cat-color: #f59e0b;">
                 <span class="badge-dot"></span>
-                Monetização & Infra
+                Monetization & Infra
               </div>
             </div>
           </a>
           <div class="card-content">
             <div class="card-meta-top">
-              <span class="card-read-time">14 min de leitura</span>
+              <span class="card-read-time">14 min read</span>
               <span class="card-meta-sep">•</span>
-              <span class="card-date">26 Out 2026</span>
+              <span class="card-date">Oct 26, 2026</span>
             </div>
             <h3 class="card-title">
-              <a href="/blog/como-utilizar-revenue-loop-no-ecossistema-benni-os.html">Autonomous Revenue Loop: Otimização de Funis e Conversão Operada por IA</a>
+              <a href="/blog/en/autonomous-revenue-loop-ai-funnel-optimization.html">Autonomous Revenue Loop: Engineering Self-Optimizing Funnels and Automated AI Sales Operations</a>
             </h3>
-            <p class="card-excerpt">A arquitetura de sistemas que analisa métricas de aquisição, ajusta copy em tempo real e orquestra fechamento comercial com intervenção humana mínima.</p>
+            <p class="card-excerpt">The system architecture analyzing acquisition metrics, adjusting messaging in real time, and orchestrating commercial deal closing with minimal manual intervention.</p>
             <div class="card-author-bar">
               <div class="author-avatar-wrap">
                 <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-mini-avatar" />
@@ -1022,8 +949,8 @@
                 <span class="author-name-text">Benni Alencar</span>
                 <span class="author-role-text">Chief AI Architect</span>
               </div>
-              <a href="/blog/como-utilizar-revenue-loop-no-ecossistema-benni-os.html" class="card-read-arrow" aria-label="Ler artigo">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              <a href="/blog/en/autonomous-revenue-loop-ai-funnel-optimization.html" class="card-read-arrow" aria-label="Read article">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
             </div>
           </div>
@@ -1031,9 +958,9 @@
         
 
         <article class="bento-card" data-category="Visual & Spatial 3D">
-          <a href="/blog/como-utilizar-spatial-3d-no-ecossistema-benni-os.html" class="card-image-link">
+          <a href="/blog/en/spatial-3d-webgl-shaders-visual-interfaces-ai-systems.html" class="card-image-link">
             <div class="card-image-wrap">
-              <img src="/blog/assets/hero-01-arrival.png" alt="Spatial 3D & Shaders WebGL no Benni OS: Interfaces Espaciais para Sistemas de IA" loading="lazy" class="card-thumb" />
+              <img src="/blog/assets/hero-01-arrival.png" alt="Spatial 3D & WebGL Shaders in Benni OS: 60 FPS Visual Interfaces for AI Topologies" loading="lazy" class="card-thumb" />
               <div class="card-category-badge" style="--cat-color: #8b5cf6;">
                 <span class="badge-dot"></span>
                 Visual & Spatial 3D
@@ -1042,14 +969,14 @@
           </a>
           <div class="card-content">
             <div class="card-meta-top">
-              <span class="card-read-time">12 min de leitura</span>
+              <span class="card-read-time">12 min read</span>
               <span class="card-meta-sep">•</span>
-              <span class="card-date">25 Out 2026</span>
+              <span class="card-date">Oct 25, 2026</span>
             </div>
             <h3 class="card-title">
-              <a href="/blog/como-utilizar-spatial-3d-no-ecossistema-benni-os.html">Spatial 3D & Shaders WebGL no Benni OS: Interfaces Espaciais para Sistemas de IA</a>
+              <a href="/blog/en/spatial-3d-webgl-shaders-visual-interfaces-ai-systems.html">Spatial 3D & WebGL Shaders in Benni OS: 60 FPS Visual Interfaces for AI Topologies</a>
             </h3>
-            <p class="card-excerpt">Construindo experiências visuais imersivas em Three.js e GLSL que traduzem dados abstratos de agentes e fluxos de rede em visualizações 3D em 60 FPS.</p>
+            <p class="card-excerpt">Building immersive Three.js and GLSL spatial experiences that translate abstract multi-agent network topologies and real-time execution graphs into fluid 60 FPS visualizations.</p>
             <div class="card-author-bar">
               <div class="author-avatar-wrap">
                 <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-mini-avatar" />
@@ -1058,8 +985,8 @@
                 <span class="author-name-text">Benni Alencar</span>
                 <span class="author-role-text">Chief AI Architect</span>
               </div>
-              <a href="/blog/como-utilizar-spatial-3d-no-ecossistema-benni-os.html" class="card-read-arrow" aria-label="Ler artigo">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              <a href="/blog/en/spatial-3d-webgl-shaders-visual-interfaces-ai-systems.html" class="card-read-arrow" aria-label="Read article">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </a>
             </div>
           </div>
@@ -1069,41 +996,41 @@
 
     <!-- VIP Newsletter Lead Capture -->
     <section class="newsletter-card">
-      <h2 class="newsletter-title">Cadernos de Arquitetura de IA</h2>
+      <h2 class="newsletter-title">AI Architecture Notebooks</h2>
       <p class="newsletter-desc">
-        Junte-se a engenheiros e arquitetos de sistemas que recebem análises aprofundadas sobre agentes autônomos, Model Context Protocol e infraestrutura soberana direto na caixa de entrada.
+        Join system architects and AI engineers receiving deep analyses on Model Context Protocol, Zero-Trust autonomous agents, and sovereign infrastructure.
       </p>
-      <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Obrigado pela inscrição! O whitepaper do Benni Master OS v9.4 foi enviado para seu e-mail.');">
-        <input type="email" required placeholder="Digite seu melhor e-mail corporativo..." class="newsletter-input" />
-        <button type="submit" class="newsletter-btn">Inscrever-se Gratuitamente</button>
+      <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thank you for subscribing! Benni Master OS whitepaper has been dispatched.');">
+        <input type="email" required placeholder="Enter your corporate email..." class="newsletter-input" />
+        <button type="submit" class="newsletter-btn">Subscribe for Free</button>
       </form>
     </section>
 
     <!-- Monetization Section -->
     <section id="monetizacao" style="margin: 4rem 0;">
       <div style="text-align: center; margin-bottom: 2.5rem;">
-        <span style="font-family: var(--font-code); color: var(--cyan); font-size: 0.8rem; letter-spacing: 2px;">ECOSSISTEMA & SOLUÇÕES</span>
-        <h2 style="font-family: var(--font-title); font-size: 2.4rem; color: #fff; margin-top: 0.5rem;">Implante o Benni Master OS na sua Organização</h2>
+        <span style="font-family: var(--font-code); color: var(--cyan); font-size: 0.8rem; letter-spacing: 2px;">ECOSYSTEM & PRODUCTION ADVISORY</span>
+        <h2 style="font-family: var(--font-title); font-size: 2.4rem; color: #fff; margin-top: 0.5rem;">Deploy Benni Master OS in Your Organization</h2>
       </div>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
         <div style="background: var(--panel); border: 1px solid rgba(0, 240, 255, 0.25); border-radius: 16px; padding: 2.5rem; position: relative;">
-          <span style="background: rgba(0, 240, 255, 0.12); color: var(--cyan); font-family: var(--font-code); font-size: 0.75rem; font-weight: 700; padding: 4px 12px; border-radius: 9999px;">FORMAÇÃO PRÁTICA</span>
-          <h3 style="font-size: 1.5rem; color: #fff; margin: 1.2rem 0 0.8rem;">Modo Operador: IA como Camada de Execução</h3>
+          <span style="background: rgba(0, 240, 255, 0.12); color: var(--cyan); font-family: var(--font-code); font-size: 0.75rem; font-weight: 700; padding: 4px 12px; border-radius: 9999px;">PRACTICAL TRAINING</span>
+          <h3 style="font-size: 1.5rem; color: #fff; margin: 1.2rem 0 0.8rem;">Operator Mode: AI as an Execution Layer</h3>
           <p style="color: var(--text-muted); font-size: 0.98rem; margin-bottom: 2rem; line-height: 1.6;">
-            Aprenda a orquestrar agentes autônomos, construir gateways MCP em produção e operar sistemas de IA com controle absoluto e rentabilidade.
+            Master autonomous agent orchestration, production MCP gateway engineering, and deterministic system governance.
           </p>
           <a href="https://github.com/Benni-OS/modo-operador" target="_blank" style="display: inline-block; width: 100%; text-align: center; background: var(--cyan); color: #000; font-weight: 700; padding: 0.85rem; border-radius: 8px; text-decoration: none;">
-            Acessar o Modo Operador &rarr;
+            Access Operator Mode &rarr;
           </a>
         </div>
         <div style="background: var(--panel); border: 1px solid rgba(201, 164, 92, 0.35); border-radius: 16px; padding: 2.5rem; position: relative;">
           <span style="background: rgba(201, 164, 92, 0.12); color: #c9a45c; font-family: var(--font-code); font-size: 0.75rem; font-weight: 700; padding: 4px 12px; border-radius: 9999px;">B2B & ENTERPRISE</span>
-          <h3 style="font-size: 1.5rem; color: #fff; margin: 1.2rem 0 0.8rem;">Consultoria & Arquitetura Corporativa de IA</h3>
+          <h3 style="font-size: 1.5rem; color: #fff; margin: 1.2rem 0 0.8rem;">Enterprise AI Architecture Advisory</h3>
           <p style="color: var(--text-muted); font-size: 0.98rem; margin-bottom: 2rem; line-height: 1.6;">
-            Projetamos e implementamos enxames autônomos, auditoria Zero-Trust e infraestruturas locais com isolamento absoluto de dados.
+            We design and deploy multi-agent swarms, Zero-Trust compliance layers, and sovereign on-prem inference topologies.
           </p>
           <a href="https://www.linkedin.com/in/benni-alencar/" target="_blank" style="display: inline-block; width: 100%; text-align: center; background: #c9a45c; color: #000; font-weight: 700; padding: 0.85rem; border-radius: 8px; text-decoration: none;">
-            Agendar Diagnóstico com Benni Alencar &rarr;
+            Schedule Architecture Review with Benni Alencar &rarr;
           </a>
         </div>
       </div>
@@ -1120,43 +1047,42 @@
           BENNI OS // SOVEREIGN ARCHITECTURE
         </div>
         <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.6; max-width: 380px;">
-          Plataforma de autoridade científica e governança de agentes autônomos fundada por Benni Alencar. Defesa Zero-Trust, Model Context Protocol e consensus distribuído.
+          Scientific authority and autonomous agent governance platform founded by Benni Alencar. Zero-Trust defense, Model Context Protocol, and distributed swarm mathematics.
         </p>
       </div>
       <div class="footer-col">
-        <h4>PUBLICAÇÕES</h4>
+        <h4>PUBLICATIONS</h4>
         <ul>
-          <li><a href="/blog/como-utilizar-cyber-sentinel-no-ecossistema-benni-os.html">Cyber Sentinel POD-9</a></li>
-          <li><a href="/blog/como-utilizar-control-plane-no-ecossistema-benni-os.html">Control Plane OS</a></li>
-          <li><a href="/blog/como-utilizar-nemesis-gateway-no-ecossistema-benni-os.html">Nemesis Gateway (MCP)</a></li>
-          <li><a href="/blog/como-utilizar-agent-armies-no-ecossistema-benni-os.html">Agent Armies & Swarms</a></li>
+          <li><a href="/blog/en/cyber-sentinel-zero-trust-ai-agents.html">Cyber Sentinel POD-9</a></li>
+          <li><a href="/blog/en/control-plane-orchestration-durable-state-ai-agents.html">Control Plane OS</a></li>
+          <li><a href="/blog/en/nemesis-gateway-model-context-protocol-enterprise-tools.html">Nemesis Gateway (MCP)</a></li>
+          <li><a href="/blog/en/agent-armies-multi-agent-swarms-typed-leases.html">Agent Armies & Swarms</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h4>ECOSSISTEMA</h4>
+        <h4>ECOSYSTEM</h4>
         <ul>
-          <li><a href="/blog/academy.html">Pós-Graduação & Academia</a></li>
+          <li><a href="/blog/academy.html">Academy & Specialization</a></li>
           <li><a href="https://github.com/Benni-OS/mcp-forge" target="_blank">MCP Forge Registry</a></li>
           <li><a href="https://github.com/BenniAlencar/reality-lock" target="_blank">Reality Lock Engine</a></li>
           <li><a href="https://github.com/BenniAlencar/agent-cyber-sentinel" target="_blank">Cyber Sentinel Repo</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h4>AUTOR</h4>
+        <h4>AUTHOR</h4>
         <ul>
-          <li><a href="https://www.linkedin.com/in/benni-alencar/" target="_blank">LinkedIn de Benni Alencar</a></li>
-          <li><a href="https://github.com/BenniAlencar" target="_blank">GitHub de Benni Alencar</a></li>
-          <li><a href="https://benni-os.net">Website Canônico</a></li>
+          <li><a href="https://www.linkedin.com/in/benni-alencar/" target="_blank">LinkedIn - Benni Alencar</a></li>
+          <li><a href="https://github.com/BenniAlencar" target="_blank">GitHub - Benni Alencar</a></li>
+          <li><a href="https://benni-os.net">benni-os.net</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <div>&copy; 2026 Benni Alencar & Benni OS Engineering Council. Todos os direitos reservados.</div>
+      <div>&copy; 2026 Benni Alencar & Benni OS Engineering Council. All rights reserved.</div>
       <div>Canonical Domain: <a href="https://benni-os.net" style="color: var(--cyan); text-decoration: none;">benni-os.net</a></div>
     </div>
   </footer>
 
-  <!-- Client-side Category Filter Script -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const filterBtns = document.querySelectorAll('.filter-btn');
