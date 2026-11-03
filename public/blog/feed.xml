@@ -1,102 +1,139 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Benni OS // Sovereign AI Engineering & Architecture</title>
+    <title>Benni OS Sovereign Engineering &amp; Architecture Journal</title>
     <link>https://benni-os.net/blog/index.html</link>
-    <description>Frontier technical essays on Autonomous AI Agents, Zero-Trust Security, Model Context Protocol (MCP), and Multi-Agent Swarms by Benni Alencar.</description>
+    <description>In-depth technical architecture, sovereign AI runtime engineering, zero-trust agents, and Model Context Protocol guides by Benni Alencar.</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 03 Nov 2026 19:50:00 GMT</lastBuildDate>
-    <atom:link href="https://benni-os.net/blog/feed.xml" rel="self" type="application/rss+xml" />
-
+    <lastBuildDate>Tue, 03 Nov 2026 21:00:00 GMT</lastBuildDate>
+    <atom:link href="https://benni-os.net/blog/feed.xml" rel="self" type="application/rss+xml"/>
     <item>
-      <title><![CDATA[Cyber Sentinel: Hardening Autonomous AI Agents Against Prompt Injection and Secret Exfiltration]]></title>
+      <title><![CDATA[Cyber Sentinel: Zero-Trust Defense Against Prompt Injection and Secret Leaks]]></title>
       <link>https://benni-os.net/blog/en/cyber-sentinel-zero-trust-ai-agents.html</link>
       <guid isPermaLink="true">https://benni-os.net/blog/en/cyber-sentinel-zero-trust-ai-agents.html</guid>
-      <description><![CDATA[Implementing a Tier-0 Zero-Trust defense layer across 9 discrete execution checkpoints (POD-9), intercepting direct and indirect prompt injections in real time.]]></description>
-      <category>Security & Defense</category>
-      <author>Benni Alencar</author>
-      <pubDate>Nov 03, 2026</pubDate>
+      <pubDate>Tue, 03 Nov 2026 12:00:00 GMT</pubDate>
+      <author>bennialencar@gmail.com (Benni Alencar)</author>
+      <description><![CDATA[Technical masterclass and sovereign architecture guide by Benni Alencar on Benni OS.]]></description>
     </item>
     <item>
-      <title><![CDATA[Control Plane OS: Durable State Orchestration and Infinite Loop Prevention for AI Agents]]></title>
+      <title><![CDATA[Control Plane OS: Durable State Orchestration and Infinite Loop Prevention]]></title>
       <link>https://benni-os.net/blog/en/control-plane-orchestration-durable-state-ai-agents.html</link>
       <guid isPermaLink="true">https://benni-os.net/blog/en/control-plane-orchestration-durable-state-ai-agents.html</guid>
-      <description><![CDATA[Architecting a centralized control plane for autonomous artificial intelligence agents with atomic snapshots, persistent graph memory, and continuous reconciliation.]]></description>
-      <category>Architecture & MCP</category>
-      <author>Benni Alencar</author>
-      <pubDate>Nov 02, 2026</pubDate>
+      <pubDate>Tue, 03 Nov 2026 12:00:00 GMT</pubDate>
+      <author>bennialencar@gmail.com (Benni Alencar)</author>
+      <description><![CDATA[Technical masterclass and sovereign architecture guide by Benni Alencar on Benni OS.]]></description>
     </item>
     <item>
-      <title><![CDATA[Agent Armies: Coordinating Massive Multi-Agent Swarms with Typed Leases and Deterministic Handoffs]]></title>
-      <link>https://benni-os.net/blog/en/agent-armies-multi-agent-swarms-typed-leases.html</link>
-      <guid isPermaLink="true">https://benni-os.net/blog/en/agent-armies-multi-agent-swarms-typed-leases.html</guid>
-      <description><![CDATA[How to orchestrate dozens of specialized AI agents with deterministic state handoffs, strict token budget governance, and least-privilege role isolation in production.]]></description>
-      <category>Multi-Agent Swarms</category>
-      <author>Benni Alencar</author>
-      <pubDate>Nov 01, 2026</pubDate>
-    </item>
-    <item>
-      <title><![CDATA[Nemesis Gateway: The Enterprise Model Context Protocol (MCP) Blueprint for Tool Federation]]></title>
-      <link>https://benni-os.net/blog/en/nemesis-gateway-model-context-protocol-enterprise-tools.html</link>
-      <guid isPermaLink="true">https://benni-os.net/blog/en/nemesis-gateway-model-context-protocol-enterprise-tools.html</guid>
-      <description><![CDATA[Engineering blueprint for building sovereign, federated gateways on top of the Model Context Protocol (MCP) with real-time authorization policies and zero cloud lock-in.]]></description>
-      <category>Architecture & MCP</category>
-      <author>Benni Alencar</author>
-      <pubDate>Oct 31, 2026</pubDate>
-    </item>
-    <item>
-      <title><![CDATA[Autonomous Swarm Consensus with Local Ollama Models: Zero-Cloud Cost Distributed AI Inference]]></title>
+      <title><![CDATA[Running 30B MoE Models on 8GB Consumer GPUs with Swarm Consensus]]></title>
       <link>https://benni-os.net/blog/en/autonomous-swarm-consensus-local-ollama-zero-cloud-cost.html</link>
       <guid isPermaLink="true">https://benni-os.net/blog/en/autonomous-swarm-consensus-local-ollama-zero-cloud-cost.html</guid>
-      <description><![CDATA[Distributed consensus strategies and hybrid routing architectures to run entire autonomous agent swarms on local consumer hardware with zero cloud inference expenditure.]]></description>
-      <category>Local & Hybrid AI</category>
-      <author>Benni Alencar</author>
-      <pubDate>Oct 30, 2026</pubDate>
+      <pubDate>Tue, 03 Nov 2026 12:00:00 GMT</pubDate>
+      <author>bennialencar@gmail.com (Benni Alencar)</author>
+      <description><![CDATA[Technical masterclass and sovereign architecture guide by Benni Alencar on Benni OS.]]></description>
     </item>
     <item>
-      <title><![CDATA[Project Adam: Recursive Self-Evolution and Algorithmic Prompt Optimization for AI Agents]]></title>
+      <title><![CDATA[Building Production Model Context Protocol (MCP) Servers in Python]]></title>
+      <link>https://benni-os.net/blog/en/nemesis-gateway-model-context-protocol-enterprise-tools.html</link>
+      <guid isPermaLink="true">https://benni-os.net/blog/en/nemesis-gateway-model-context-protocol-enterprise-tools.html</guid>
+      <pubDate>Tue, 03 Nov 2026 12:00:00 GMT</pubDate>
+      <author>bennialencar@gmail.com (Benni Alencar)</author>
+      <description><![CDATA[Technical masterclass and sovereign architecture guide by Benni Alencar on Benni OS.]]></description>
+    </item>
+    <item>
+      <title><![CDATA[Agent Armies: Coordinating Multi-Agent Swarms with Typed Leases]]></title>
+      <link>https://benni-os.net/blog/en/agent-armies-multi-agent-swarms-typed-leases.html</link>
+      <guid isPermaLink="true">https://benni-os.net/blog/en/agent-armies-multi-agent-swarms-typed-leases.html</guid>
+      <pubDate>Tue, 03 Nov 2026 12:00:00 GMT</pubDate>
+      <author>bennialencar@gmail.com (Benni Alencar)</author>
+      <description><![CDATA[Technical masterclass and sovereign architecture guide by Benni Alencar on Benni OS.]]></description>
+    </item>
+    <item>
+      <title><![CDATA[Project Adam: Governed Self-Evolution Architecture for AI Agents]]></title>
       <link>https://benni-os.net/blog/en/project-adam-recursive-self-evolution-autonomous-ai-agents.html</link>
       <guid isPermaLink="true">https://benni-os.net/blog/en/project-adam-recursive-self-evolution-autonomous-ai-agents.html</guid>
-      <description><![CDATA[Constructing self-improving feedback loops where autonomous agents critique their own execution logs, refine system prompts, and compile new workflow nodes without human intervention.]]></description>
-      <category>Autonomous Systems</category>
-      <author>Benni Alencar</author>
-      <pubDate>Oct 29, 2026</pubDate>
+      <pubDate>Tue, 03 Nov 2026 12:00:00 GMT</pubDate>
+      <author>bennialencar@gmail.com (Benni Alencar)</author>
+      <description><![CDATA[Technical masterclass and sovereign architecture guide by Benni Alencar on Benni OS.]]></description>
     </item>
     <item>
-      <title><![CDATA[Deterministic Handoffs: Eliminating Context Drift in Multi-LLM Agent Pipelines]]></title>
+      <title><![CDATA[Deterministic Handoffs: Eliminating Context Drift in Multi-Agent Pipelines]]></title>
       <link>https://benni-os.net/blog/en/deterministic-handoffs-eliminating-context-drift-ai-pipelines.html</link>
       <guid isPermaLink="true">https://benni-os.net/blog/en/deterministic-handoffs-eliminating-context-drift-ai-pipelines.html</guid>
-      <description><![CDATA[State transition patterns across heterogeneous language models to ensure downstream agents receive strictly schema-validated payloads without hallucinated assumptions.]]></description>
-      <category>Software Engineering</category>
-      <author>Benni Alencar</author>
-      <pubDate>Oct 28, 2026</pubDate>
+      <pubDate>Tue, 03 Nov 2026 12:00:00 GMT</pubDate>
+      <author>bennialencar@gmail.com (Benni Alencar)</author>
+      <description><![CDATA[Technical masterclass and sovereign architecture guide by Benni Alencar on Benni OS.]]></description>
     </item>
     <item>
-      <title><![CDATA[Sovereign Serverless AI Backends with Puter.js: Zero Fixed Infrastructure Cost]]></title>
+      <title><![CDATA[Sovereign Serverless Backends with Puter.js: Zero Fixed Cloud Infrastructure Cost]]></title>
       <link>https://benni-os.net/blog/en/sovereign-serverless-backend-puter-js-zero-fixed-cost.html</link>
       <guid isPermaLink="true">https://benni-os.net/blog/en/sovereign-serverless-backend-puter-js-zero-fixed-cost.html</guid>
-      <description><![CDATA[Deploying browser-native and serverless AI microservices, persistent key-value storage, and decentralized authentication with Puter.js at zero fixed monthly operational overhead.]]></description>
-      <category>Monetization & Infra</category>
-      <author>Benni Alencar</author>
-      <pubDate>Oct 27, 2026</pubDate>
+      <pubDate>Tue, 03 Nov 2026 12:00:00 GMT</pubDate>
+      <author>bennialencar@gmail.com (Benni Alencar)</author>
+      <description><![CDATA[Technical masterclass and sovereign architecture guide by Benni Alencar on Benni OS.]]></description>
     </item>
     <item>
-      <title><![CDATA[Autonomous Revenue Loop: Engineering Self-Optimizing Funnels and Automated AI Sales Operations]]></title>
+      <title><![CDATA[Autonomous Revenue Loop: End-to-End AI Funnel Optimization]]></title>
       <link>https://benni-os.net/blog/en/autonomous-revenue-loop-ai-funnel-optimization.html</link>
       <guid isPermaLink="true">https://benni-os.net/blog/en/autonomous-revenue-loop-ai-funnel-optimization.html</guid>
-      <description><![CDATA[The system architecture analyzing acquisition metrics, adjusting messaging in real time, and orchestrating commercial deal closing with minimal manual intervention.]]></description>
-      <category>Monetization & Infra</category>
-      <author>Benni Alencar</author>
-      <pubDate>Oct 26, 2026</pubDate>
+      <pubDate>Tue, 03 Nov 2026 12:00:00 GMT</pubDate>
+      <author>bennialencar@gmail.com (Benni Alencar)</author>
+      <description><![CDATA[Technical masterclass and sovereign architecture guide by Benni Alencar on Benni OS.]]></description>
     </item>
     <item>
-      <title><![CDATA[Spatial 3D & WebGL Shaders in Benni OS: 60 FPS Visual Interfaces for AI Topologies]]></title>
+      <title><![CDATA[Spatial 3D & WebGL Shaders: Building Living Interfaces for AI Systems]]></title>
       <link>https://benni-os.net/blog/en/spatial-3d-webgl-shaders-visual-interfaces-ai-systems.html</link>
       <guid isPermaLink="true">https://benni-os.net/blog/en/spatial-3d-webgl-shaders-visual-interfaces-ai-systems.html</guid>
-      <description><![CDATA[Building immersive Three.js and GLSL spatial experiences that translate abstract multi-agent network topologies and real-time execution graphs into fluid 60 FPS visualizations.]]></description>
-      <category>Visual & Spatial 3D</category>
-      <author>Benni Alencar</author>
-      <pubDate>Oct 25, 2026</pubDate>
+      <pubDate>Tue, 03 Nov 2026 12:00:00 GMT</pubDate>
+      <author>bennialencar@gmail.com (Benni Alencar)</author>
+      <description><![CDATA[Technical masterclass and sovereign architecture guide by Benni Alencar on Benni OS.]]></description>
+    </item>
+    <item>
+      <title><![CDATA[Ephemeral AST Code Sandboxes: Zero Cold-Start Execution Without Cloud VM Latency]]></title>
+      <link>https://benni-os.net/blog/en/ephemeral-ast-code-sandboxes-zero-cold-start.html</link>
+      <guid isPermaLink="true">https://benni-os.net/blog/en/ephemeral-ast-code-sandboxes-zero-cold-start.html</guid>
+      <pubDate>Tue, 03 Nov 2026 12:00:00 GMT</pubDate>
+      <author>bennialencar@gmail.com (Benni Alencar)</author>
+      <description><![CDATA[Technical masterclass and sovereign architecture guide by Benni Alencar on Benni OS.]]></description>
+    </item>
+    <item>
+      <title><![CDATA[Deterministic Zero-Cloud Evaluation for AI Agents: Eliminating LLM-Judge Token Burn]]></title>
+      <link>https://benni-os.net/blog/en/deterministic-zero-cloud-evaluation-ai-agents.html</link>
+      <guid isPermaLink="true">https://benni-os.net/blog/en/deterministic-zero-cloud-evaluation-ai-agents.html</guid>
+      <pubDate>Tue, 03 Nov 2026 12:00:00 GMT</pubDate>
+      <author>bennialencar@gmail.com (Benni Alencar)</author>
+      <description><![CDATA[Technical masterclass and sovereign architecture guide by Benni Alencar on Benni OS.]]></description>
+    </item>
+    <item>
+      <title><![CDATA[Autonomous Deep Research: Eliminating Hallucinated Citations and 85% Token Burn in Python]]></title>
+      <link>https://benni-os.net/blog/en/autonomous-deep-research-bm25-zero-hallucination.html</link>
+      <guid isPermaLink="true">https://benni-os.net/blog/en/autonomous-deep-research-bm25-zero-hallucination.html</guid>
+      <pubDate>Tue, 03 Nov 2026 12:00:00 GMT</pubDate>
+      <author>bennialencar@gmail.com (Benni Alencar)</author>
+      <description><![CDATA[Technical masterclass and sovereign architecture guide by Benni Alencar on Benni OS.]]></description>
+    </item>
+    <item>
+      <title><![CDATA[High-Speed, Zero-Token-Waste Autonomous Browser Engine for AI Agents]]></title>
+      <link>https://benni-os.net/blog/en/autonomous-ai-browser-engine-zero-token-waste.html</link>
+      <guid isPermaLink="true">https://benni-os.net/blog/en/autonomous-ai-browser-engine-zero-token-waste.html</guid>
+      <pubDate>Tue, 03 Nov 2026 12:00:00 GMT</pubDate>
+      <author>bennialencar@gmail.com (Benni Alencar)</author>
+      <description><![CDATA[Technical masterclass and sovereign architecture guide by Benni Alencar on Benni OS.]]></description>
+    </item>
+    <item>
+      <title><![CDATA[Reality Lock: Eliminating AI Agent 'Hallucination of Done' via Cryptographic Proofs]]></title>
+      <link>https://benni-os.net/blog/en/reality-lock-cryptographic-proofs-zero-hallucination.html</link>
+      <guid isPermaLink="true">https://benni-os.net/blog/en/reality-lock-cryptographic-proofs-zero-hallucination.html</guid>
+      <pubDate>Tue, 03 Nov 2026 12:00:00 GMT</pubDate>
+      <author>bennialencar@gmail.com (Benni Alencar)</author>
+      <description><![CDATA[Technical masterclass and sovereign architecture guide by Benni Alencar on Benni OS.]]></description>
+    </item>
+    <item>
+      <title><![CDATA[Bi-Temporal Knowledge Graphs: Cutting Agent Context Blowout by 74% in Python]]></title>
+      <link>https://benni-os.net/blog/en/bitemporal-knowledge-graphs-ai-agents-memory.html</link>
+      <guid isPermaLink="true">https://benni-os.net/blog/en/bitemporal-knowledge-graphs-ai-agents-memory.html</guid>
+      <pubDate>Tue, 03 Nov 2026 12:00:00 GMT</pubDate>
+      <author>bennialencar@gmail.com (Benni Alencar)</author>
+      <description><![CDATA[Technical masterclass and sovereign architecture guide by Benni Alencar on Benni OS.]]></description>
     </item>
   </channel>
 </rss>
