@@ -10,3 +10,8 @@ benni-os-hero.mp4
 benni-os-hero-source.mp4
 backups/
 raw-media/
+
+.benni/
+.playwright-cli/
+output/
+*.bak
