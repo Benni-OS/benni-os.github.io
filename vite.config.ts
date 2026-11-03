@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import { defineConfig } from 'vite';
 import legacy from '@vitejs/plugin-legacy';
 import { VitePWA } from 'vite-plugin-pwa';
@@ -68,10 +70,23 @@ export default defineConfig({
   build: {
     target: 'es2020',
     rollupOptions: {
-      input: {
-        main: 'index.html',
-        admin: 'admin.html'
-      }
+      input: (() => {
+        const inputs: Record<string, string> = {
+          main: path.resolve(__dirname, 'index.html'),
+          admin: path.resolve(__dirname, 'admin.html')
+        };
+        const blogDir = path.resolve(__dirname, 'blog');
+        if (fs.existsSync(blogDir)) {
+          const files = fs.readdirSync(blogDir);
+          for (const f of files) {
+            if (f.endsWith('.html')) {
+              const name = f === 'index.html' ? 'blog' : `blog-${f.replace('.html', '')}`;
+              inputs[name] = path.resolve(blogDir, f);
+            }
+          }
+        }
+        return inputs;
+      })()
     }
   },
   publicDir: 'public'
