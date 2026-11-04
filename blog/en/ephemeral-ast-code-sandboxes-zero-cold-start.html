@@ -605,10 +605,10 @@
 
 <div class="mermaid">
 flowchart LR
-    A["User Prompt / Agent Intent"] --> B["AST Static Security Gate (<0.3ms)"]
+    A["User Prompt / Agent Intent"] --> B["AST Static Security Gate (Sub-0.3ms)"]
     B -->|Safe Bytecode| C["Ephemeral In-Memory Process"]
     B -->|Banned Syscall / Breakout| D["Immediate Rejection & Receipt"]
-    C --> E["Deterministic Output (<1ms Total)"]
+    C --> E["Deterministic Output (Sub-1ms Total)"]
 </div>
 
 <h2>The Solution: Sub-Millisecond AST Static Inspection</h2>

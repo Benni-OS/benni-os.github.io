@@ -96,7 +96,7 @@
           "name": "Does it protect against indirect prompt injection on web pages?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes, it contains a sub-millisecond security parser (<0.4ms) filtering malicious prompt injection instructions embedded in hidden HTML elements or alt tags."
+            "text": "Yes, it contains a sub-millisecond security parser (Sub-0.4ms) filtering malicious prompt injection instructions embedded in hidden HTML elements or alt tags."
           }
         }
         ]
@@ -606,7 +606,7 @@
 <div class="mermaid">
 flowchart TD
     URL["Web Page Target"] --> Mesh["agent-browser-mesh"]
-    Mesh --> Filter["<0.4ms Injection Shield (Hidden Elements)"]
+    Mesh --> Filter["Sub-0.4ms Injection Shield (Hidden Elements)"]
     Filter --> Delta["Semantic DOM Delta Generator (-92% Tokens)"]
     Delta --> Action["Actionable Element Selector Map"]
     Action --> Agent["Autonomous AI Agent Decision Loop"]
@@ -659,7 +659,7 @@ print("Action Result:", result.status)
         </div>
         <div class="faq-item-card">
           <div class="faq-item-q">Does it protect against indirect prompt injection on web pages?</div>
-          <div class="faq-item-a">Yes, it contains a sub-millisecond security parser (<0.4ms) filtering malicious prompt injection instructions embedded in hidden HTML elements or alt tags.</div>
+          <div class="faq-item-a">Yes, it contains a sub-millisecond security parser (Sub-0.4ms) filtering malicious prompt injection instructions embedded in hidden HTML elements or alt tags.</div>
         </div>
       </section>
     </article>
