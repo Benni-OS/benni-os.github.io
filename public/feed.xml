@@ -135,5 +135,13 @@
       <author>bennialencar@gmail.com (Benni Alencar)</author>
       <description><![CDATA[Technical masterclass and sovereign architecture guide by Benni Alencar on Benni OS.]]></description>
     </item>
+      <item>
+      <title><![CDATA[Compiling Natural Language to Typed DAGs: Eliminating AI Agent Prompt Injection and 60% Token Waste]]></title>
+      <link>https://benni-os.net/blog/en/agent-intent-compiler-typed-dag-execution.html</link>
+      <guid isPermaLink="true">https://benni-os.net/blog/en/agent-intent-compiler-typed-dag-execution.html</guid>
+      <pubDate>Tue, 03 Nov 2026 21:30:00 GMT</pubDate>
+      <author>bennialencar@gmail.com (Benni Alencar)</author>
+      <description><![CDATA[Deterministic intent compiler and typed DAG execution planner for AI agents by Benni Alencar.]]></description>
+    </item>
   </channel>
 </rss>

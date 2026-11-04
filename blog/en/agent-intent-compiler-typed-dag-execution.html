@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- Google AdSense Oficial -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6415277800729792" crossorigin="anonymous"></script>
+
+  <title>Compiling Natural Language to Typed DAGs: Eliminating AI Agent Prompt Injection and 60% Token Waste in Python — Benni Alencar // Benni OS</title>
+  <meta name="description" content="Sub-millisecond deterministic intent compiler and typed DAG execution planner for AI agents and Model Context Protocol (MCP) servers.">
+  <link rel="canonical" href="https://benni-os.net/blog/en/agent-intent-compiler-typed-dag-execution.html" />
+  <link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/agent-intent-compiler-typed-dag-execution.html" />
+  <link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/como-utilizar-agent-intent-compiler-no-ecossistema-benni-os.html" />
+  <link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/agent-intent-compiler-typed-dag-execution.html" />
+  <meta property="og:title" content="Compiling Natural Language to Typed DAGs: Eliminating AI Agent Prompt Injection and 60% Token Waste in Python" />
+  <meta property="og:description" content="Sub-millisecond deterministic intent compiler and typed DAG execution planner for AI agents and MCP." />
+  <meta property="og:image" content="https://benni-os.net/blog/assets/hero-01-arrival.png" />
+  <meta property="og:url" content="https://benni-os.net/blog/en/agent-intent-compiler-typed-dag-execution.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:creator" content="@BenniAlencar" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": ["TechArticle", "BlogPosting"],
+        "@id": "https://benni-os.net/blog/en/agent-intent-compiler-typed-dag-execution.html#article",
+        "isPartOf": {
+          "@type": "WebSite",
+          "@id": "https://benni-os.net/#website",
+          "name": "Benni OS",
+          "url": "https://benni-os.net"
+        },
+        "headline": "Compiling Natural Language to Typed DAGs: Eliminating AI Agent Prompt Injection and 60% Token Waste in Python",
+        "description": "Sub-millisecond deterministic intent compiler and typed DAG execution planner for AI agents and MCP.",
+        "inLanguage": "en-US",
+        "mainEntityOfPage": "https://benni-os.net/blog/en/agent-intent-compiler-typed-dag-execution.html",
+        "url": "https://benni-os.net/blog/en/agent-intent-compiler-typed-dag-execution.html",
+        "image": "https://benni-os.net/blog/assets/hero-01-arrival.png",
+        "datePublished": "2026-11-03T00:00:00Z",
+        "dateModified": "2026-11-03T21:30:00Z",
+        "keywords": "agent intent compiler, prompt injection defense, dag execution ai agents, typed tool calling, mcp server python, benni os",
+        "author": {
+          "@type": "Person",
+          "@id": "https://benni-os.net/#author",
+          "name": "Benni Alencar",
+          "jobTitle": "Chief AI Systems Architect & Founder",
+          "url": "https://benni-os.net",
+          "sameAs": [
+            "https://github.com/BenniAlencar",
+            "https://dev.to/bennialencar",
+            "https://www.linkedin.com/in/benni-alencar/",
+            "https://benni-os.net"
+          ]
+        },
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://benni-os.net/#organization",
+          "name": "Benni OS",
+          "url": "https://benni-os.net",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://benni-os.net/blog/assets/benni_avatar.png"
+          }
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://benni-os.net/blog/en/agent-intent-compiler-typed-dag-execution.html#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Why is compiling natural language before tool invocation crucial for AI agents?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Compiling natural language transforms unstructured, potentially malicious prompts into typed, statically verified DAG execution stages, halting prompt injections and saving over 60% of LLM reasoning tokens."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How does agent-intent-compiler prevent circular execution loops?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "It uses Kahn's topological sorting algorithm on execution nodes, immediately catching cyclic dependencies before any subprocess or tool is triggered."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does it integrate with the Model Context Protocol (MCP)?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, it contains a native MCPAdapter that serializes execution plans directly into standard JSON-RPC 2.0 tools/call requests."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #07080c;
+      --panel: #0e111a;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --cyan: #00f0ff;
+      --blue: #3b82f6;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-title: 'DM Serif Display', Georgia, serif;
+      --font-code: 'IBM Plex Mono', monospace;
+      --badge-color: #00f0ff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.75;
+      font-size: 1.05rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header.magazine-header {
+      background: rgba(7, 8, 12, 0.85);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--card-border);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 0.9rem 2rem;
+    }
+    .nav-container {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand-logo {
+      font-family: var(--font-code);
+      font-weight: 700;
+      color: var(--text-main);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #10b981;
+    }
+    nav.nav-links { display: flex; align-items: center; gap: 1.8rem; }
+    nav.nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.92rem; }
+    nav.nav-links a:hover, nav.nav-links a.active { color: #fff; }
+    .lang-switcher-pill {
+      display: flex;
+      align-items: center;
+      background: rgba(14, 17, 26, 0.8);
+      border: 1px solid var(--card-border);
+      border-radius: 9999px;
+      padding: 3px;
+      gap: 2px;
+    }
+    .lang-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-family: var(--font-code);
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+    .lang-btn.active {
+      background: rgba(0, 240, 255, 0.15);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+    }
+    main.article-layout {
+      max-width: 860px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      flex: 1;
+    }
+    .category-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(10, 12, 18, 0.9);
+      border: 1px solid var(--badge-color);
+      color: var(--badge-color);
+      font-family: var(--font-code);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+    }
+    .article-main-title {
+      font-family: var(--font-title);
+      font-size: clamp(2.3rem, 4.5vw, 3.6rem);
+      margin: 1.2rem 0;
+      color: #fff;
+      line-height: 1.15;
+    }
+    .article-prose { color: #cbd5e1; }
+    .article-prose h2 { font-family: var(--font-title); font-size: 1.95rem; color: #fff; margin: 2.5rem 0 1rem; }
+    .article-prose pre {
+      background: #040507;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      overflow-x: auto;
+      margin: 1.6rem 0;
+    }
+    .article-prose pre code { color: #e2e8f0; font-family: var(--font-code); font-size: 0.88rem; }
+    .faq-item-card { border-bottom: 1px solid var(--card-border); padding: 1.2rem 0; }
+    .faq-item-q { font-weight: 700; color: var(--cyan); margin-bottom: 0.5rem; }
+    .faq-item-a { color: var(--text-muted); font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+  <header class="magazine-header">
+    <div class="nav-container">
+      <a href="/" class="brand-logo"><span class="status-dot"></span>BENNI OS // MAGAZINE</a>
+      <nav class="nav-links">
+        <a href="/">Home</a>
+        <a href="/blog/index.html" class="active">Magazine</a>
+        <a href="/blog/academy.html">Academy</a>
+        <a href="https://github.com/BenniAlencar" target="_blank">GitHub</a>
+        <a href="https://dev.to/bennialencar" target="_blank">Dev.to</a>
+        <div class="lang-switcher-pill" role="navigation" aria-label="Language Selector">
+          <a href="/blog/en/agent-intent-compiler-typed-dag-execution.html" class="lang-btn active"><span>🇺🇸</span> EN</a>
+          <a href="/blog/como-utilizar-agent-intent-compiler-no-ecossistema-benni-os.html" class="lang-btn"><span>🇧🇷</span> PT-BR</a>
+        </div>
+        <a href="/#monetizacao" style="color: var(--cyan); font-weight: 700;">Operator Mode &rarr;</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-layout">
+    <div class="category-badge-pill">INTENT COMPILATION &amp; MCP</div>
+    <h1 class="article-main-title">Compiling Natural Language to Typed DAGs: Eliminating AI Agent Prompt Injection and 60% Token Waste in Python</h1>
+    <p style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 2rem;">
+      Why feeding raw user strings into agent tool loops leads to prompt injection vulnerabilities and token blowouts, and how to compile prompts into deterministic, typed DAG execution stages in sub-millisecond local Python.
+    </p>
+
+    <article class="article-prose">
+      <h2>The Fragility of Stochastic Tool Calling</h2>
+      <p>Modern agent frameworks delegate tool selection and parameter generation entirely to the LLM. In production, this introduces severe vulnerabilities:</p>
+      <ul>
+        <li><strong>Prompt Injection:</strong> Attackers hide malicious instructions in input text or zero-width unicode characters.</li>
+        <li><strong>Type Mismatches:</strong> The LLM produces parameters with missing keys or invalid types, failing mid-pipeline.</li>
+        <li><strong>Token Waste:</strong> Multi-turn conversations burn hundreds of tokens debating which tool to call.</li>
+      </ul>
+
+      <h2>The Solution: agent-intent-compiler</h2>
+      <p>By compiling prompts prior to execution, <code>agent-intent-compiler</code> provides:</p>
+      <ol>
+        <li><strong>Sub-Millisecond Sanitizer:</strong> Traverses AST syntax and analyzes Shannon entropy to halt hidden payloads.</li>
+        <li><strong>Typed Slot Compiler:</strong> Maps intent into strict Pydantic v2 schemas.</li>
+        <li><strong>Kahn's Algorithm DAG Stager:</strong> Prevents cycle loops and groups independent tasks for parallel execution.</li>
+        <li><strong>Cryptographic SHA-256 Merkle Root:</strong> Issues a tamper-proof verification seal for every execution plan.</li>
+      </ol>
+
+      <h2>Quickstart Implementation</h2>
+      <pre><code class="language-bash">pip install agent-intent-compiler</code></pre>
+
+      <pre><code class="language-python">from agent_intent_compiler import IntentCompiler, MCPAdapter
+
+compiler = IntentCompiler()
+plan = compiler.compile("Migrate the production PostgreSQL database schema and verify table constraints")
+
+print("Plan ID:", plan.plan_id)
+print("Intent:", plan.intent_type)
+print("Stages:", plan.execution_order)
+print("Merkle Receipt:", plan.merkle_root)
+
+# Convert directly to Model Context Protocol (MCP) tool requests
+mcp_requests = MCPAdapter.to_mcp_requests(plan)
+print(f"Generated {len(mcp_requests)} MCP JSON-RPC calls.")
+</code></pre>
+
+      <section style="margin: 3.5rem 0;">
+        <h2 style="font-family: var(--font-title); color: #fff; margin-bottom: 1.5rem;">Frequently Asked Questions</h2>
+        <div class="faq-item-card">
+          <div class="faq-item-q">Why is compiling natural language before tool invocation crucial for AI agents?</div>
+          <div class="faq-item-a">Compiling natural language transforms unstructured prompts into typed, verified execution stages, halting prompt injections and saving over 60% of LLM reasoning tokens.</div>
+        </div>
+        <div class="faq-item-card">
+          <div class="faq-item-q">How does agent-intent-compiler prevent circular execution loops?</div>
+          <div class="faq-item-a">It uses Kahn's topological sorting algorithm on execution nodes, immediately catching cyclic dependencies before any subprocess or tool is triggered.</div>
+        </div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>
