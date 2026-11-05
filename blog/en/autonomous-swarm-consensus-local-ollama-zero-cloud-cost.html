@@ -734,7 +734,7 @@
 <h2>Executive Summary &amp; First Principles</h2>
 <p>Mixture-of-Experts (MoE) architectures—such as Mixtral 8x7B, Mixtral 8x22B, and DeepSeek-V2/V3—represent the undisputed frontier of open-weight artificial intelligence, delivering GPT-4 class reasoning with a fraction of active parameter compute.</p>
 <p>However, running these massive models locally has remained inaccessible to independent developers and edge engineers due to the <strong>VRAM Capacity Wall</strong>:</p>
-<p>$$  ext{Model Weight Memory} =  ext{Parameters}     imes    ext{Bytes per Weight}$$</p>
+<p>$$\text{Model Weight Memory} =\text{Parameters}     imes\text{Bytes per Weight}$$</p>
 <p>For a 30B to 45B parameter MoE quantized to 4-bit (INT4), loading all weights into memory requires <strong>24GB to 32GB of pure VRAM</strong>, necessitating $2,000+ workstation GPUs (RTX 4090 / A6000) or expensive cloud instances (AWS p4d / g5).</p>
 <p>Yet, sparse MoE architectures have a profound mathematical property that traditional runtimes fail to exploit: <strong>Sparsity</strong>.</p>
 <p>At any single token generation step, out of $E = 8$ total experts, <strong>only $K = 2$ experts are activated by the top-$k$ gating router</strong>. The remaining 6 experts ($75\%$ of model weights) sit completely idle!</p>

@@ -530,9 +530,9 @@
 </code></pre>
 <h3>1.1 The Okapi BM25 Ranking Formulation</h3>
 <p>Given a research query $Q$ with query terms $q_1, q_2, \dots, q_n$ and a document paragraph $D$, the BM25 relevance score is calculated as:</p>
-<p>$$  ext{Score}(D, Q) = \sum_{i=1}^{n}   ext{IDF}(q_i) \cdot <br />
+<p>$$\text{Score}(D, Q) = \sum_{i=1}^{n}\text{IDF}(q_i) \cdot <br />
 rac{f(q_i, D) \cdot (k_1 + 1)}{f(q_i, D) + k_1 \cdot \left(1 - b + b \cdot <br />
-rac{|D|}{   ext{avgdl}}<br />
+rac{|D|}{\text{avgdl}}<br />
 ight)}$$</p>
 <p>Where:<br />
 - $f(q_i, D)$ is the term frequency of $q_i$ in paragraph $D$.<br />

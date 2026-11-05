@@ -634,11 +634,11 @@
  └────────────────────────────────────────────────────────────────────────┘
 </code></pre>
 <h3>1.1 Mathematical Token Compression Ratio</h3>
-<p>Let the raw DOM tree at step $t$ contain $N$ nodes, consuming $T_{  ext{raw}}$ tokens (typically $8,000$ to $25,000$ tokens).</p>
+<p>Let the raw DOM tree at step $t$ contain $N$ nodes, consuming $T_{\text{raw}}$ tokens (typically $8,000$ to $25,000$ tokens).</p>
 <p>The Semantic Grounding Matrix extracts the interactive subset $\mathcal{I} \subset \mathcal{N}$ where $|\mathcal{I}| \ll N$.</p>
 <p>Between step $t$ and step $t+1$, only the symmetric difference $\Delta \mathcal{I} = \mathcal{I}_{t+1} \ominus \mathcal{I}_t$ is serialized:</p>
-<p>$$  ext{Compression Ratio } \mathcal{C} = 1 - <br />
-rac{    ext{Tokens}(\Delta \mathcal{I})}{   ext{Tokens}(    ext{Screenshot})} \ge 0.92 \quad (92\%  ext{ reduction})$$</p>
+<p>$$\text{Compression Ratio } \mathcal{C} = 1 - <br />
+rac{\text{Tokens}(\Delta \mathcal{I})}{\text{Tokens}(\text{Screenshot})} \ge 0.92 \quad (92\%\text{ reduction})$$</p>
 <hr />
 <h2>2. Production Python Implementation</h2>
 <p>Here is the complete, self-contained architecture of <code>agent-browser-mesh</code> implemented in Python 3.9+:</p>

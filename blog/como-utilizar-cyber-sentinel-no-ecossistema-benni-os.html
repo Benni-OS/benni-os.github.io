@@ -819,7 +819,7 @@
 <h3>2.1 Sub-Millisecond Multi-Pattern Search via Aho-Corasick Automaton</h3>
 <p>Searching for hundreds of adversarial prompt injection strings using naive regular expressions causes catastrophic backtracking and scales with $O(n    imes m)$, where $n$ is prompt length and $m$ is the pattern dictionary size.</p>
 <p><code>agent-cyber-sentinel</code> compiles the injection threat dictionary into a trie with failure transitions (Aho-Corasick Automaton):</p>
-<p>$$  ext{Time Complexity} = \mathcal{O}(n + z)$$</p>
+<p>$$\text{Time Complexity} = \mathcal{O}(n + z)$$</p>
 <p>Where:<br />
 - $n$ is the input text byte length.<br />
 - $z$ is the number of matching threat occurrences.<br />

@@ -305,9 +305,9 @@ appears visually clean in web frontends and chat interfaces, but LLM tokenizers 
 - $\mathcal{E}$ is the set of directed edges $(v_i, v_j) \in \mathcal{E}$, indicating that node $v_j$ depends on the successful output of node $v_i$.</p>
 <p>To schedule execution, the compiler executes an optimized variant of <strong>Kahn's Algorithm</strong> with stage grouping:</p>
 <ol>
-<li>Compute the in-degree $  ext{deg}^-(v)$ for every node $v \in \mathcal{V}$.</li>
+<li>Compute the in-degree $\text{deg}^-(v)$ for every node $v \in \mathcal{V}$.</li>
 <li>Enqueue all nodes with $ ext{deg}^-(v) = 0$ into Stage 0 (initial parallel wave).</li>
-<li>For each stage, process all queued nodes concurrently. Upon simulated completion, decrement the in-degree of all adjacent nodes $    ext{adj}(v)$.</li>
+<li>For each stage, process all queued nodes concurrently. Upon simulated completion, decrement the in-degree of all adjacent nodes $\text{adj}(v)$.</li>
 <li>Add nodes whose in-degree becomes 0 to the subsequent execution stage.</li>
 <li>If the total number of scheduled nodes is less than $|\mathcal{V}|$, a <strong>cyclic dependency is mathematically proven to exist</strong>, and compilation aborts immediately, preventing runtime deadlocks.</li>
 </ol>
@@ -331,9 +331,9 @@ appears visually clean in web frontends and chat interfaces, but LLM tokenizers 
 <h2>3. Cryptographic Merkle Root Non-Repudiation</h2>
 <p>To guarantee auditability in enterprise and regulated multi-agent environments, each compiled <code>ExecutionPlan</code> generates a cryptographic SHA-256 Merkle root.</p>
 <p>For each execution node $v_i$:</p>
-<p>$$h(v_i) =  ext{SHA-256}\Big(   ext{node_id} \,|\,    ext{tool_name} \,|\,  ext{canonical_json}(   ext{parameters})\Big)$$</p>
+<p>$$h(v_i) =\text{SHA-256}\Big(\text{node_id} \,|\,\text{tool_name} \,|\,\text{canonical_json}(\text{parameters})\Big)$$</p>
 <p>The overall Merkle root for plan $\mathcal{P}$ with sorted nodes $v_1, v_2, \dots, v_n$ is:</p>
-<p>$$\mathcal{M}(\mathcal{P}) =    ext{SHA-256}\Big(h(v_1) \,|\, h(v_2) \,|\, \dots \,|\, h(v_n)\Big)$$</p>
+<p>$$\mathcal{M}(\mathcal{P}) =\text{SHA-256}\Big(h(v_1) \,|\, h(v_2) \,|\, \dots \,|\, h(v_n)\Big)$$</p>
 <p>This cryptographic digest guarantees:<br />
 1. <strong>Tamper Evidence:</strong> If an adversarial prompt injection attempts to mutate tool arguments mid-execution, the downstream verifier catches the Merkle mismatch before execution.<br />
 2. <strong>Offline Verifiability:</strong> External logging ledgers, CI/CD pipelines, or security audit nodes can independently re-hash the plan without communicating with the LLM.</p>

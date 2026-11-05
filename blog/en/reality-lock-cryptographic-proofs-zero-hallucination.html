@@ -638,14 +638,14 @@ Agent: &quot;I have successfully migrated the schema, created table 'users_v2', 
 <p>Let the physical state of the host operating system at timestamp $t$ be represented by $\mathcal{S}_t$.</p>
 <p>When an agent executes an action $A$, it asserts a transition from pre-state $\mathcal{S}<em>t$ to post-state $\mathcal{S}</em>{t+1}$.</p>
 <p>Standard agent frameworks rely on the LLM's internal representation:</p>
-<p>$$\mathcal{P}(  ext{"Done"} \mid A, \mathcal{S}_t) pprox 0.98 \quad    ext{(Stochastic Guess)}$$</p>
-<p><code>reality-lock</code> introduces a formal verification function $\mathcal{V}(A, \mathcal{S}_{t+1})     o {0, 1}$:</p>
-<p>$$\mathcal{V}(A, \mathcal{S}<em>{t+1}) = egin{cases} <br />
-1 &amp;     ext{if }    ext{Hash}(  ext{Disk}(\mathcal{S}</em>{t+1})) = H_{ ext{expected}} \;\land\;    ext{ExitCode}(A) = 0 \<br />
-0 &amp;     ext{otherwise}<br />
+<p>$$\mathcal{P}(\text{"Done"} \mid A, \mathcal{S}_t) \approxpprox 0.98 \quad\text{(Stochastic Guess)}$$</p>
+<p><code>reality-lock</code> introduces a formal verification function $\mathcal{V}(A, \mathcal{S}_{t+1}) \to {0, 1}$:</p>
+<p>$$\mathcal{V}(A, \mathcal{S}<em>{t+1}) = \beginegin{cases} <br />
+1 &amp; \text{if }\text{Hash}(\text{Disk}(\mathcal{S}</em>{t+1})) = H_{ ext{expected}} \;\land\;\text{ExitCode}(A) = 0 \<br />
+0 &amp; \text{otherwise}<br />
 \end{cases}$$</p>
 <p>The non-repudiation Merkle receipt $\mathcal{R}$ is computed as:</p>
-<p>$$\mathcal{R} =     ext{SHA-256}\Big(   ext{ActionID} \,|\,    ext{Timestamp} \,|\,   ext{ExitCode} \,|\, H_{    ext{disk}} \,|\, H_{   ext{witness}}\Big)$$</p>
+<p>$$\mathcal{R} = \text{SHA-256}\Big(\text{ActionID} \,|\,\text{Timestamp} \,|\,\text{ExitCode} \,|\, H_{\text{disk}} \,|\, H_{\text{witness}}\Big)$$</p>
 <p>If $\mathcal{V} = 0$, the lease fails, a <code>HallucinationOfDoneException</code> is raised, and the rollback hook restores the pre-state snapshot $\mathcal{S}_t$ from an atomic copy-on-write buffer.</p>
 <hr />
 <h2>3. Production Python Implementation</h2>
