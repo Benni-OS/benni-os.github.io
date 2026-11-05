@@ -7,7 +7,15 @@
     <language>en-us</language>
     <lastBuildDate>Tue, 03 Nov 2026 21:00:00 GMT</lastBuildDate>
     <atom:link href="https://benni-os.net/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <item>
+        <item>
+      <title><![CDATA[Autonomous Spatial Canvas Engineering: Compiling Natural Language into 120 FPS Living Interfaces Without Design Debt]]></title>
+      <link>https://benni-os.net/blog/en/autonomous-spatial-canvas-engineering-120fps-living-interfaces.html</link>
+      <guid isPermaLink="true">https://benni-os.net/blog/en/autonomous-spatial-canvas-engineering-120fps-living-interfaces.html</guid>
+      <pubDate>Thu, 05 Nov 2026 23:33:10 GMT</pubDate>
+      <author>bennialencar@benni-os.net (Benni Alencar)</author>
+      <description><![CDATA[Why traditional DOM frontends crumble under multi-agent orchestration, and how Benni-Canvas virtualizes 120 FPS living interfaces with zero layout thrashing.]]></description>
+    </item>
+<item>
       <title><![CDATA[Cyber Sentinel: Zero-Trust Defense Against Prompt Injection and Secret Leaks]]></title>
       <link>https://benni-os.net/blog/en/cyber-sentinel-zero-trust-ai-agents.html</link>
       <guid isPermaLink="true">https://benni-os.net/blog/en/cyber-sentinel-zero-trust-ai-agents.html</guid>
