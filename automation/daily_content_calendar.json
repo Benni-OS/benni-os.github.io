@@ -148,6 +148,42 @@
       "proprietary_shield": true,
       "conversion_target": "Enterprise Regulatory Compliance & SOC2/HIPAA Gateway Licensing",
       "cta_link": "https://benni-os.net/blog/academy.html"
+    },
+    {
+      "id": "project-adam",
+      "type": "proprietary",
+      "category": "Autonomous Recursive Evolution",
+      "title_en": "Recursive Self-Evolution in Autonomous AI Agents: Closed-Loop Skill Distillation, Prompt-Atom Synthesis, and Memory Healing",
+      "title_pt": "Autoevolução Recursiva em Agentes Autônomos de IA: Destilação de Skills em Malha Fechada, Síntese Prompt-Átomo e Auto-Cura de Memória",
+      "slug_en": "recursive-self-evolution-autonomous-ai-agents-skill-distillation",
+      "slug_pt": "como-utilizar-project-adam-autoevolucao-recursiva-no-ecossistema-benni-os",
+      "summary_en": "How Project Adam autonomously detects reasoning bottlenecks, synthesizes new tool schemas, and recompiles prompt atoms without catastrophic forgetting.",
+      "summary_pt": "Como o Projeto Adam detecta gargalos de raciocínio, sintetiza novos schemas de ferramentas e recompila átomos de prompt sem esquecimento catastrófico.",
+      "reading_time": "16 min read",
+      "target_system": "Project Adam OS",
+      "hero_image": "/blog/assets/hero-11-adam.png",
+      "tags": ["machinelearning", "ai", "self-evolution", "softwarearchitecture"],
+      "proprietary_shield": true,
+      "conversion_target": "Enterprise Cognitive Self-Evolution Licensing & Private LLM Optimization",
+      "cta_link": "https://benni-os.net/blog/academy.html"
+    },
+    {
+      "id": "project-benjamin",
+      "type": "proprietary",
+      "category": "Autonomous Swarm Dispatch",
+      "title_en": "Autonomous Dispatch Engineering: High-Yield Task Routing, Capability Probing, and Zero-Drift Swarm Execution",
+      "title_pt": "Engenharia de Dispatch Autônomo: Roteamento de Tarefas de Alto Rendimento, Probes de Capacidade e Execução de Enxames Sem Deriva",
+      "slug_en": "autonomous-dispatch-engineering-high-yield-task-routing-swarms",
+      "slug_pt": "como-utilizar-projeto-benjamin-dispatch-autonomo-no-ecossistema-benni-os",
+      "summary_en": "Orchestrating high-yield enterprise missions with verified capability probes, typed leases, tenant isolation, and deterministic task completion.",
+      "summary_pt": "Orquestrando missões corporativas de alto rendimento com probes de capacidade verificados, leases tipados, isolamento de tenant e conclusão determinística de tarefas.",
+      "reading_time": "15 min read",
+      "target_system": "Projeto Benjamin OS",
+      "hero_image": "/blog/assets/hero-10-benjamin.png",
+      "tags": ["distributed", "orchestration", "softwarearchitecture", "ai"],
+      "proprietary_shield": true,
+      "conversion_target": "Enterprise Autonomous Swarm Dispatch & Mission SLAs",
+      "cta_link": "https://benni-os.net/blog/academy.html"
     }
   ]
 }

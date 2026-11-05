@@ -7,7 +7,15 @@
     <language>en-us</language>
     <lastBuildDate>Tue, 03 Nov 2026 21:00:00 GMT</lastBuildDate>
     <atom:link href="https://benni-os.net/blog/feed.xml" rel="self" type="application/rss+xml"/>
-        <item>
+            <item>
+      <title><![CDATA[Sovereign Multi-Agent Brokerage: Zero-Trust Security, Dynamic Leases, and Rate-Limiting for 97+ Enterprise Connectors]]></title>
+      <link>https://benni-os.net/blog/en/sovereign-multi-agent-brokerage-zero-trust-97-connectors.html</link>
+      <guid isPermaLink="true">https://benni-os.net/blog/en/sovereign-multi-agent-brokerage-zero-trust-97-connectors.html</guid>
+      <pubDate>Thu, 05 Nov 2026 23:47:24 GMT</pubDate>
+      <author>bennialencar@benni-os.net (Benni Alencar)</author>
+      <description><![CDATA[The hidden architectural vulnerabilities of vanilla MCP servers in Fortune 500 clouds, and how Nemesis Gateway delivers zero-trust brokerages and audit ledgers.]]></description>
+    </item>
+<item>
       <title><![CDATA[Autonomous Spatial Canvas Engineering: Compiling Natural Language into 120 FPS Living Interfaces Without Design Debt]]></title>
       <link>https://benni-os.net/blog/en/autonomous-spatial-canvas-engineering-120fps-living-interfaces.html</link>
       <guid isPermaLink="true">https://benni-os.net/blog/en/autonomous-spatial-canvas-engineering-120fps-living-interfaces.html</guid>

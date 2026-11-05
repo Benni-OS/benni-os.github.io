@@ -359,4 +359,22 @@
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
+  <url>
+    <loc>https://benni-os.net/blog/en/sovereign-multi-agent-brokerage-zero-trust-97-connectors.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/sovereign-multi-agent-brokerage-zero-trust-97-connectors.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/como-utilizar-nemesis-gateway-corretagem-soberana-97-conectores-no-ecossistema-benni-os.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/sovereign-multi-agent-brokerage-zero-trust-97-connectors.html" />
+    <lastmod>2026-11-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/como-utilizar-nemesis-gateway-corretagem-soberana-97-conectores-no-ecossistema-benni-os.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/sovereign-multi-agent-brokerage-zero-trust-97-connectors.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/como-utilizar-nemesis-gateway-corretagem-soberana-97-conectores-no-ecossistema-benni-os.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/sovereign-multi-agent-brokerage-zero-trust-97-connectors.html" />
+    <lastmod>2026-11-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
 </urlset>

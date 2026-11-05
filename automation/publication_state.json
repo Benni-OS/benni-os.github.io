@@ -8,7 +8,16 @@
       "en_url": "https://benni-os.net/blog/en/autonomous-spatial-canvas-engineering-120fps-living-interfaces.html",
       "pt_url": "https://benni-os.net/blog/como-utilizar-benni-canvas-espacial-interfaces-vivas-no-ecossistema-benni-os.html",
       "type": "proprietary"
+    },
+    {
+      "id": "nemesis-gateway",
+      "published_at": "2026-11-05T20:45:00Z",
+      "devto_id": 4984867,
+      "devto_url": "https://dev.to/bennialencar/sovereign-multi-agent-brokerage-zero-trust-security-dynamic-leases-and-rate-limiting-for-97-46if",
+      "en_url": "https://benni-os.net/blog/en/sovereign-multi-agent-brokerage-zero-trust-97-connectors.html",
+      "pt_url": "https://benni-os.net/blog/como-utilizar-nemesis-gateway-corretagem-soberana-97-conectores-no-ecossistema-benni-os.html",
+      "type": "proprietary"
     }
   ],
-  "last_published_id": "benni-canvas"
+  "last_published_id": "nemesis-gateway"
 }
