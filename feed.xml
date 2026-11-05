@@ -143,5 +143,12 @@
       <author>bennialencar@gmail.com (Benni Alencar)</author>
       <description><![CDATA[Deterministic intent compiler and typed DAG execution planner for AI agents by Benni Alencar.]]></description>
     </item>
+      <item>
+      <title>Slashing AI Agent LLM Bills by 75%: Sub-Millisecond Context Compression and Semantic Prompt Optimization in Python</title>
+      <link>https://benni-os.net/blog/en/agent-token-optimizer-slashing-llm-token-bills.html</link>
+      <guid>https://benni-os.net/blog/en/agent-token-optimizer-slashing-llm-token-bills.html</guid>
+      <pubDate>Wed, 05 Nov 2026 18:30:00 GMT</pubDate>
+      <description>Sub-millisecond prompt and context compression engine in Python that cuts LLM token bills by 70%-85% without sacrificing output accuracy.</description>
+    </item>
   </channel>
 </rss>
