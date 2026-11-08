@@ -7,7 +7,15 @@
     <language>en-us</language>
     <lastBuildDate>Tue, 03 Nov 2026 21:00:00 GMT</lastBuildDate>
     <atom:link href="https://benni-os.net/blog/feed.xml" rel="self" type="application/rss+xml"/>
-                <item>
+                    <item>
+      <title><![CDATA[Autonomous Dispatch Engineering: High-Yield Task Routing]]></title>
+      <link>https://benni-os.net/blog/en/autonomous-dispatch-engineering-high-yield-task-routing-swarms.html</link>
+      <guid isPermaLink="true">https://benni-os.net/blog/en/autonomous-dispatch-engineering-high-yield-task-routing-swarms.html</guid>
+      <pubDate>Sun, 08 Nov 2026 04:49:17 GMT</pubDate>
+      <author>bennialencar@benni-os.net (Benni Alencar)</author>
+      <description><![CDATA[Project Benjamin autonomous dispatch and zero-drift swarms.]]></description>
+    </item>
+<item>
       <title><![CDATA[The Genesis Manifesto: Why We Don't Sell Model Routing, and How We Engineered the Sovereign Autonomous Substrate]]></title>
       <link>https://benni-os.net/blog/en/genesis-manifesto-sovereign-ai-engineering-substrate.html</link>
       <guid isPermaLink="true">https://benni-os.net/blog/en/genesis-manifesto-sovereign-ai-engineering-substrate.html</guid>

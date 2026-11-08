@@ -395,4 +395,22 @@
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
+  <url>
+    <loc>https://benni-os.net/blog/en/autonomous-dispatch-engineering-high-yield-task-routing-swarms.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/autonomous-dispatch-engineering-high-yield-task-routing-swarms.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/como-utilizar-projeto-benjamin-dispatch-autonomo-no-ecossistema-benni-os.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/autonomous-dispatch-engineering-high-yield-task-routing-swarms.html" />
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/como-utilizar-projeto-benjamin-dispatch-autonomo-no-ecossistema-benni-os.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/autonomous-dispatch-engineering-high-yield-task-routing-swarms.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/como-utilizar-projeto-benjamin-dispatch-autonomo-no-ecossistema-benni-os.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/autonomous-dispatch-engineering-high-yield-task-routing-swarms.html" />
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
 </urlset>
