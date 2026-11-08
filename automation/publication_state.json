@@ -17,7 +17,16 @@
       "en_url": "https://benni-os.net/blog/en/sovereign-multi-agent-brokerage-zero-trust-97-connectors.html",
       "pt_url": "https://benni-os.net/blog/como-utilizar-nemesis-gateway-corretagem-soberana-97-conectores-no-ecossistema-benni-os.html",
       "type": "proprietary"
+    },
+    {
+      "id": "benni-os-genesis",
+      "published_at": "2026-11-08T01:30:00Z",
+      "devto_id": 4996930,
+      "devto_url": "https://dev.to/bennialencar/the-genesis-manifesto-why-we-dont-sell-model-routing-and-how-we-engineered-the-sovereign-2i8",
+      "en_url": "https://benni-os.net/blog/en/genesis-manifesto-sovereign-ai-engineering-substrate.html",
+      "pt_url": "https://benni-os.net/blog/o-manifesto-genesis-engenharia-soberana-de-agentes-ia.html",
+      "type": "proprietary"
     }
   ],
-  "last_published_id": "nemesis-gateway"
+  "last_published_id": "benni-os-genesis"
 }

@@ -7,7 +7,15 @@
     <language>en-us</language>
     <lastBuildDate>Tue, 03 Nov 2026 21:00:00 GMT</lastBuildDate>
     <atom:link href="https://benni-os.net/blog/feed.xml" rel="self" type="application/rss+xml"/>
-            <item>
+                <item>
+      <title><![CDATA[The Genesis Manifesto: Why We Don't Sell Model Routing, and How We Engineered the Sovereign Autonomous Substrate]]></title>
+      <link>https://benni-os.net/blog/en/genesis-manifesto-sovereign-ai-engineering-substrate.html</link>
+      <guid isPermaLink="true">https://benni-os.net/blog/en/genesis-manifesto-sovereign-ai-engineering-substrate.html</guid>
+      <pubDate>Sun, 08 Nov 2026 04:33:33 GMT</pubDate>
+      <author>bennialencar@benni-os.net (Benni Alencar)</author>
+      <description><![CDATA[Why model routing is an empty commodity trap, and how the Genesis Substrate delivers deterministic governance, zero hallucination, and 120 FPS living execution.]]></description>
+    </item>
+<item>
       <title><![CDATA[Sovereign Multi-Agent Brokerage: Zero-Trust Security, Dynamic Leases, and Rate-Limiting for 97+ Enterprise Connectors]]></title>
       <link>https://benni-os.net/blog/en/sovereign-multi-agent-brokerage-zero-trust-97-connectors.html</link>
       <guid isPermaLink="true">https://benni-os.net/blog/en/sovereign-multi-agent-brokerage-zero-trust-97-connectors.html</guid>

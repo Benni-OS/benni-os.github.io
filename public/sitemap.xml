@@ -377,4 +377,22 @@
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
+  <url>
+    <loc>https://benni-os.net/blog/en/genesis-manifesto-sovereign-ai-engineering-substrate.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/genesis-manifesto-sovereign-ai-engineering-substrate.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/o-manifesto-genesis-engenharia-soberana-de-agentes-ia.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/genesis-manifesto-sovereign-ai-engineering-substrate.html" />
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/o-manifesto-genesis-engenharia-soberana-de-agentes-ia.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/genesis-manifesto-sovereign-ai-engineering-substrate.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/o-manifesto-genesis-engenharia-soberana-de-agentes-ia.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/genesis-manifesto-sovereign-ai-engineering-substrate.html" />
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
 </urlset>
