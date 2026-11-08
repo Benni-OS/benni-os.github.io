@@ -73,7 +73,8 @@ export default defineConfig({
       input: (() => {
         const inputs: Record<string, string> = {
           main: path.resolve(__dirname, 'index.html'),
-          admin: path.resolve(__dirname, 'admin.html')
+          admin: path.resolve(__dirname, 'admin.html'),
+          biosync: path.resolve(__dirname, 'bio-sync/index.html')
         };
         const blogDir = path.resolve(__dirname, 'blog');
         function scanHtml(dir: string) {

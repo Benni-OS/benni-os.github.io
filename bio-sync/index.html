@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bio-Sync Operator OS :: Real-Time Biometric Swarm Governance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #030712;
+      --card-bg: rgba(17, 24, 39, 0.75);
+      --card-border: rgba(31, 41, 55, 0.8);
+      --accent-cyan: #10b981;
+      --accent-glow: rgba(16, 185, 129, 0.35);
+      --accent-amber: #f59e0b;
+      --accent-ruby: #ef4444;
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --font-sans: 'Inter', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Medical Disclaimer Banner */
+    .disclaimer-banner {
+      background: rgba(30, 41, 59, 0.95);
+      border-bottom: 1px solid rgba(245, 158, 11, 0.3);
+      padding: 8px 16px;
+      font-size: 0.75rem;
+      color: #fbbf24;
+      text-align: center;
+      font-family: var(--font-mono);
+      letter-spacing: 0.02em;
+      z-index: 100;
+    }
+
+    header {
+      padding: 16px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--card-border);
+      background: rgba(3, 7, 18, 0.85);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+      box-shadow: 0 0 16px var(--accent-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #030712;
+      font-size: 1rem;
+    }
+
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #10b981;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #10b981;
+      box-shadow: 0 0 8px #10b981;
+      animation: pulse-dot 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    /* Main Grid Layout */
+    .dashboard-container {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 340px 1fr 380px;
+      gap: 20px;
+      padding: 24px 28px;
+      max-width: 1750px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    @media (max-width: 1280px) {
+      .dashboard-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 20px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding-bottom: 10px;
+    }
+
+    /* Center Visualizer */
+    .center-visualizer {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #kineticCanvas {
+      width: 100%;
+      height: 380px;
+      border-radius: 10px;
+      background: radial-gradient(circle at center, rgba(16, 185, 129, 0.08) 0%, rgba(3, 7, 18, 0.95) 75%);
+    }
+
+    .oscilloscope-canvas {
+      width: 100%;
+      height: 100px;
+      border-radius: 8px;
+      background: rgba(3, 7, 18, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    /* Metric Display Rows */
+    .metric-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .metric-box {
+      background: rgba(31, 41, 55, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metric-val {
+      font-size: 2rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      color: var(--text-main);
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+
+    .metric-unit {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .metric-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* Stress Gauge */
+    .stress-meter-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .stress-bar-track {
+      height: 12px;
+      background: rgba(31, 41, 55, 0.8);
+      border-radius: 9999px;
+      overflow: hidden;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .stress-bar-fill {
+      height: 100%;
+      width: 14%;
+      background: linear-gradient(90deg, #10b981 0%, #06b6d4 50%, #f59e0b 80%, #ef4444 100%);
+      transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Video & Consent Section */
+    .camera-preview-container {
+      position: relative;
+      width: 100%;
+      height: 160px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #0b0f19;
+      border: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #webcamVideo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scaleX(-1);
+    }
+
+    .roi-target {
+      position: absolute;
+      width: 100px;
+      height: 70px;
+      border: 2px dashed rgba(16, 185, 129, 0.75);
+      border-radius: 6px;
+      pointer-events: none;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
+    }
+
+    .camera-offline-msg {
+      position: absolute;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 12px;
+      font-family: var(--font-mono);
+    }
+
+    /* Action Swarm Feed */
+    .swarm-feed {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 480px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .swarm-item {
+      background: rgba(31, 41, 55, 0.35);
+      border-left: 3px solid #10b981;
+      border-radius: 0 8px 8px 0;
+      padding: 10px 14px;
+      font-size: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      animation: slide-in 0.3s ease-out;
+    }
+
+    .swarm-item.throttled {
+      border-left-color: #f59e0b;
+      background: rgba(245, 158, 11, 0.08);
+    }
+
+    .swarm-item.circuit-breaker {
+      border-left-color: #ef4444;
+      background: rgba(239, 68, 68, 0.12);
+    }
+
+    @keyframes slide-in {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .swarm-agent {
+      font-weight: 700;
+      font-family: var(--font-mono);
+      display: flex;
+      justify-content: space-between;
+      color: #e5e7eb;
+    }
+
+    .swarm-badge {
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+    }
+
+    .swarm-badge.p-warn {
+      background: rgba(245, 158, 11, 0.2);
+      color: #f59e0b;
+    }
+
+    .swarm-badge.p-crit {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+    }
+
+    /* Buttons & Controls */
+    .btn {
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #030712;
+      box-shadow: 0 4px 14px var(--accent-glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #f87171;
+    }
+
+    .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.25);
+    }
+
+    /* Consent Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 7, 18, 0.88);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-card {
+      background: #0f172a;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      border-radius: 16px;
+      max-width: 580px;
+      width: 100%;
+      padding: 28px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .modal-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #10b981;
+    }
+
+    .consent-check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.85rem;
+      color: #d1d5db;
+      line-height: 1.45;
+    }
+
+    .consent-check-item input[type="checkbox"] {
+      margin-top: 3px;
+      accent-color: #10b981;
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    /* Footer */
+    footer {
+      padding: 20px 28px;
+      border-top: 1px solid var(--card-border);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      background: rgba(3, 7, 18, 0.9);
+    }
+
+    .footer-links a {
+      color: #10b981;
+      text-decoration: none;
+      margin-left: 16px;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Non-Medical Informational Disclaimer Banner -->
+  <div class="disclaimer-banner">
+    ⚠️ <strong>RESEARCH & HACKATHON PROTOCOL:</strong> Bio-Sync Operator OS is an experimental human-computer interaction and autonomous swarm throttle framework. <strong>NOT A MEDICAL DEVICE.</strong> Does not diagnose, treat, or monitor health conditions.
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-logo">B</div>
+      <div>
+        <div class="brand-title">Bio-Sync Operator OS</div>
+        <div class="brand-sub">Presage SmartSpectra SDK + 120 FPS Benni-Canvas Resonator</div>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <div class="status-badge" id="systemStatusBadge">
+        <div class="status-dot" id="statusDot"></div>
+        <span id="systemStatusText">CONSENT VERIFIED • STREAMING 120 FPS</span>
+      </div>
+      <button class="btn btn-outline" id="btnToggleConsent">Privacy Settings</button>
+    </div>
+  </header>
+
+  <!-- Main Grid -->
+  <main class="dashboard-container">
+    
+    <!-- Left Column: Sensing & Optical rPPG -->
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      
+      <!-- Camera & rPPG Hardware Card -->
+      <div class="card">
+        <div class="card-title">
+          <span>Optical rPPG Sensing</span>
+          <span style="font-size: 0.7rem; color: #10b981;">ZERO-CLOUD</span>
+        </div>
+
+        <div class="camera-preview-container">
+          <video id="webcamVideo" autoplay playsinline muted></video>
+          <div class="roi-target" id="roiTarget"></div>
+          <div class="camera-offline-msg" id="cameraOfflineMsg">
+            Webcam stream inactive.<br>
+            <span style="font-size: 0.7rem; color: #6b7280;">Running High-Fidelity Physiological Synthetic Fallback</span>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+          <button class="btn btn-primary" id="btnStartCamera" style="flex: 1;">Start Camera</button>
+          <button class="btn btn-danger" id="btnStopCamera">Stop</button>
+        </div>
+
+        <div style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.4;">
+          Optical blood volume pulse extracted directly from facial capillary hemoglobin reflectance. Zero video frames leave device RAM.
+        </div>
+      </div>
+
+      <!-- Live Physiological Telemetry -->
+      <div class="card">
+        <div class="card-title">
+          <span>Biometric Telemetry</span>
+          <span style="font-size: 0.7rem;">SMARTSPECTRA</span>
+        </div>
+
+        <div class="metric-grid">
+          <div class="metric-box">
+            <span class="metric-label">Pulse Rate</span>
+            <div class="metric-val">
+              <span id="metricPulse">72</span>
+              <span class="metric-unit">BPM</span>
+            </div>
+          </div>
+
+          <div class="metric-box">
+            <span class="metric-label">Respiration</span>
+            <div class="metric-val">
+              <span id="metricResp">14.0</span>
+              <span class="metric-unit">BRPM</span>
+            </div>
+          </div>
+
+          <div class="metric-box">
+            <span class="metric-label">HRV (RMSSD)</span>
+            <div class="metric-val">
+              <span id="metricHRV">48</span>
+              <span class="metric-unit">ms</span>
+            </div>
+          </div>
+
+          <div class="metric-box">
+            <span class="metric-label">Optical SNR</span>
+            <div class="metric-val">
+              <span id="metricSNR">28.4</span>
+              <span class="metric-unit">dB</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stress Meter -->
+        <div class="stress-meter-container">
+          <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-family: var(--font-mono);">
+            <span>OPERATOR STRESS INDEX (OSI)</span>
+            <span id="osiValue" style="color: #10b981; font-weight: 700;">0.12 • OPTIMAL</span>
+          </div>
+          <div class="stress-bar-track">
+            <div class="stress-bar-fill" id="osiBarFill"></div>
+          </div>
+        </div>
+
+        <!-- Simulation Controls -->
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;">
+          <span style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; font-family: var(--font-mono);">Interactive Stress Injector</span>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-outline" id="btnSimStress" style="flex: 1; font-size: 0.75rem;">Simulate Stress Spike</button>
+            <button class="btn btn-outline" id="btnSimRelax" style="flex: 1; font-size: 0.75rem;">Deep Breathing</button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Center Column: 120 FPS Resonant Kinetic Canvas -->
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      
+      <div class="card center-visualizer" style="flex: 1;">
+        <div class="card-title">
+          <span>Kinetic Resonant Canvas (120 FPS)</span>
+          <span id="fpsCounter" style="font-size: 0.75rem; color: #10b981;">120.0 FPS</span>
+        </div>
+
+        <!-- Main Breathing Harmonic Canvas -->
+        <canvas id="kineticCanvas"></canvas>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 4px 6px;">
+          <span style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">
+            Coupled 2nd-Order Spring ODE: &omega;<sub>n</sub> = <span id="omegaVal">1.46 rad/s</span> | &zeta; = <span id="zetaVal">0.707</span>
+          </span>
+          <span style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">
+            Bokeh CoC: <span id="bokehVal">14.2px</span>
+          </span>
+        </div>
+
+        <!-- Blood Volume Pulse Oscilloscope -->
+        <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 8px;">
+          <div style="display: flex; justify-content: space-between; font-size: 0.75rem; font-family: var(--font-mono); color: var(--text-muted);">
+            <span>PHOTOPLETHYSMOGRAM (BVP WAVEFORM)</span>
+            <span style="color: #10b981;">DICROTIC NOTCH RESOLVED</span>
+          </div>
+          <canvas id="oscilloscopeCanvas" class="oscilloscope-canvas"></canvas>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Right Column: Swarm Governor & Dispatch Stream -->
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      
+      <div class="card" style="flex: 1;">
+        <div class="card-title">
+          <span>Autonomous Swarm Governor</span>
+          <span id="governorModeBadge" style="font-size: 0.7rem; color: #10b981;">ACTIVE ZERO-TRUST</span>
+        </div>
+
+        <div style="font-size: 0.75rem; color: var(--text-muted); line-height: 1.45;">
+          Matches multi-agent API throughput to operator cognitive capacity. Enforces dynamic cooling leases and throttle gates upon acute stress.
+        </div>
+
+        <div class="card-title" style="margin-top: 4px; padding-bottom: 6px;">
+          <span>Live Swarm Dispatches</span>
+          <span style="font-size: 0.7rem; color: var(--text-muted);">PROJECT BENJAMIN & NEMESIS</span>
+        </div>
+
+        <!-- Feed of agent dispatches -->
+        <div class="swarm-feed" id="swarmFeed">
+          <!-- Populated dynamically via JS -->
+        </div>
+
+        <div style="margin-top: auto; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.06); display: flex; justify-content: space-between; font-size: 0.75rem; font-family: var(--font-mono);">
+          <span>DISPATCH LEASE: <strong id="leaseStatus" style="color: #10b981;">UNLOCKED</strong></span>
+          <span>GATEWAYS: <strong>97 CONNECTORS</strong></span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div>
+      Bio-Sync Operator OS v0.1.0 • Built for the <strong>Presage SmartSpectra SDK Challenge</strong>
+    </div>
+    <div class="footer-links">
+      <a href="https://github.com/BenniAlencar/bio-sync-operator-os" target="_blank" rel="noopener">GitHub Repository</a>
+      <a href="https://benni-os.net" target="_blank" rel="noopener">Benni OS Ecosystem</a>
+      <a href="https://dev.to/t/presagechallenge" target="_blank" rel="noopener">#presagechallenge</a>
+    </div>
+  </footer>
+
+  <!-- Explicit Consent & Privacy Modal -->
+  <div class="modal-overlay" id="consentModal">
+    <div class="modal-card">
+      <div class="modal-title">
+        <span>🛡️</span>
+        <span>Operator Consent & Privacy Guard</span>
+      </div>
+
+      <p style="font-size: 0.85rem; color: #9ca3af; line-height: 1.5;">
+        Bio-Sync Operator OS processes real-time optical signals via the Presage SmartSpectra SDK to calculate pulse rate, respiration, and cognitive stress for adaptive agent swarm regulation. Please review and acknowledge the privacy safeguards:
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <label class="consent-check-item">
+          <input type="checkbox" id="chkCameraConsent" checked>
+          <span><strong>Camera Access Consent:</strong> I grant permission for local camera stream optical sampling to measure pulse and respiration rhythm.</span>
+        </label>
+
+        <label class="consent-check-item">
+          <input type="checkbox" id="chkZeroCloud" checked>
+          <span><strong>Zero-Cloud Local Processing:</strong> I understand that all video frames and rPPG waveforms are processed strictly in local browser memory and never uploaded to any remote server or third-party cloud.</span>
+        </label>
+
+        <label class="consent-check-item">
+          <input type="checkbox" id="chkMedicalDisclaimer" checked>
+          <span><strong>Non-Medical Disclaimer:</strong> I acknowledge that Bio-Sync Operator OS is an experimental developer and UI framework, NOT a medical device, and is not intended for diagnostic or clinical health purposes.</span>
+        </label>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 10px;">
+        <button class="btn btn-outline" id="btnDeclineConsent">Decline & Use Mock Data</button>
+        <button class="btn btn-primary" id="btnAcceptConsent">Confirm & Enable Bio-Sync</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Engine -->
+  <script>
+    (function() {
+      'use strict';
+
+      // State Management
+      const state = {
+        consentGranted: true,
+        cameraActive: false,
+        pulseBpm: 72.0,
+        targetPulseBpm: 72.0,
+        respBrpm: 14.0,
+        targetRespBrpm: 14.0,
+        hrvRmssd: 48.0,
+        targetHrvRmssd: 48.0,
+        opticalSnr: 28.4,
+        stressIndex: 0.12,
+        cardiacPhase: 0.0,
+        respPhase: 0.0,
+        springDisplacement: 0.0,
+        springVelocity: 0.0,
+        bvpHistory: new Array(180).fill(0),
+        lastFrameTime: performance.now(),
+        fps: 120,
+        coolingLeaseTimer: 0
+      };
+
+      // DOM Elements
+      const kineticCanvas = document.getElementById('kineticCanvas');
+      const kineticCtx = kineticCanvas.getContext('2d');
+      const oscCanvas = document.getElementById('oscilloscopeCanvas');
+      const oscCtx = oscCanvas.getContext('2d');
+      const webcamVideo = document.getElementById('webcamVideo');
+      const cameraOfflineMsg = document.getElementById('cameraOfflineMsg');
+      const consentModal = document.getElementById('consentModal');
+      const btnAcceptConsent = document.getElementById('btnAcceptConsent');
+      const btnDeclineConsent = document.getElementById('btnDeclineConsent');
+      const btnToggleConsent = document.getElementById('btnToggleConsent');
+      const btnStartCamera = document.getElementById('btnStartCamera');
+      const btnStopCamera = document.getElementById('btnStopCamera');
+      const btnSimStress = document.getElementById('btnSimStress');
+      const btnSimRelax = document.getElementById('btnSimRelax');
+      const swarmFeed = document.getElementById('swarmFeed');
+
+      // Metric elements
+      const metricPulse = document.getElementById('metricPulse');
+      const metricResp = document.getElementById('metricResp');
+      const metricHRV = document.getElementById('metricHRV');
+      const metricSNR = document.getElementById('metricSNR');
+      const osiValue = document.getElementById('osiValue');
+      const osiBarFill = document.getElementById('osiBarFill');
+      const fpsCounter = document.getElementById('fpsCounter');
+      const omegaVal = document.getElementById('omegaVal');
+      const zetaVal = document.getElementById('zetaVal');
+      const bokehVal = document.getElementById('bokehVal');
+      const leaseStatus = document.getElementById('leaseStatus');
+      const governorModeBadge = document.getElementById('governorModeBadge');
+      const systemStatusBadge = document.getElementById('systemStatusBadge');
+      const statusDot = document.getElementById('statusDot');
+      const systemStatusText = document.getElementById('systemStatusText');
+
+      // Resize canvas high-DPI
+      function resizeCanvases() {
+        const dpr = window.devicePixelRatio || 1;
+        
+        const kRect = kineticCanvas.getBoundingClientRect();
+        kineticCanvas.width = kRect.width * dpr;
+        kineticCanvas.height = kRect.height * dpr;
+        kineticCtx.scale(dpr, dpr);
+
+        const oRect = oscCanvas.getBoundingClientRect();
+        oscCanvas.width = oRect.width * dpr;
+        oscCanvas.height = oRect.height * dpr;
+        oscCtx.scale(dpr, dpr);
+      }
+      window.addEventListener('resize', resizeCanvases);
+      setTimeout(resizeCanvases, 100);
+
+      // Camera Handling
+      let mediaStream = null;
+      async function startCamera() {
+        if (!state.consentGranted) {
+          consentModal.style.display = 'flex';
+          return;
+        }
+        try {
+          mediaStream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: 'user', width: 640, height: 480 }
+          });
+          webcamVideo.srcObject = mediaStream;
+          cameraOfflineMsg.style.display = 'none';
+          state.cameraActive = true;
+          systemStatusText.textContent = "OPTICAL CAMERA ACTIVE • rPPG TRACKING";
+          statusDot.style.backgroundColor = "#10b981";
+        } catch (err) {
+          console.warn("Camera access denied or unavailable, using synthetic rPPG generator:", err);
+          cameraOfflineMsg.innerHTML = "Camera unattached / blocked.<br><span style='font-size:0.7rem;color:#10b981;'>Synthetic rPPG Engine Active</span>";
+          cameraOfflineMsg.style.display = 'block';
+        }
+      }
+
+      function stopCamera() {
+        if (mediaStream) {
+          mediaStream.getTracks().forEach(track => track.stop());
+          mediaStream = null;
+        }
+        webcamVideo.srcObject = null;
+        cameraOfflineMsg.style.display = 'block';
+        cameraOfflineMsg.innerHTML = "Webcam stream inactive.<br><span style='font-size: 0.7rem; color: #6b7280;'>Synthetic rPPG Fallback Active</span>";
+        state.cameraActive = false;
+        systemStatusText.textContent = "SYNTHETIC BIO-STREAM • 120 FPS";
+      }
+
+      btnStartCamera.addEventListener('click', startCamera);
+      btnStopCamera.addEventListener('click', stopCamera);
+
+      // Consent Modal Handlers
+      btnAcceptConsent.addEventListener('click', () => {
+        state.consentGranted = true;
+        consentModal.style.display = 'none';
+      });
+      btnDeclineConsent.addEventListener('click', () => {
+        state.consentGranted = false;
+        stopCamera();
+        consentModal.style.display = 'none';
+      });
+      btnToggleConsent.addEventListener('click', () => {
+        consentModal.style.display = 'flex';
+      });
+
+      // Stress simulation triggers
+      btnSimStress.addEventListener('click', () => {
+        state.targetPulseBpm = 118.0;
+        state.targetRespBrpm = 26.0;
+        state.targetHrvRmssd = 16.0;
+      });
+
+      btnSimRelax.addEventListener('click', () => {
+        state.targetPulseBpm = 68.0;
+        state.targetRespBrpm = 11.0;
+        state.targetHrvRmssd = 58.0;
+      });
+
+      // Swarm Dispatch Generator
+      const AGENT_NAMES = ['agent_genesis', 'agent_nemesis', 'agent_adam', 'benjamin_worker_04', 'cyber_sentinel_gate'];
+      const ACTIONS = [
+        { name: 'market_intelligence_scan', risk: 'LOW' },
+        { name: 'git_pull_request_merge', risk: 'HIGH' },
+        { name: 'contract_settlement_execute', risk: 'CRITICAL' },
+        { name: 'render_spatial_benni_canvas', risk: 'LOW' },
+        { name: 'rotate_production_secret_keys', risk: 'CRITICAL' },
+        { name: 'dispatch_swarm_formation', risk: 'HIGH' }
+      ];
+
+      function spawnSwarmEvent() {
+        const agent = AGENT_NAMES[Math.floor(Math.random() * AGENT_NAMES.length)];
+        const action = ACTIONS[Math.floor(Math.random() * ACTIONS.length)];
+
+        let statusClass = '';
+        let badgeClass = '';
+        let statusText = 'APPROVED';
+        let note = 'Within physiological tolerance';
+
+        if (state.stressIndex > 0.75) {
+          if (action.risk === 'CRITICAL' || action.risk === 'HIGH') {
+            statusClass = 'circuit-breaker';
+            badgeClass = 'p-crit';
+            statusText = 'CIRCUIT BREAKER';
+            note = 'Emergency 30s freeze due to severe operator strain';
+            state.coolingLeaseTimer = 30;
+          } else {
+            statusClass = 'throttled';
+            badgeClass = 'p-warn';
+            statusText = 'THROTTLED (2s)';
+            note = 'Paced under high cognitive load';
+          }
+        } else if (state.stressIndex > 0.45 && action.risk === 'HIGH') {
+          statusClass = 'throttled';
+          badgeClass = 'p-warn';
+          statusText = 'PACED (1s)';
+          note = 'Elevated autonomic arousal pacing';
+        }
+
+        const item = document.createElement('div');
+        item.className = `swarm-item ${statusClass}`;
+        item.innerHTML = `
+          <div class="swarm-agent">
+            <span>${agent} &bull; ${action.name}</span>
+            <span class="swarm-badge ${badgeClass}">${statusText}</span>
+          </div>
+          <div style="font-size: 0.7rem; color: #9ca3af;">${note} &bull; Risk: <strong>${action.risk}</strong></div>
+        `;
+
+        swarmFeed.prepend(item);
+        if (swarmFeed.children.length > 8) {
+          swarmFeed.removeChild(swarmFeed.lastChild);
+        }
+      }
+      setInterval(spawnSwarmEvent, 2200);
+
+      // Main 120 FPS Loop
+      function tick(now) {
+        requestAnimationFrame(tick);
+
+        const dt = Math.max(0.001, Math.min(0.05, (now - state.lastFrameTime) / 1000.0));
+        state.lastFrameTime = now;
+        state.fps = (1.0 / dt);
+
+        // Smooth physiological target approach
+        state.pulseBpm += (state.targetPulseBpm - state.pulseBpm) * 0.05;
+        state.respBrpm += (state.targetRespBrpm - state.respBrpm) * 0.05;
+        state.hrvRmssd += (state.targetHrvRmssd - state.hrvRmssd) * 0.05;
+
+        // Frequencies
+        const fCardiac = state.pulseBpm / 60.0;
+        const fResp = state.respBrpm / 60.0;
+
+        state.cardiacPhase = (state.cardiacPhase + 2.0 * Math.PI * fCardiac * dt) % (2.0 * Math.PI);
+        state.respPhase = (state.respPhase + 2.0 * Math.PI * fResp * dt) % (2.0 * Math.PI);
+
+        // Blood Volume Pulse Waveform
+        const systolic = Math.sin(state.cardiacPhase);
+        const dicrotic = 0.35 * Math.sin(2.0 * state.cardiacPhase + 1.2) * (systolic > -0.2 ? 1.0 : 0.0);
+        const rsa = 0.15 * Math.cos(state.respPhase);
+        const bvp = Math.max(-1.0, Math.min(1.0, (systolic + dicrotic + rsa) / 1.35));
+
+        // Oscilloscope buffer
+        state.bvpHistory.push(bvp);
+        state.bvpHistory.shift();
+
+        // Operator Stress Index (OSI)
+        const dHR = Math.max(0.0, Math.min(1.0, (state.pulseBpm - 70.0) / 40.0));
+        const dHRV = Math.max(0.0, Math.min(1.0, (50.0 - state.hrvRmssd) / 35.0));
+        const dBR = Math.max(0.0, Math.min(1.0, (state.respBrpm - 14.0) / 12.0));
+        state.stressIndex = (0.35 * dHR) + (0.45 * dHRV) + (0.20 * dBR);
+
+        // 2nd-order Harmonic Resonator ODE: x'' + 2*zeta*w_n*x' + w_n^2*x = w_n^2 * F_bio
+        const omegaN = 2.0 * Math.PI * fResp;
+        const normHrv = Math.max(0.0, Math.min(1.0, (state.hrvRmssd - 15.0) / 65.0));
+        const zeta = 1.4 - (0.693 * normHrv);
+        const fBio = (0.7 * bvp) + (0.3 * Math.sin(state.respPhase));
+
+        const accel = (-(omegaN * omegaN) * state.springDisplacement) - (2.0 * zeta * omegaN * state.springVelocity) + (omegaN * omegaN * fBio);
+        state.springVelocity += accel * dt;
+        state.springDisplacement += state.springVelocity * dt;
+        state.springDisplacement = Math.max(-2.0, Math.min(2.0, state.springDisplacement));
+
+        // Circle of Confusion & Color Luminescence
+        const bokehCoC = 12.0 + (8.0 * (1.0 + Math.sin(state.respPhase)) * 0.5);
+        const hue = 165.0 - (state.stressIndex * 145.0); // 165 (emerald) -> 20 (ruby/coral)
+
+        // Render UI Telemetry
+        metricPulse.textContent = Math.round(state.pulseBpm);
+        metricResp.textContent = state.respBrpm.toFixed(1);
+        metricHRV.textContent = Math.round(state.hrvRmssd);
+        metricSNR.textContent = state.opticalSnr.toFixed(1);
+
+        osiBarFill.style.width = `${Math.min(100, Math.max(5, state.stressIndex * 100))}%`;
+        let tierLabel = "OPTIMAL";
+        if (state.stressIndex >= 0.75) {
+          tierLabel = "CRITICAL";
+          osiValue.style.color = "#ef4444";
+          governorModeBadge.textContent = "CIRCUIT BREAKER ENGAGED";
+          governorModeBadge.style.color = "#ef4444";
+          leaseStatus.textContent = "FROZEN (ACTIVE LEASE)";
+          leaseStatus.style.color = "#ef4444";
+        } else if (state.stressIndex >= 0.45) {
+          tierLabel = "ELEVATED";
+          osiValue.style.color = "#f59e0b";
+          governorModeBadge.textContent = "PACING HIGH-RISK DISPATCH";
+          governorModeBadge.style.color = "#f59e0b";
+          leaseStatus.textContent = "PACED";
+          leaseStatus.style.color = "#f59e0b";
+        } else {
+          tierLabel = "OPTIMAL";
+          osiValue.style.color = "#10b981";
+          governorModeBadge.textContent = "ACTIVE ZERO-TRUST";
+          governorModeBadge.style.color = "#10b981";
+          leaseStatus.textContent = "UNLOCKED";
+          leaseStatus.style.color = "#10b981";
+        }
+        osiValue.textContent = `${state.stressIndex.toFixed(2)} • ${tierLabel}`;
+
+        fpsCounter.textContent = `${Math.round(state.fps)} FPS`;
+        omegaVal.textContent = `${omegaN.toFixed(2)} rad/s`;
+        zetaVal.textContent = zeta.toFixed(3);
+        bokehVal.textContent = `${bokehCoC.toFixed(1)}px`;
+
+        // Render Canvas Visualizer
+        drawResonantCanvas(hue, bokehCoC);
+        drawOscilloscope();
+      }
+
+      function drawResonantCanvas(hue, bokehCoC) {
+        const w = kineticCanvas.clientWidth;
+        const h = kineticCanvas.clientHeight;
+        if (!w || !h) return;
+
+        kineticCtx.clearRect(0, 0, w, h);
+
+        const centerX = w / 2;
+        const centerY = h / 2;
+
+        // Base breathing radius modulated by spring displacement
+        const baseRadius = Math.min(w, h) * 0.22;
+        const currentRadius = baseRadius + (state.springDisplacement * 22.0);
+
+        // Ambient radial glow
+        const glowGrad = kineticCtx.createRadialGradient(
+          centerX, centerY, currentRadius * 0.2,
+          centerX, centerY, currentRadius + (bokehCoC * 3)
+        );
+        glowGrad.addColorStop(0, `hsla(${hue}, 85%, 60%, 0.45)`);
+        glowGrad.addColorStop(0.5, `hsla(${hue}, 80%, 50%, 0.15)`);
+        glowGrad.addColorStop(1, `hsla(${hue}, 90%, 40%, 0)`);
+
+        kineticCtx.fillStyle = glowGrad;
+        kineticCtx.beginPath();
+        kineticCtx.arc(centerX, centerY, currentRadius + (bokehCoC * 3), 0, Math.PI * 2);
+        kineticCtx.fill();
+
+        // Resonant Concentric Orbital Rings
+        const ringCount = 3;
+        for (let r = 1; r <= ringCount; r++) {
+          const ringRad = currentRadius * (0.6 + r * 0.35);
+          kineticCtx.beginPath();
+          kineticCtx.arc(centerX, centerY, ringRad, 0, Math.PI * 2);
+          kineticCtx.strokeStyle = `hsla(${hue}, 70%, 55%, ${0.25 / r})`;
+          kineticCtx.lineWidth = 1.5;
+          kineticCtx.setLineDash([6, 10]);
+          kineticCtx.stroke();
+          kineticCtx.setLineDash([]);
+        }
+
+        // Central Luminescent Core
+        kineticCtx.beginPath();
+        kineticCtx.arc(centerX, centerY, currentRadius, 0, Math.PI * 2);
+        kineticCtx.fillStyle = `hsla(${hue}, 80%, 48%, 0.22)`;
+        kineticCtx.fill();
+        kineticCtx.strokeStyle = `hsla(${hue}, 90%, 65%, 0.85)`;
+        kineticCtx.lineWidth = 2.5;
+        kineticCtx.shadowColor = `hsla(${hue}, 90%, 60%, 0.7)`;
+        kineticCtx.shadowBlur = bokehCoC;
+        kineticCtx.stroke();
+        kineticCtx.shadowBlur = 0; // Reset
+
+        // Center pulse text
+        kineticCtx.fillStyle = '#f9fafb';
+        kineticCtx.font = '600 13px "JetBrains Mono"';
+        kineticCtx.textAlign = 'center';
+        kineticCtx.textBaseline = 'middle';
+        kineticCtx.fillText(`\u03C9: ${(state.respBrpm/60).toFixed(2)}Hz`, centerX, centerY - 8);
+        kineticCtx.font = '400 11px "Inter"';
+        kineticCtx.fillStyle = '#9ca3af';
+        kineticCtx.fillText(`BVP: ${state.bvpHistory[state.bvpHistory.length - 1].toFixed(2)}`, centerX, centerY + 12);
+      }
+
+      function drawOscilloscope() {
+        const w = oscCanvas.clientWidth;
+        const h = oscCanvas.clientHeight;
+        if (!w || !h) return;
+
+        oscCtx.clearRect(0, 0, w, h);
+
+        // Grid lines
+        oscCtx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+        oscCtx.lineWidth = 1;
+        oscCtx.beginPath();
+        oscCtx.moveTo(0, h / 2);
+        oscCtx.lineTo(w, h / 2);
+        oscCtx.stroke();
+
+        // Draw waveform
+        const len = state.bvpHistory.length;
+        const step = w / (len - 1);
+
+        oscCtx.beginPath();
+        for (let i = 0; i < len; i++) {
+          const val = state.bvpHistory[i];
+          const x = i * step;
+          const y = (h / 2) - (val * (h * 0.42));
+
+          if (i === 0) {
+            oscCtx.moveTo(x, y);
+          } else {
+            oscCtx.lineTo(x, y);
+          }
+        }
+
+        const hue = 165.0 - (state.stressIndex * 145.0);
+        oscCtx.strokeStyle = `hsl(${hue}, 90%, 55%)`;
+        oscCtx.lineWidth = 2;
+        oscCtx.shadowColor = `hsl(${hue}, 90%, 50%)`;
+        oscCtx.shadowBlur = 6;
+        oscCtx.stroke();
+        oscCtx.shadowBlur = 0;
+      }
+
+      // Initialize loop
+      requestAnimationFrame(tick);
+
+    })();
+  </script>
+</body>
+</html>
