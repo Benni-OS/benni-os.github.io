@@ -431,4 +431,22 @@
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
+  <url>
+    <loc>https://benni-os.net/blog/en/benni-master-os-kernel-manifesto-sovereign-machine-cognition.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/benni-master-os-kernel-manifesto-sovereign-machine-cognition.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/o-manifesto-do-kernel-benni-master-os-arquitetura-soberana.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/benni-master-os-kernel-manifesto-sovereign-machine-cognition.html" />
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/o-manifesto-do-kernel-benni-master-os-arquitetura-soberana.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/benni-master-os-kernel-manifesto-sovereign-machine-cognition.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/o-manifesto-do-kernel-benni-master-os-arquitetura-soberana.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/benni-master-os-kernel-manifesto-sovereign-machine-cognition.html" />
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
 </urlset>
