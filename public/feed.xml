@@ -7,7 +7,31 @@
     <language>en-us</language>
     <lastBuildDate>Tue, 03 Nov 2026 21:00:00 GMT</lastBuildDate>
     <atom:link href="https://benni-os.net/blog/feed.xml" rel="self" type="application/rss+xml"/>
-                            <item>
+                                        <item>
+      <title><![CDATA[The Nemesis Manifesto: The Zero-Trust Brokerage and Sovereign Tool Mesh for 97+ Enterprise Connectors]]></title>
+      <link>https://benni-os.net/blog/en/the-nemesis-manifesto-zero-trust-brokerage-sovereign-tool-mesh.html</link>
+      <guid isPermaLink="true">https://benni-os.net/blog/en/the-nemesis-manifesto-zero-trust-brokerage-sovereign-tool-mesh.html</guid>
+      <pubDate>Thu, 12 Nov 2026 05:48:19 GMT</pubDate>
+      <author>bennialencar@benni-os.net (Benni Alencar)</author>
+      <description><![CDATA[Why connecting AI agents directly to APIs is corporate suicide, and how Nemesis Gateway delivers zero-trust security, POD-9 defense, and dynamic leases.]]></description>
+    </item>
+<item>
+      <title><![CDATA[The Benjamin Manifesto: Zero-Drift Autonomous Dispatch, Typed Leases, and Swarm Supremacy]]></title>
+      <link>https://benni-os.net/blog/en/the-benjamin-manifesto-zero-drift-autonomous-dispatch-swarm-supremacy.html</link>
+      <guid isPermaLink="true">https://benni-os.net/blog/en/the-benjamin-manifesto-zero-drift-autonomous-dispatch-swarm-supremacy.html</guid>
+      <pubDate>Thu, 12 Nov 2026 05:48:18 GMT</pubDate>
+      <author>bennialencar@benni-os.net (Benni Alencar)</author>
+      <description><![CDATA[Why conversational agent delegation leads to failure, and how Project Benjamin guarantees zero context drift, typed leases, and deterministic swarm dispatch.]]></description>
+    </item>
+<item>
+      <title><![CDATA[The Adam Manifesto: Perpetual Adaptation and Recursive Self-Evolution in Autonomous Machine Cognition]]></title>
+      <link>https://benni-os.net/blog/en/the-adam-manifesto-perpetual-adaptation-recursive-self-evolution.html</link>
+      <guid isPermaLink="true">https://benni-os.net/blog/en/the-adam-manifesto-perpetual-adaptation-recursive-self-evolution.html</guid>
+      <pubDate>Thu, 12 Nov 2026 05:48:18 GMT</pubDate>
+      <author>bennialencar@benni-os.net (Benni Alencar)</author>
+      <description><![CDATA[Why frozen agents decay, and how Project Adam engineers closed-loop skill distillation, Lyapunov prompt stability, and self-healing memory.]]></description>
+    </item>
+<item>
       <title><![CDATA[The Benni Master OS Kernel Manifesto: The Sovereign Architecture for Autonomous Intelligence, Mathematical Reliability, and Machine Cognition]]></title>
       <link>https://benni-os.net/blog/en/benni-master-os-kernel-manifesto-sovereign-machine-cognition.html</link>
       <guid isPermaLink="true">https://benni-os.net/blog/en/benni-master-os-kernel-manifesto-sovereign-machine-cognition.html</guid>

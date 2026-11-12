@@ -449,4 +449,58 @@
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
+  <url>
+    <loc>https://benni-os.net/blog/en/the-adam-manifesto-perpetual-adaptation-recursive-self-evolution.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/the-adam-manifesto-perpetual-adaptation-recursive-self-evolution.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/o-manifesto-adam-adaptacao-perpetua-autoevolucao-recursiva.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/the-adam-manifesto-perpetual-adaptation-recursive-self-evolution.html" />
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/o-manifesto-adam-adaptacao-perpetua-autoevolucao-recursiva.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/the-adam-manifesto-perpetual-adaptation-recursive-self-evolution.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/o-manifesto-adam-adaptacao-perpetua-autoevolucao-recursiva.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/the-adam-manifesto-perpetual-adaptation-recursive-self-evolution.html" />
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/en/the-benjamin-manifesto-zero-drift-autonomous-dispatch-swarm-supremacy.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/the-benjamin-manifesto-zero-drift-autonomous-dispatch-swarm-supremacy.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/o-manifesto-benjamin-dispatch-autonomo-sem-deriva-supremacia-de-enxames.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/the-benjamin-manifesto-zero-drift-autonomous-dispatch-swarm-supremacy.html" />
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/o-manifesto-benjamin-dispatch-autonomo-sem-deriva-supremacia-de-enxames.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/the-benjamin-manifesto-zero-drift-autonomous-dispatch-swarm-supremacy.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/o-manifesto-benjamin-dispatch-autonomo-sem-deriva-supremacia-de-enxames.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/the-benjamin-manifesto-zero-drift-autonomous-dispatch-swarm-supremacy.html" />
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/en/the-nemesis-manifesto-zero-trust-brokerage-sovereign-tool-mesh.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/the-nemesis-manifesto-zero-trust-brokerage-sovereign-tool-mesh.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/o-manifesto-nemesis-corretagem-zero-trust-malha-soberana-conectores.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/the-nemesis-manifesto-zero-trust-brokerage-sovereign-tool-mesh.html" />
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/o-manifesto-nemesis-corretagem-zero-trust-malha-soberana-conectores.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/the-nemesis-manifesto-zero-trust-brokerage-sovereign-tool-mesh.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/o-manifesto-nemesis-corretagem-zero-trust-malha-soberana-conectores.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/the-nemesis-manifesto-zero-trust-brokerage-sovereign-tool-mesh.html" />
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
 </urlset>
