@@ -665,6 +665,7 @@ def build_english_html():
       font-family: var(--font-code);
     }
   </style>
+  <script defer src="/assets/blog-telemetry.js"></script>
 </head>
 <body>
   <header class="post-header">
@@ -1228,6 +1229,7 @@ def build_portuguese_html():
       font-family: var(--font-code);
     }
   </style>
+  <script defer src="/assets/blog-telemetry.js"></script>
 </head>
 <body>
   <header class="post-header">

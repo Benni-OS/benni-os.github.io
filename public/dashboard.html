@@ -1,95 +1,368 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BENNI·OS — Analytics Dashboard</title>
+  <title>BENNI·OS — Blog &amp; Portal Traffic Monitor</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap" rel="stylesheet" />
   <style>
+    :root {
+      --bg: #07080c;
+      --panel: #0e111a;
+      --panel-alt: rgba(255, 255, 255, 0.025);
+      --border: rgba(232, 225, 213, 0.11);
+      --bone: #f1f5f9;
+      --muted: #94a3b8;
+      --gold: #c9a45c;
+      --blue: #426bff;
+      --cyan: #00f0ff;
+      --green: #10b981;
+      --amber: #f59e0b;
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: #09090b; color: #e8e1d5; font-family: "Instrument Sans", sans-serif; padding: 3rem 4vw; -webkit-font-smoothing: antialiased; }
-    .dashboard { max-width: 1200px; margin: 0 auto; }
-    .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(232, 225, 213, 0.12); padding-bottom: 1.5rem; margin-bottom: 2rem; }
-    .header h1 { font-family: "DM Serif Display", serif; font-size: 2.2rem; font-weight: 500; color: #ffffff; letter-spacing: -0.02em; }
-    .header .domain-badge { font-family: "IBM Plex Mono", monospace; font-size: 11px; letter-spacing: 0.15em; color: #8bb2ff; background: rgba(66, 107, 255, 0.15); border: 1px solid rgba(66, 107, 255, 0.4); padding: 6px 14px; border-radius: 20px; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; }
-    .card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(232, 225, 213, 0.1); border-radius: 12px; padding: 1.75rem; backdrop-filter: blur(10px); transition: border-color 0.3s ease, transform 0.3s ease; }
-    .card:hover { border-color: rgba(201, 164, 92, 0.4); transform: translateY(-2px); }
-    .card h3 { font-family: "IBM Plex Mono", monospace; font-size: 11px; letter-spacing: 0.16em; opacity: 0.6; text-transform: uppercase; margin-bottom: 0.75rem; }
-    .card .value { font-size: 2.8rem; font-weight: 600; font-family: "DM Serif Display", serif; color: #ffffff; margin-bottom: 0.35rem; line-height: 1; }
-    .card .sub { font-size: 0.85rem; color: #a1a1aa; font-family: "IBM Plex Mono", monospace; }
-    .events-section { background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(232, 225, 213, 0.08); border-radius: 12px; padding: 2rem; }
-    .events-section h2 { font-family: "IBM Plex Mono", monospace; font-size: 13px; letter-spacing: 0.15em; margin-bottom: 1.25rem; color: #c9a45c; }
+    body {
+      background: var(--bg);
+      color: var(--bone);
+      font-family: "Instrument Sans", -apple-system, sans-serif;
+      padding: 2.5rem 4vw 4rem;
+      -webkit-font-smoothing: antialiased;
+      background-image: radial-gradient(ellipse at 50% 0%, rgba(66, 107, 255, 0.1) 0%, transparent 55%);
+    }
+    .dashboard { max-width: 1240px; margin: 0 auto; }
+    .header {
+      display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 1rem;
+      border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; margin-bottom: 2rem;
+    }
+    .header h1 { font-family: "DM Serif Display", serif; font-size: 2.25rem; font-weight: 400; color: #fff; letter-spacing: -0.02em; }
+    .header p { color: var(--muted); font-size: 0.95rem; margin-top: 0.35rem; }
+    .header-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.65rem; }
+    .pill {
+      font-family: "IBM Plex Mono", monospace; font-size: 11px; letter-spacing: 0.12em;
+      color: #8bb2ff; background: rgba(66, 107, 255, 0.14); border: 1px solid rgba(66, 107, 255, 0.38);
+      padding: 7px 14px; border-radius: 999px; text-decoration: none;
+    }
+    .btn {
+      font-family: "IBM Plex Mono", monospace; font-size: 11px; letter-spacing: 0.08em; cursor: pointer;
+      padding: 8px 13px; border-radius: 7px; border: 1px solid var(--border);
+      background: var(--panel); color: var(--bone); transition: all 0.2s ease;
+    }
+    .btn:hover { border-color: var(--cyan); color: #fff; }
+    .btn.active { background: rgba(0, 240, 255, 0.14); border-color: var(--cyan); color: var(--cyan); }
+    .btn-primary { background: rgba(16, 185, 129, 0.14); border-color: rgba(16, 185, 129, 0.4); color: #6ee7b7; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1.15rem; margin-bottom: 2rem; }
+    .card {
+      background: var(--panel-alt); border: 1px solid var(--border); border-radius: 12px; padding: 1.4rem;
+      transition: border-color 0.25s ease;
+    }
+    .card:hover { border-color: rgba(201, 164, 92, 0.4); }
+    .card h3 { font-family: "IBM Plex Mono", monospace; font-size: 10.5px; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; margin-bottom: 0.6rem; }
+    .card .value { font-family: "DM Serif Display", serif; font-size: 2.35rem; color: #fff; line-height: 1.05; margin-bottom: 0.3rem; }
+    .card .sub { font-family: "IBM Plex Mono", monospace; font-size: 0.78rem; color: var(--muted); }
+    .section { background: var(--panel-alt); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+    .section-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+    .section h2 { font-family: "IBM Plex Mono", monospace; font-size: 12.5px; letter-spacing: 0.15em; color: var(--gold); text-transform: uppercase; }
+    .collectors-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.85rem; }
+    .collector-box { background: rgba(0, 0, 0, 0.35); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem 1rem; }
+    .collector-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem; font-family: "IBM Plex Mono", monospace; font-size: 12px; }
+    .status-tag { font-size: 10px; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+    .status-on { background: rgba(16, 185, 129, 0.16); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.35); }
+    .status-wait { background: rgba(245, 158, 11, 0.14); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .collector-meta { font-family: "IBM Plex Mono", monospace; font-size: 11px; color: var(--muted); word-break: break-all; }
+    .two-col { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.5rem; }
+    table { width: 100%; border-collapse: collapse; font-family: "IBM Plex Mono", monospace; font-size: 12px; }
+    th, td { text-align: left; padding: 0.65rem 0.5rem; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+    th { color: var(--muted); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.1em; }
+    td.num, th.num { text-align: right; }
     .events-list { display: flex; flex-direction: column; gap: 8px; font-family: "IBM Plex Mono", monospace; font-size: 12px; max-height: 320px; overflow-y: auto; }
-    .event-item { display: flex; justify-content: space-between; padding: 8px 12px; background: rgba(0, 0, 0, 0.4); border-radius: 6px; border-left: 3px solid #426bff; }
+    .event-item { display: grid; grid-template-columns: 165px 1fr auto; gap: 0.75rem; align-items: center; padding: 8px 12px; background: rgba(0, 0, 0, 0.38); border-radius: 6px; border-left: 3px solid var(--blue); }
     .event-item .name { color: #8bb2ff; font-weight: 600; }
-    .event-item .time { color: rgba(232, 225, 213, 0.4); font-size: 10px; }
+    .event-item .props { color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .event-item .time { color: rgba(232, 225, 213, 0.45); font-size: 10.5px; }
+    .config-note { margin-top: 1rem; font-family: "IBM Plex Mono", monospace; font-size: 11.5px; color: var(--muted); line-height: 1.6; }
+    code { color: var(--cyan); background: rgba(0, 240, 255, 0.08); padding: 2px 6px; border-radius: 4px; }
+    @media (max-width: 700px) {
+      .event-item { grid-template-columns: 1fr; gap: 4px; }
+      .two-col { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
   <div class="dashboard">
     <div class="header">
       <div>
-        <h1>BENNI·OS — Analytics Dashboard</h1>
-        <p style="opacity:0.6; font-size:14px; margin-top:4px;">Métricas de engajamento, interações 3D e funil de conversão em tempo real</p>
+        <h1>BENNI·OS — Blog &amp; Portal Traffic Monitor</h1>
+        <p>Telemetria em tempo real de leitura, origens, UTMs, cópias de código e coletores externos em <code>benni-os.net</code></p>
       </div>
-      <div class="domain-badge">benni-os.net</div>
-    </div>
-    <div class="grid" id="stats">
-      <div class="card">
-        <h3>Sessão Ativa</h3>
-        <div class="value" id="session-id">LIVE</div>
-        <div class="sub">Rastreamento GDPR compliant</div>
-      </div>
-      <div class="card">
-        <h3>Visualizações de Página</h3>
-        <div class="value" id="pageviews">1</div>
-        <div class="sub">Sessão atual</div>
-      </div>
-      <div class="card">
-        <h3>Cliques em CTAs</h3>
-        <div class="value" id="cta_clicks">0</div>
-        <div class="sub">Interações registradas</div>
-      </div>
-      <div class="card">
-        <h3>Interações 3D</h3>
-        <div class="value" id="interactions_3d">0</div>
-        <div class="sub">WebGL hover / tilt</div>
+      <div class="header-actions">
+        <span class="pill">benni-os.net/blog</span>
+        <a class="btn" href="/blog/index.html">Abrir Blog</a>
+        <a class="btn" href="/admin.html">Admin</a>
+        <button class="btn btn-primary" id="exportCsvBtn">Exportar CSV</button>
+        <button class="btn" id="exportJsonBtn">Exportar JSON</button>
+        <button class="btn" id="clearBtn">Limpar Local</button>
       </div>
     </div>
-    <div class="events-section">
-      <h2>FEED DE EVENTOS EM TEMPO REAL</h2>
-      <div class="events-list" id="events-feed">
-        <div class="event-item"><span class="name">system_initialized</span><span class="time">Agora</span></div>
+
+    <div class="section">
+      <div class="section-head">
+        <h2>Coletores Globais Conectados (/assets/telemetry-config.json)</h2>
+        <span class="collector-meta" id="configStatusText">Lendo configuração...</span>
       </div>
+      <div class="collectors-grid" id="collectorsGrid"></div>
+      <p class="config-note">
+        <strong>Ativação global em 1 arquivo:</strong> edite <code>public/assets/telemetry-config.json</code> preenchendo
+        <code>ga4MeasurementId</code> (<code>G-XXXXXXXXXX</code>), <code>cloudflareBeaconToken</code>, <code>goatcounterCode</code> ou
+        <code>customEndpoint</code> e faça push para <code>main</code> — todas as páginas do blog passam a reportar automaticamente.
+      </p>
+    </div>
+
+    <div class="section-head" style="margin-bottom:1rem;">
+      <h2>Métricas Observadas Neste Navegador</h2>
+      <div class="header-actions">
+        <button class="btn active" data-lang="all">Todos</button>
+        <button class="btn" data-lang="en">EN</button>
+        <button class="btn" data-lang="pt-BR">PT-BR</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h3>Pageviews do Blog</h3>
+        <div class="value" id="kpi-pageviews">0</div>
+        <div class="sub" id="kpi-unique-articles">0 artigos únicos</div>
+      </div>
+      <div class="card">
+        <h3>Leituras Completas</h3>
+        <div class="value" id="kpi-completed">0</div>
+        <div class="sub" id="kpi-completion-rate">0% taxa (≥75% scroll + ≥20s)</div>
+      </div>
+      <div class="card">
+        <h3>Tempo Médio Ativo</h3>
+        <div class="value" id="kpi-avg-time">0s</div>
+        <div class="sub">Visibilidade em 1º plano</div>
+      </div>
+      <div class="card">
+        <h3>Cliques GitHub / CTA</h3>
+        <div class="value" id="kpi-outbound">0</div>
+        <div class="sub" id="kpi-copies">0 cópias de código</div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="section">
+        <div class="section-head"><h2>Ranking de Páginas / Artigos</h2></div>
+        <table>
+          <thead>
+            <tr><th>Slug / Rota</th><th>Idioma</th><th class="num">Views</th><th class="num">Completas</th></tr>
+          </thead>
+          <tbody id="articlesTableBody"></tbody>
+        </table>
+      </div>
+      <div class="section">
+        <div class="section-head"><h2>Canais &amp; Origens (Referrer / UTM)</h2></div>
+        <table>
+          <thead>
+            <tr><th>Canal</th><th>Domínio</th><th class="num">Sessões</th></tr>
+          </thead>
+          <tbody id="channelsTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <h2>Feed de Eventos em Tempo Real</h2>
+        <span class="collector-meta" id="eventsCountLabel">0 eventos</span>
+      </div>
+      <div class="events-list" id="events-feed"></div>
     </div>
   </div>
+
   <script>
-    function refreshData() {
-      try {
-        const events = JSON.parse(localStorage.getItem('benni_events') || '[]');
-        const feed = document.getElementById('events-feed');
-        if (feed && events.length > 0) {
-          feed.innerHTML = events.slice(-15).reverse().map(e => `
-            <div class="event-item">
-              <span class="name">${e.name}</span>
-              <span class="props">${JSON.stringify(e.props || {})}</span>
-              <span class="time">${new Date(e.timestamp).toLocaleTimeString()}</span>
-            </div>
-          `).join('');
+    (function () {
+      "use strict";
+      var STORAGE_KEY = "benni_blog_telemetry";
+      var activeLangFilter = "all";
+
+      function esc(str) {
+        return String(str == null ? "" : str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      function readTelemetryEvents() {
+        try {
+          var raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+          return Array.isArray(raw) ? raw : [];
+        } catch (_) {
+          return [];
         }
-        const ctas = events.filter(e => e.name === 'cta_click').length;
-        const d3 = events.filter(e => e.name === '3d_interaction').length;
-        const pvs = events.filter(e => e.name === 'page_view' || e.name === 'section_view').length;
-        document.getElementById('cta_clicks').textContent = ctas;
-        document.getElementById('interactions_3d').textContent = d3;
-        document.getElementById('pageviews').textContent = Math.max(1, pvs);
-      } catch (_) {}
-    }
-    setInterval(refreshData, 1500);
-    refreshData();
+      }
+
+      async function loadConfigStatus() {
+        var grid = document.getElementById("collectorsGrid");
+        var statusEl = document.getElementById("configStatusText");
+        try {
+          var resp = await fetch("/assets/telemetry-config.json", { cache: "no-cache" });
+          var cfg = resp.ok ? await resp.json() : {};
+          var providers = [
+            { name: "Google Analytics 4", val: cfg.ga4MeasurementId, hint: "ga4MeasurementId (G-XXXX)" },
+            { name: "Plausible", val: cfg.plausibleDomain, hint: "plausibleDomain" },
+            { name: "Cloudflare Web Analytics", val: cfg.cloudflareBeaconToken, hint: "cloudflareBeaconToken" },
+            { name: "GoatCounter", val: cfg.goatcounterCode, hint: "goatcounterCode" },
+            { name: "Custom / Supabase Webhook", val: cfg.customEndpoint, hint: "customEndpoint (POST JSON)" }
+          ];
+          grid.innerHTML = providers.map(function (p) {
+            var active = Boolean(p.val && String(p.val).trim());
+            return (
+              '<div class="collector-box">' +
+                '<div class="collector-top">' +
+                  "<span>" + esc(p.name) + "</span>" +
+                  '<span class="status-tag ' + (active ? "status-on" : "status-wait") + '">' +
+                    (active ? "ATIVO" : "AGUARDANDO ID") +
+                  "</span>" +
+                "</div>" +
+                '<div class="collector-meta">' + esc(active ? p.val : p.hint) + "</div>" +
+              "</div>"
+            );
+          }).join("");
+          var activeCount = providers.filter(function (p) { return Boolean(p.val && String(p.val).trim()); }).length;
+          statusEl.textContent = activeCount + " de " + providers.length + " coletores ativos";
+        } catch (err) {
+          statusEl.textContent = "Config não carregada em file:// (funciona em HTTP/HTTPS)";
+        }
+      }
+
+      function renderStats() {
+        var all = readTelemetryEvents();
+        var filtered = activeLangFilter === "all"
+          ? all
+          : all.filter(function (e) { return (e.lang || "") === activeLangFilter; });
+
+        var pageviews = filtered.filter(function (e) { return e.event === "blog_pageview"; });
+        var completes = filtered.filter(function (e) { return e.event === "blog_read_complete"; });
+        var exits = filtered.filter(function (e) { return e.event === "blog_engaged_exit"; });
+        var outbound = filtered.filter(function (e) { return e.event === "blog_outbound_click"; });
+        var copies = filtered.filter(function (e) { return e.event === "blog_code_copy"; });
+
+        var uniqueSlugs = {};
+        var articleMap = {};
+        pageviews.forEach(function (e) {
+          var key = (e.slug || "index") + "::" + (e.lang || "en");
+          uniqueSlugs[e.slug || "index"] = true;
+          if (!articleMap[key]) articleMap[key] = { slug: e.slug || "index", lang: e.lang || "en", views: 0, completes: 0 };
+          articleMap[key].views += 1;
+        });
+        completes.forEach(function (e) {
+          var key = (e.slug || "index") + "::" + (e.lang || "en");
+          if (!articleMap[key]) articleMap[key] = { slug: e.slug || "index", lang: e.lang || "en", views: 0, completes: 0 };
+          articleMap[key].completes += 1;
+        });
+
+        var totalSeconds = 0;
+        exits.forEach(function (e) { totalSeconds += Number((e.props && e.props.active_seconds) || 0); });
+        var avgSec = exits.length ? Math.round(totalSeconds / exits.length) : 0;
+        var rate = pageviews.length ? Math.round((completes.length / pageviews.length) * 100) : 0;
+
+        document.getElementById("kpi-pageviews").textContent = pageviews.length;
+        document.getElementById("kpi-unique-articles").textContent = Object.keys(uniqueSlugs).length + " páginas únicas";
+        document.getElementById("kpi-completed").textContent = completes.length;
+        document.getElementById("kpi-completion-rate").textContent = rate + "% taxa (≥75% scroll + ≥20s)";
+        document.getElementById("kpi-avg-time").textContent = avgSec + "s";
+        document.getElementById("kpi-outbound").textContent = outbound.length;
+        document.getElementById("kpi-copies").textContent = copies.length + " cópias de código";
+
+        var topArticles = Object.values(articleMap).sort(function (a, b) { return b.views - a.views; }).slice(0, 10);
+        document.getElementById("articlesTableBody").innerHTML = topArticles.length
+          ? topArticles.map(function (a) {
+              return "<tr><td>" + esc(a.slug) + "</td><td>" + esc(a.lang) + '</td><td class="num">' + a.views + '</td><td class="num">' + a.completes + "</td></tr>";
+            }).join("")
+          : '<tr><td colspan="4" style="color:#64748b;">Navegue por qualquer página de /blog/ para registrar eventos.</td></tr>';
+
+        var channelMap = {};
+        pageviews.forEach(function (e) {
+          var ch = (e.props && e.props.channel) || "direct";
+          var dom = (e.props && e.props.referrer) || "direct";
+          var k = ch + "::" + dom;
+          if (!channelMap[k]) channelMap[k] = { channel: ch, domain: dom, count: 0 };
+          channelMap[k].count += 1;
+        });
+        var topChannels = Object.values(channelMap).sort(function (a, b) { return b.count - a.count; }).slice(0, 10);
+        document.getElementById("channelsTableBody").innerHTML = topChannels.length
+          ? topChannels.map(function (c) {
+              return "<tr><td>" + esc(c.channel) + "</td><td>" + esc(c.domain) + '</td><td class="num">' + c.count + "</td></tr>";
+            }).join("")
+          : '<tr><td colspan="3" style="color:#64748b;">Aguardando pageviews registrados.</td></tr>';
+
+        var feed = document.getElementById("events-feed");
+        document.getElementById("eventsCountLabel").textContent = filtered.length + " eventos filtrados";
+        feed.innerHTML = filtered.length
+          ? filtered.slice(-25).reverse().map(function (e) {
+              var summary = (e.slug || "") + " (" + (e.lang || "") + ") " + JSON.stringify(e.props || {});
+              return (
+                '<div class="event-item">' +
+                  '<span class="name">' + esc(e.event) + "</span>" +
+                  '<span class="props">' + esc(summary) + "</span>" +
+                  '<span class="time">' + esc(new Date(e.ts).toLocaleTimeString()) + "</span>" +
+                "</div>"
+              );
+            }).join("")
+          : '<div class="event-item"><span class="name">system_ready</span><span class="props">Nenhum evento local ainda</span><span class="time">Agora</span></div>';
+      }
+
+      document.querySelectorAll("[data-lang]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          document.querySelectorAll("[data-lang]").forEach(function (b) { b.classList.remove("active"); });
+          btn.classList.add("active");
+          activeLangFilter = btn.getAttribute("data-lang");
+          renderStats();
+        });
+      });
+
+      document.getElementById("exportJsonBtn").addEventListener("click", function () {
+        var data = JSON.stringify(readTelemetryEvents(), null, 2);
+        var blob = new Blob([data], { type: "application/json" });
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "benni-blog-telemetry.json";
+        a.click();
+      });
+
+      document.getElementById("exportCsvBtn").addEventListener("click", function () {
+        var rows = readTelemetryEvents();
+        var header = "timestamp,event,lang,slug,path,channel,referrer\n";
+        var body = rows.map(function (r) {
+          var p = r.props || {};
+          return [
+            new Date(r.ts).toISOString(),
+            r.event || "",
+            r.lang || "",
+            r.slug || "",
+            r.path || "",
+            p.channel || "",
+            p.referrer || ""
+          ].map(function (v) { return '"' + String(v).replace(/"/g, '""') + '"'; }).join(",");
+        }).join("\n");
+        var blob = new Blob([header + body], { type: "text/csv;charset=utf-8" });
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "benni-blog-telemetry.csv";
+        a.click();
+      });
+
+      document.getElementById("clearBtn").addEventListener("click", function () {
+        localStorage.removeItem(STORAGE_KEY);
+        renderStats();
+      });
+
+      loadConfigStatus();
+      renderStats();
+      setInterval(renderStats, 3000);
+    })();
   </script>
 </body>
 </html>

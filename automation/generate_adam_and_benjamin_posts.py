@@ -374,6 +374,7 @@ def get_html_template(
       font-size: 0.85rem;
     }}
   </style>
+  <script defer src="/assets/blog-telemetry.js"></script>
 </head>
 <body>
 
