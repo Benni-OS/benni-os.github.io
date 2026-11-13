@@ -503,4 +503,58 @@
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
+  <url>
+    <loc>https://benni-os.net/blog/en/the-8gb-vram-breakthrough-pagedattention-kv-cache-quantization.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/the-8gb-vram-breakthrough-pagedattention-kv-cache-quantization.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/o-salto-dos-8gb-de-vram-pagedattention-quantizacao-kv-cache.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/the-8gb-vram-breakthrough-pagedattention-kv-cache-quantization.html" />
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/o-salto-dos-8gb-de-vram-pagedattention-quantizacao-kv-cache.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/the-8gb-vram-breakthrough-pagedattention-kv-cache-quantization.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/o-salto-dos-8gb-de-vram-pagedattention-quantizacao-kv-cache.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/the-8gb-vram-breakthrough-pagedattention-kv-cache-quantization.html" />
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/en/spec-driven-development-eliminating-ai-code-drift-formal-consensus.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/spec-driven-development-eliminating-ai-code-drift-formal-consensus.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/desenvolvimento-orientado-a-especificacoes-eliminando-deriva-ia.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/spec-driven-development-eliminating-ai-code-drift-formal-consensus.html" />
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/desenvolvimento-orientado-a-especificacoes-eliminando-deriva-ia.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/spec-driven-development-eliminating-ai-code-drift-formal-consensus.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/desenvolvimento-orientado-a-especificacoes-eliminando-deriva-ia.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/spec-driven-development-eliminating-ai-code-drift-formal-consensus.html" />
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/en/zero-trust-mcp-gateway-default-deny-dynamic-leases-atomic-rollback.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/zero-trust-mcp-gateway-default-deny-dynamic-leases-atomic-rollback.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/gateway-mcp-zero-trust-default-deny-leases-dinamicos-rollback.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/zero-trust-mcp-gateway-default-deny-dynamic-leases-atomic-rollback.html" />
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://benni-os.net/blog/gateway-mcp-zero-trust-default-deny-leases-dinamicos-rollback.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/zero-trust-mcp-gateway-default-deny-dynamic-leases-atomic-rollback.html" />
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/gateway-mcp-zero-trust-default-deny-leases-dinamicos-rollback.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/zero-trust-mcp-gateway-default-deny-dynamic-leases-atomic-rollback.html" />
+    <lastmod>2026-11-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
 </urlset>

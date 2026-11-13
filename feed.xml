@@ -7,7 +7,31 @@
     <language>en-us</language>
     <lastBuildDate>Tue, 03 Nov 2026 21:00:00 GMT</lastBuildDate>
     <atom:link href="https://benni-os.net/blog/feed.xml" rel="self" type="application/rss+xml"/>
-                                        <item>
+                                                    <item>
+      <title><![CDATA[The Zero-Trust MCP Gateway: Securing Autonomous AI Agent Tools with Default-Deny, Dynamic Leases, and Atomic Rollback]]></title>
+      <link>https://benni-os.net/blog/en/zero-trust-mcp-gateway-default-deny-dynamic-leases-atomic-rollback.html</link>
+      <guid isPermaLink="true">https://benni-os.net/blog/en/zero-trust-mcp-gateway-default-deny-dynamic-leases-atomic-rollback.html</guid>
+      <pubDate>Fri, 13 Nov 2026 02:25:02 GMT</pubDate>
+      <author>bennialencar@benni-os.net (Benni Alencar)</author>
+      <description><![CDATA[Mitigating indirect prompt injection and tool poisoning in MCP servers via Default-Deny capability gates, ephemeral leases, and atomic rollback.]]></description>
+    </item>
+<item>
+      <title><![CDATA[Spec-Driven Development (SDD): Eliminating AI Code Drift and Multi-Turn Hallucinations with Formal Consensus]]></title>
+      <link>https://benni-os.net/blog/en/spec-driven-development-eliminating-ai-code-drift-formal-consensus.html</link>
+      <guid isPermaLink="true">https://benni-os.net/blog/en/spec-driven-development-eliminating-ai-code-drift-formal-consensus.html</guid>
+      <pubDate>Fri, 13 Nov 2026 02:25:02 GMT</pubDate>
+      <author>bennialencar@benni-os.net (Benni Alencar)</author>
+      <description><![CDATA[Why prompt-and-pray coding collapses after 3-5 turns, and how Conductor SDD + Elephant-Goldfish blind review guarantees 0.00% drift.]]></description>
+    </item>
+<item>
+      <title><![CDATA[The 8GB VRAM Breakthrough: How PagedAttention and Dynamic KV-Cache Quantization Unlock 64k Context on Consumer GPUs]]></title>
+      <link>https://benni-os.net/blog/en/the-8gb-vram-breakthrough-pagedattention-kv-cache-quantization.html</link>
+      <guid isPermaLink="true">https://benni-os.net/blog/en/the-8gb-vram-breakthrough-pagedattention-kv-cache-quantization.html</guid>
+      <pubDate>Fri, 13 Nov 2026 02:25:02 GMT</pubDate>
+      <author>bennialencar@benni-os.net (Benni Alencar)</author>
+      <description><![CDATA[Eliminate the PCIe RAM spill cliff on 8GB consumer GPUs using PagedAttention block tables, FP8/INT4 KV-cache quantization, and speculative decoding with BIE.]]></description>
+    </item>
+<item>
       <title><![CDATA[The Nemesis Manifesto: The Zero-Trust Brokerage and Sovereign Tool Mesh for 97+ Enterprise Connectors]]></title>
       <link>https://benni-os.net/blog/en/the-nemesis-manifesto-zero-trust-brokerage-sovereign-tool-mesh.html</link>
       <guid isPermaLink="true">https://benni-os.net/blog/en/the-nemesis-manifesto-zero-trust-brokerage-sovereign-tool-mesh.html</guid>
