@@ -1,0 +1,11 @@
+{
+  "site": "benni-os.net",
+  "ga4MeasurementId": "",
+  "cloudflareBeaconToken": "",
+  "plausibleDomain": "benni-os.net",
+  "goatcounterCode": "",
+  "customEndpoint": "",
+  "localDashboardStorage": true,
+  "readCompleteMinScrollPct": 75,
+  "readCompleteMinActiveSeconds": 20
+}
