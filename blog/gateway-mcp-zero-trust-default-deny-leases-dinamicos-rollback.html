@@ -20,7 +20,7 @@
   <link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/zero-trust-mcp-gateway-default-deny-dynamic-leases-atomic-rollback.html" />
   <meta property="og:title" content="O Gateway MCP Zero-Trust: Protegendo Ferramentas de Agentes Autônomos com Default-Deny, Leases Dinâmicos e Rollback Atômico" />
   <meta property="og:description" content="Um blueprint arquitetural para blindar servidores Model Context Protocol (MCP) contra injeção indireta de prompt, envenenamento de ferramentas, execução arbitrária de shell e exfiltração de credenciais usando portões Default-Deny, leases efêmeros, ledgers Ed25519 e rollback atômico." />
-  <meta property="og:image" content="https://benni-os.net/blog/assets/image-6-nemesis-seal.png" />
+  <meta property="og:image" content="https://benni-os.net/blog/assets/flow_hero_zero-trust.jpg" />
   <meta property="og:url" content="https://benni-os.net/blog/gateway-mcp-zero-trust-default-deny-leases-dinamicos-rollback.html" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:creator" content="@BenniAlencar" />
@@ -46,7 +46,7 @@
       "inLanguage": "pt-BR",
       "mainEntityOfPage": "https://benni-os.net/blog/gateway-mcp-zero-trust-default-deny-leases-dinamicos-rollback.html",
       "url": "https://benni-os.net/blog/gateway-mcp-zero-trust-default-deny-leases-dinamicos-rollback.html",
-      "image": "https://benni-os.net/blog/assets/image-6-nemesis-seal.png",
+      "image": "https://benni-os.net/blog/assets/flow_hero_zero-trust.jpg",
       "datePublished": "2026-11-08T00:00:00Z",
       "dateModified": "2026-11-08T01:30:00Z",
       "author": {
@@ -345,6 +345,8 @@
     }
   </style>
   <script defer src="/assets/blog-telemetry.js"></script>
+  <link rel="stylesheet" href="/assets/editorial-theme.css" />
+  <script src="/assets/editorial-theme.js"></script>
   <script async type="module" crossorigin src="/assets/blog-gateway-mcp-zero-trust-default-deny-leases-dinamicos-rollback-6F3hq9O7.js"></script>
   <script type="module">import.meta.url;import("_").catch(()=>1);(async function*(){})().next();if(location.protocol!="file:"){window.__vite_is_modern_browser=true}</script>
   <script type="module">!function(){if(window.__vite_is_modern_browser)return;console.warn("vite: loading legacy chunks, syntax error above and the same error below should be ignored");var e=document.getElementById("vite-legacy-polyfill"),n=document.createElement("script");n.src=e.src,n.onload=function(){System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))},document.body.appendChild(n)}();</script>
@@ -405,7 +407,7 @@
     </header>
 
     <figure class="article-hero-cover-figure">
-      <img src="/blog/assets/image-6-nemesis-seal.png" alt="O Gateway MCP Zero-Trust: Protegendo Ferramentas de Agentes Autônomos com Default-Deny, Leases Dinâmicos e Rollback Atômico" class="article-hero-img" />
+      <img src="/assets/flow_hero_zero-trust-CejdrScO.jpg" alt="O Gateway MCP Zero-Trust: Protegendo Ferramentas de Agentes Autônomos com Default-Deny, Leases Dinâmicos e Rollback Atômico" class="article-hero-img" />
     </figure>
 
     <article class="article-content-body">
@@ -442,7 +444,7 @@
 <h2>2. Corretagem Zero-Trust: A Arquitetura Nemesis Gateway</h2>
 <p>No <strong>Benni OS</strong>, eliminamos esses modos de falha impondo uma separação arquitetural rigorosa entre <strong>Raciocínio Cognitivo</strong> e <strong>Execução Determinística</strong>. Agentes jamais seguram credenciais, jamais abrem sockets diretos para APIs SaaS downstream e jamais executam chamadas de ferramentas sem mediação. Todas as invocações devem atravessar o <strong>Gateway MCP Zero-Trust</strong> (modelado na arquitetura <strong>Nemesis Gateway</strong>), que opera como um Ponto de Aplicação de Política (PEP) e Ponto de Decisão de Política (PDP) em linha entre o Enxame de Agentes e a Malha de Ferramentas MCP.</p>
 
-<pre><code class="language-mermaid">flowchart TD
+<div class="mermaid">flowchart TD
     subgraph Untrusted ["1. Plano Probabilístico (Raciocínio Não Confiável)"]
         Agent["Agente Autônomo / Enxame"] -->|Chamada Proposta + Intenção| Intercept["Proxy de Entrada do Gateway"]
     end
@@ -467,7 +469,7 @@
         Rollback --> Audit
     end
 
-    Audit --> Agent</code></pre>
+    Audit --> Agent</div>
 
 <h2>3. Pilar 1: Portões de Capacidade Default-Deny e Fixação de Schema</h2>
 <p>A segurança tradicional de APIs frequentemente depende de <strong>Default-Allow com Blacklists</strong>—tentando enumerar comandos perigosos (<code>rm -rf</code>, <code>DROP TABLE</code>, <code>curl</code>) enquanto permite todo o resto. Listas negras sempre falham contra codificações criativas, ofuscação e combinações inéditas de ferramentas. Um Gateway MCP Zero-Trust impõe <strong>Default-Deny</strong> em todas as camadas.</p>

@@ -20,7 +20,7 @@
   <link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/zero-trust-mcp-gateway-default-deny-dynamic-leases-atomic-rollback.html" />
   <meta property="og:title" content="The Zero-Trust MCP Gateway: Securing Autonomous AI Agent Tools with Default-Deny, Dynamic Leases, and Atomic Rollback" />
   <meta property="og:description" content="An architectural blueprint for securing Model Context Protocol (MCP) servers against indirect prompt injection, tool poisoning, arbitrary shell execution, and credential exfiltration using Default-Deny gates, ephemeral leases, Ed25519 audit ledgers, and atomic rollback." />
-  <meta property="og:image" content="https://benni-os.net/blog/assets/image-6-nemesis-seal.png" />
+  <meta property="og:image" content="https://benni-os.net/blog/assets/flow_hero_zero-trust.jpg" />
   <meta property="og:url" content="https://benni-os.net/blog/en/zero-trust-mcp-gateway-default-deny-dynamic-leases-atomic-rollback.html" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:creator" content="@BenniAlencar" />
@@ -46,7 +46,7 @@
       "inLanguage": "en-US",
       "mainEntityOfPage": "https://benni-os.net/blog/en/zero-trust-mcp-gateway-default-deny-dynamic-leases-atomic-rollback.html",
       "url": "https://benni-os.net/blog/en/zero-trust-mcp-gateway-default-deny-dynamic-leases-atomic-rollback.html",
-      "image": "https://benni-os.net/blog/assets/image-6-nemesis-seal.png",
+      "image": "https://benni-os.net/blog/assets/flow_hero_zero-trust.jpg",
       "datePublished": "2026-11-08T00:00:00Z",
       "dateModified": "2026-11-08T01:30:00Z",
       "author": {
@@ -345,6 +345,8 @@
     }
   </style>
   <script defer src="/assets/blog-telemetry.js"></script>
+  <link rel="stylesheet" href="/assets/editorial-theme.css" />
+  <script src="/assets/editorial-theme.js"></script>
   <script async type="module" crossorigin src="/assets/blog-en-zero-trust-mcp-gateway-default-deny-dynamic-leases-atomic-rollback-6F3hq9O7.js"></script>
   <script type="module">import.meta.url;import("_").catch(()=>1);(async function*(){})().next();if(location.protocol!="file:"){window.__vite_is_modern_browser=true}</script>
   <script type="module">!function(){if(window.__vite_is_modern_browser)return;console.warn("vite: loading legacy chunks, syntax error above and the same error below should be ignored");var e=document.getElementById("vite-legacy-polyfill"),n=document.createElement("script");n.src=e.src,n.onload=function(){System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))},document.body.appendChild(n)}();</script>
@@ -405,7 +407,7 @@
     </header>
 
     <figure class="article-hero-cover-figure">
-      <img src="/blog/assets/image-6-nemesis-seal.png" alt="The Zero-Trust MCP Gateway: Securing Autonomous AI Agent Tools with Default-Deny, Dynamic Leases, and Atomic Rollback" class="article-hero-img" />
+      <img src="/assets/flow_hero_zero-trust-CejdrScO.jpg" alt="The Zero-Trust MCP Gateway: Securing Autonomous AI Agent Tools with Default-Deny, Dynamic Leases, and Atomic Rollback" class="article-hero-img" />
     </figure>
 
     <article class="article-content-body">
@@ -442,7 +444,7 @@
 <h2>2. Zero-Trust Brokerage: The Nemesis Gateway Architecture</h2>
 <p>At <strong>Benni OS</strong>, we eliminate these failure modes by enforcing a strict architectural separation between <strong>Cognitive Reasoning</strong> and <strong>Deterministic Execution</strong>. Agents never hold credentials, never open direct sockets to downstream SaaS APIs, and never execute unmediated tool calls. All tool invocations must traverse the <strong>Zero-Trust MCP Gateway</strong> (modeled after the <strong>Nemesis Gateway</strong> architecture), which operates as an inline Policy Enforcement Point (PEP) and Policy Decision Point (PDP) between the Agent Swarm and the MCP Tool Mesh.</p>
 
-<pre><code class="language-mermaid">flowchart TD
+<div class="mermaid">flowchart TD
     subgraph Untrusted ["1. Probabilistic Plane (Untrusted Reasoning)"]
         Agent["Autonomous Agent / Swarm"] -->|Proposed Tool Call + Intent| Intercept["Gateway Ingress Proxy"]
     end
@@ -467,7 +469,7 @@
         Rollback --> Audit
     end
 
-    Audit --> Agent</code></pre>
+    Audit --> Agent</div>
 
 <h2>3. Pillar 1: Default-Deny Capability Gates and Schema Pinning</h2>
 <p>Traditional API security often relies on <strong>Default-Allow with Blacklists</strong>—attempting to enumerate dangerous commands (<code>rm -rf</code>, <code>DROP TABLE</code>, <code>curl</code>) while permitting everything else. Blacklists always fail against creative encoding, obfuscation, and novel tool combinations. A Zero-Trust MCP Gateway enforces <strong>Default-Deny</strong> at every layer.</p>
