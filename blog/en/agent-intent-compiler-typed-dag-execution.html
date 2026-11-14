@@ -234,6 +234,8 @@
     .faq-item-a { color: var(--text-muted); font-size: 0.95rem; }
   </style>
   <script defer src="/assets/blog-telemetry.js"></script>
+  <link rel="stylesheet" href="/assets/editorial-theme.css" />
+  <script src="/assets/editorial-theme.js"></script>
 </head>
 <body>
   <header class="magazine-header">
@@ -261,7 +263,8 @@
       Why feeding raw user strings into agent tool loops leads to prompt injection vulnerabilities and token blowouts, and how to compile prompts into deterministic, typed DAG execution stages in sub-millisecond local Python.
     </p>
 
-    <article class="article-prose">
+    <figure class="article-hero-cover-figure"><img src="/blog/assets/flow_hero_control-plane.jpg" alt="Compiling Natural Language to Typed DAGs: Eliminating AI Agent Prompt Injection and 60% Token Waste in Python — Benni Alencar // Benni OS" class="article-hero-img" /></figure>
+<article class="article-prose">
 <hr />
 <h2>Executive Summary &amp; First Principles</h2>
 <p>In contemporary autonomous agent architectures (LangChain, AutoGen, CrewAI, LangGraph), the standard design pattern is deceptively simple: take a raw, unstructured natural language prompt from a user, format it with a system prompt and available tool definitions, and send it directly into a multi-turn Large Language Model (LLM) reasoning loop (ReAct, Plan-and-Solve, or Reflection).</p>
