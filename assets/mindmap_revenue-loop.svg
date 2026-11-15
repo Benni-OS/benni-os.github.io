@@ -1,0 +1,177 @@
+<svg width="1200" height="750" viewBox="0 0 1200 750" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Background Radial Gradients -->
+    <radialGradient id="mmGlow" cx="50%" cy="50%" r="55%">
+      <stop offset="0%" stop-color="#426bff" stop-opacity="0.25"/>
+      <stop offset="60%" stop-color="#00ffff" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#09090b" stop-opacity="1"/>
+    </radialGradient>
+    <pattern id="mmGrid" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#e8e1d5" stroke-opacity="0.035" stroke-width="1"/>
+    </pattern>
+    <filter id="glowEffect" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <rect width="1200" height="750" fill="#09090b"/>
+  <rect width="1200" height="750" fill="url(#mmGlow)"/>
+  <rect width="1200" height="750" fill="url(#mmGrid)"/>
+
+  <!-- Outer Frame -->
+  <rect x="20" y="20" width="1160" height="710" rx="8" stroke="#e8e1d5" stroke-opacity="0.1" stroke-width="1.5"/>
+
+  <!-- Header Banner -->
+  <g transform="translate(45, 55)">
+    <rect x="0" y="0" width="12" height="12" rx="2" fill="#00ffff"/>
+    <text x="22" y="11" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="600" fill="#00ffff" letter-spacing="2">BENNI OS // COGNITIVE ARCHITECTURE MINDMAP</text>
+    <text x="780" y="11" font-family="IBM Plex Mono, monospace" font-size="12" fill="#c9a45c">HIERARCHICAL REASONING TREE</text>
+  </g>
+
+<path d="M 600.0 375.0 C 440.0 375.0, 440.0 215.0, 280.0 215.0" stroke="#00ffff" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.85"/>
+<path d="M 160.0 215.0 C 220.0 215.0, 220.0 171.0, 170.0 171.0" stroke="#00ffff" stroke-width="1.5" stroke-dasharray="3 3" fill="none" opacity="0.6"/>
+<path d="M 160.0 215.0 C 220.0 215.0, 220.0 215.0, 170.0 215.0" stroke="#00ffff" stroke-width="1.5" stroke-dasharray="3 3" fill="none" opacity="0.6"/>
+<path d="M 160.0 215.0 C 220.0 215.0, 220.0 259.0, 170.0 259.0" stroke="#00ffff" stroke-width="1.5" stroke-dasharray="3 3" fill="none" opacity="0.6"/>
+<path d="M 600.0 375.0 C 440.0 375.0, 440.0 535.0, 280.0 535.0" stroke="#00ff66" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.85"/>
+<path d="M 160.0 535.0 C 220.0 535.0, 220.0 491.0, 170.0 491.0" stroke="#00ff66" stroke-width="1.5" stroke-dasharray="3 3" fill="none" opacity="0.6"/>
+<path d="M 160.0 535.0 C 220.0 535.0, 220.0 535.0, 170.0 535.0" stroke="#00ff66" stroke-width="1.5" stroke-dasharray="3 3" fill="none" opacity="0.6"/>
+<path d="M 160.0 535.0 C 220.0 535.0, 220.0 579.0, 170.0 579.0" stroke="#00ff66" stroke-width="1.5" stroke-dasharray="3 3" fill="none" opacity="0.6"/>
+<path d="M 600.0 375.0 C 760.0 375.0, 760.0 215.0, 920.0 215.0" stroke="#426bff" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.85"/>
+<path d="M 1040.0 215.0 C 980.0 215.0, 980.0 171.0, 1030.0 171.0" stroke="#426bff" stroke-width="1.5" stroke-dasharray="3 3" fill="none" opacity="0.6"/>
+<path d="M 1040.0 215.0 C 980.0 215.0, 980.0 215.0, 1030.0 215.0" stroke="#426bff" stroke-width="1.5" stroke-dasharray="3 3" fill="none" opacity="0.6"/>
+<path d="M 1040.0 215.0 C 980.0 215.0, 980.0 259.0, 1030.0 259.0" stroke="#426bff" stroke-width="1.5" stroke-dasharray="3 3" fill="none" opacity="0.6"/>
+<path d="M 600.0 375.0 C 760.0 375.0, 760.0 535.0, 920.0 535.0" stroke="#c9a45c" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.85"/>
+<path d="M 1040.0 535.0 C 980.0 535.0, 980.0 491.0, 1030.0 491.0" stroke="#c9a45c" stroke-width="1.5" stroke-dasharray="3 3" fill="none" opacity="0.6"/>
+<path d="M 1040.0 535.0 C 980.0 535.0, 980.0 535.0, 1030.0 535.0" stroke="#c9a45c" stroke-width="1.5" stroke-dasharray="3 3" fill="none" opacity="0.6"/>
+<path d="M 1040.0 535.0 C 980.0 535.0, 980.0 579.0, 1030.0 579.0" stroke="#c9a45c" stroke-width="1.5" stroke-dasharray="3 3" fill="none" opacity="0.6"/>
+
+            <g transform="translate(160.0, 183.0)">
+              <rect x="0" y="0" width="240" height="64" rx="8" fill="#141418" stroke="#00ffff" stroke-width="2"/>
+              <text x="16" y="28" font-family="DM Serif Display, serif" font-size="16" font-weight="700" fill="#e8e1d5">Teoria &amp; Invariantes</text>
+              <text x="16" y="48" font-family="IBM Plex Mono, monospace" font-size="11" fill="#00ffff">Formalismos matemáticos e reality locks</text>
+            </g>
+            
+
+                <g transform="translate(5.0, 155.0)">
+                  <rect x="0" y="0" width="170" height="32" rx="5" fill="#09090b" stroke="#00ffff" stroke-width="1" opacity="0.95"/>
+                  <circle cx="12" cy="16" r="4" fill="#00ffff"/>
+                  <text x="24" y="20" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="500" fill="#e8e1d5">Consistência SHA-256</text>
+                </g>
+                
+
+                <g transform="translate(5.0, 199.0)">
+                  <rect x="0" y="0" width="170" height="32" rx="5" fill="#09090b" stroke="#00ffff" stroke-width="1" opacity="0.95"/>
+                  <circle cx="12" cy="16" r="4" fill="#00ffff"/>
+                  <text x="24" y="20" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="500" fill="#e8e1d5">Zero Vendor Lock-in</text>
+                </g>
+                
+
+                <g transform="translate(5.0, 243.0)">
+                  <rect x="0" y="0" width="170" height="32" rx="5" fill="#09090b" stroke="#00ffff" stroke-width="1" opacity="0.95"/>
+                  <circle cx="12" cy="16" r="4" fill="#00ffff"/>
+                  <text x="24" y="20" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="500" fill="#e8e1d5">Isolamento de Contexto</text>
+                </g>
+                
+
+            <g transform="translate(160.0, 503.0)">
+              <rect x="0" y="0" width="240" height="64" rx="8" fill="#141418" stroke="#00ff66" stroke-width="2"/>
+              <text x="16" y="28" font-family="DM Serif Display, serif" font-size="16" font-weight="700" fill="#e8e1d5">Capacidades Centrais</text>
+              <text x="16" y="48" font-family="IBM Plex Mono, monospace" font-size="11" fill="#00ff66">Engenharia e recursos de alto impacto</text>
+            </g>
+            
+
+                <g transform="translate(5.0, 475.0)">
+                  <rect x="0" y="0" width="170" height="32" rx="5" fill="#09090b" stroke="#00ff66" stroke-width="1" opacity="0.95"/>
+                  <circle cx="12" cy="16" r="4" fill="#00ff66"/>
+                  <text x="24" y="20" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="500" fill="#e8e1d5">Funis de aquisição e checkout se</text>
+                </g>
+                
+
+                <g transform="translate(5.0, 519.0)">
+                  <rect x="0" y="0" width="170" height="32" rx="5" fill="#09090b" stroke="#00ff66" stroke-width="1" opacity="0.95"/>
+                  <circle cx="12" cy="16" r="4" fill="#00ff66"/>
+                  <text x="24" y="20" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="500" fill="#e8e1d5">Rastreamento de atribuição de le</text>
+                </g>
+                
+
+                <g transform="translate(5.0, 563.0)">
+                  <rect x="0" y="0" width="170" height="32" rx="5" fill="#09090b" stroke="#00ff66" stroke-width="1" opacity="0.95"/>
+                  <circle cx="12" cy="16" r="4" fill="#00ff66"/>
+                  <text x="24" y="20" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="500" fill="#e8e1d5">Design de ofertas irresistíveis </text>
+                </g>
+                
+
+            <g transform="translate(800.0, 183.0)">
+              <rect x="0" y="0" width="240" height="64" rx="8" fill="#141418" stroke="#426bff" stroke-width="2"/>
+              <text x="16" y="28" font-family="DM Serif Display, serif" font-size="16" font-weight="700" fill="#e8e1d5">Governança &amp; Defesa</text>
+              <text x="16" y="48" font-family="IBM Plex Mono, monospace" font-size="11" fill="#426bff">Contratos canônicos e blindagem</text>
+            </g>
+            
+
+                <g transform="translate(1025.0, 155.0)">
+                  <rect x="0" y="0" width="170" height="32" rx="5" fill="#09090b" stroke="#426bff" stroke-width="1" opacity="0.95"/>
+                  <circle cx="12" cy="16" r="4" fill="#426bff"/>
+                  <text x="24" y="20" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="500" fill="#e8e1d5">Skill 10 Canônica</text>
+                </g>
+                
+
+                <g transform="translate(1025.0, 199.0)">
+                  <rect x="0" y="0" width="170" height="32" rx="5" fill="#09090b" stroke="#426bff" stroke-width="1" opacity="0.95"/>
+                  <circle cx="12" cy="16" r="4" fill="#426bff"/>
+                  <text x="24" y="20" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="500" fill="#e8e1d5">Skill 11 Canônica</text>
+                </g>
+                
+
+                <g transform="translate(1025.0, 243.0)">
+                  <rect x="0" y="0" width="170" height="32" rx="5" fill="#09090b" stroke="#426bff" stroke-width="1" opacity="0.95"/>
+                  <circle cx="12" cy="16" r="4" fill="#426bff"/>
+                  <text x="24" y="20" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="500" fill="#e8e1d5">Skill 12 Canônica</text>
+                </g>
+                
+
+            <g transform="translate(800.0, 503.0)">
+              <rect x="0" y="0" width="240" height="64" rx="8" fill="#141418" stroke="#c9a45c" stroke-width="2"/>
+              <text x="16" y="28" font-family="DM Serif Display, serif" font-size="16" font-weight="700" fill="#e8e1d5">Engenharia &amp; Stack</text>
+              <text x="16" y="48" font-family="IBM Plex Mono, monospace" font-size="11" fill="#c9a45c">Linguagens, protocolos e runtime</text>
+            </g>
+            
+
+                <g transform="translate(1025.0, 475.0)">
+                  <rect x="0" y="0" width="170" height="32" rx="5" fill="#09090b" stroke="#c9a45c" stroke-width="1" opacity="0.95"/>
+                  <circle cx="12" cy="16" r="4" fill="#c9a45c"/>
+                  <text x="24" y="20" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="500" fill="#e8e1d5">n8n Workflows</text>
+                </g>
+                
+
+                <g transform="translate(1025.0, 519.0)">
+                  <rect x="0" y="0" width="170" height="32" rx="5" fill="#09090b" stroke="#c9a45c" stroke-width="1" opacity="0.95"/>
+                  <circle cx="12" cy="16" r="4" fill="#c9a45c"/>
+                  <text x="24" y="20" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="500" fill="#e8e1d5">Stripe / Hotmart / Cakto API</text>
+                </g>
+                
+
+                <g transform="translate(1025.0, 563.0)">
+                  <rect x="0" y="0" width="170" height="32" rx="5" fill="#09090b" stroke="#c9a45c" stroke-width="1" opacity="0.95"/>
+                  <circle cx="12" cy="16" r="4" fill="#c9a45c"/>
+                  <text x="24" y="20" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="500" fill="#e8e1d5">Meta / Google Webhooks</text>
+                </g>
+                
+
+  <!-- Central Brain / Core Node -->
+  <g transform="translate(450.0, 325.0)">
+    <rect x="-6" y="-6" width="312" height="112" rx="14" fill="#426bff" opacity="0.3" filter="url(#glowEffect)"/>
+    <rect x="0" y="0" width="300" height="100" rx="10" fill="#141418" stroke="#00ffff" stroke-width="2.5"/>
+    <rect x="18" y="16" width="8" height="8" rx="2" fill="#00ff66"/>
+    <text x="34" y="24" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600" fill="#00ff66" letter-spacing="1.5">SOVEREIGN ATOM ROOT</text>
+    <text x="18" y="56" font-family="DM Serif Display, serif" font-size="21" font-weight="700" fill="#e8e1d5">Benni Autonomous Revenue Loop</text>
+    <text x="18" y="80" font-family="IBM Plex Mono, monospace" font-size="12" fill="#00ffff">Arquitetura Soberana // CRESCIMENTO &amp; MONETIZAÇÃO</text>
+  </g>
+
+  <!-- Bottom Legend -->
+  <g transform="translate(45, 705)">
+    <line x1="0" y1="0" x2="1110" y2="0" stroke="#e8e1d5" stroke-opacity="0.1" stroke-width="1"/>
+    <text x="0" y="24" font-family="IBM Plex Mono, monospace" font-size="12" fill="#e8e1d5">BENNI OS KNOWLEDGE GRAPH // TIER-0 STANDARDS</text>
+    <text x="840" y="24" font-family="IBM Plex Mono, monospace" font-size="12" fill="#c9a45c">CONVERGENCE PROOF: DETERMINISTIC</text>
+  </g>
+</svg>
