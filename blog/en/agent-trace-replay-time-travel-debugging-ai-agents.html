@@ -641,7 +641,7 @@
       <div class="mermaid">
 flowchart LR
     A["Live Agent Run\n(Steps 0..N)"] -->|"Records LLM + Tool I/O"| B["Immutable Trace Ledger\n(SHA-256 Frame Chain)"]
-    B -->|"Zero-Token Replay"| C["Offline Replay Engine\n(< 2ms per trajectory)"]
+    B -->|"Zero-Token Replay"| C["Offline Replay Engine\n(&lt; 2ms per trajectory)"]
     B -->|"Rewind to Step k"| D["Counterfactual Fork\n(Mutate Tool / Prompt)"]
     D -->|"Resume from k+1"| E["New Branch Trace\n(Diff &amp; Regression Gate)"]
     C -->|"Assert Invariants"| F["CI/CD Pass / Fail\n(0 Cloud Tokens)"]

@@ -641,7 +641,7 @@
       <div class="mermaid">
 flowchart LR
     A["Execução ao Vivo\n(Passos 0..N)"] -->|"Grava I/O de LLM + Tools"| B["Ledger Imutável de Traço\n(Cadeia SHA-256)"]
-    B -->|"Replay Custo Zero"| C["Motor de Replay Offline\n(< 2ms por trajetória)"]
+    B -->|"Replay Custo Zero"| C["Motor de Replay Offline\n(&lt; 2ms por trajetória)"]
     B -->|"Retroceder ao Passo k"| D["Bifurcação Contrafactual\n(Mutar Tool / Prompt)"]
     D -->|"Retomar de k+1"| E["Novo Ramo de Execução\n(Diff &amp; Gate de Regressão)"]
     C -->|"Validar Invariantes"| F["CI/CD Pass / Fail\n(0 Tokens na Nuvem)"]
