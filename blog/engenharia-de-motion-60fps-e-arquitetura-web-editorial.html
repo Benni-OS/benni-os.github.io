@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- Google AdSense Oficial -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6415277800729792" crossorigin="anonymous"></script>
+
+  <title>Engenharia de Motion 60 FPS e Core Web Vitals: Projetando Interfaces Editoriais para Ranquear no Google Discover — Benni Alencar // Benni OS</title>
+  <meta name="description" content="Como projetar interfaces web editoriais a 60 FPS usando transforms exclusivos de compositor, cleanup determinístico de Lenis e GSAP, orçamentos de Core Web Vitals e dados estruturados para Google Discover." />
+  <link rel="canonical" href="https://benni-os.net/blog/engenharia-de-motion-60fps-e-arquitetura-web-editorial.html" />
+  <link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/60fps-motion-engineering-and-editorial-web-architecture.html" />
+  <link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/engenharia-de-motion-60fps-e-arquitetura-web-editorial.html" />
+  <link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/60fps-motion-engineering-and-editorial-web-architecture.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Engenharia de Motion 60 FPS e Core Web Vitals: Projetando Interfaces Editoriais para Ranquear no Google Discover" />
+  <meta property="og:description" content="Como projetar interfaces web editoriais a 60 FPS usando transforms exclusivos de compositor, cleanup determinístico de Lenis e GSAP, orçamentos de Core Web Vitals e dados estruturados para Google Discover." />
+  <meta property="og:image" content="https://benni-os.net/blog/assets/flow_hero_agent-browser-mesh.jpg" />
+  <meta property="og:image:width" content="1376" />
+  <meta property="og:image:height" content="768" />
+  <meta property="og:url" content="https://benni-os.net/blog/engenharia-de-motion-60fps-e-arquitetura-web-editorial.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:creator" content="@BenniAlencar" />
+  <meta name="twitter:image" content="https://benni-os.net/blog/assets/flow_hero_agent-browser-mesh.jpg" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": ["TechArticle", "BlogPosting"],
+        "@id": "https://benni-os.net/blog/engenharia-de-motion-60fps-e-arquitetura-web-editorial.html#article",
+        "isPartOf": {
+          "@type": "WebSite",
+          "@id": "https://benni-os.net/#website",
+          "name": "Benni OS",
+          "url": "https://benni-os.net"
+        },
+        "headline": "Engenharia de Motion 60 FPS e Core Web Vitals: Projetando Interfaces Editoriais para Ranquear no Google Discover",
+        "description": "Como projetar interfaces web editoriais a 60 FPS usando transforms exclusivos de compositor, cleanup determinístico de Lenis e GSAP, orçamentos de Core Web Vitals e dados estruturados para Google Discover.",
+        "inLanguage": "pt-BR",
+        "mainEntityOfPage": "https://benni-os.net/blog/engenharia-de-motion-60fps-e-arquitetura-web-editorial.html",
+        "url": "https://benni-os.net/blog/engenharia-de-motion-60fps-e-arquitetura-web-editorial.html",
+        "image": {
+          "@type": "ImageObject",
+          "url": "https://benni-os.net/blog/assets/flow_hero_agent-browser-mesh.jpg",
+          "width": 1376,
+          "height": 768
+        },
+        "datePublished": "2026-11-15T00:00:00Z",
+        "dateModified": "2026-11-15T04:00:00Z",
+        "keywords": "engenharia de motion 60 fps, core web vitals, google discover seo, max-image-preview large, gsap scrolltrigger cleanup, lenis smooth scroll, compositor only animations, benni canvas",
+        "author": {
+          "@type": "Person",
+          "@id": "https://benni-os.net/#author",
+          "name": "Benni Alencar",
+          "jobTitle": "Chief AI Systems Architect & Founder",
+          "url": "https://benni-os.net",
+          "sameAs": [
+            "https://github.com/BenniAlencar",
+            "https://dev.to/bennialencar",
+            "https://www.linkedin.com/in/benni-alencar/",
+            "https://benni-os.net"
+          ]
+        },
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://benni-os.net/#organization",
+          "name": "Benni OS",
+          "url": "https://benni-os.net",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://benni-os.net/blog/assets/benni_avatar.png"
+          }
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://benni-os.net/blog/engenharia-de-motion-60fps-e-arquitetura-web-editorial.html#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Por que propriedades exclusivas de compositor são essenciais para motion a 60 FPS?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Animar transform, opacity ou clip-path ignora as etapas de Layout e Paint na main thread do navegador, executando diretamente na thread do compositor de GPU para que cada frame termine dentro do orçamento de 16,67 ms."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Como evitar vazamentos de memória ao combinar Lenis e GSAP ScrollTrigger?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Envolva todas as timelines em gsap.context(), remova o callback do ticker, chame ctx.revert() na desmontagem e execute lenis.destroy() para que nenhum loop de requestAnimationFrame ou listener de scroll persista após mudanças de rota."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Quais requisitos técnicos são obrigatórios para ranquear no Google Discover?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "As páginas devem incluir a diretiva max-image-preview:large na meta robots, servir imagem hero de alta resolução com pelo menos 1200 px de largura (como 1376x768) referenciada em og:image e TechArticle JSON-LD, além de cumprir os limites de Core Web Vitals (LCP <= 2,5 s, CLS <= 0,1, INP <= 200 ms)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Como o Benni Canvas garante acessibilidade e performance em motion?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "O Benni Canvas combina a Skill 56 (Motion Engineering) e a Skill 57 (Aesthetic Engineering) para impor tokens exclusivos de compositor, fallbacks estritos de prefers-reduced-motion e portões automatizados de Core Web Vitals antes da publicação."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #07080c;
+      --panel: #0e111a;
+      --panel-hover: #141824;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-border-hover: rgba(0, 240, 255, 0.35);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --cyan: #00f0ff;
+      --cyan-glow: rgba(0, 240, 255, 0.15);
+      --blue: #3b82f6;
+      --lime: #10b981;
+      --orange: #ff6b00;
+      --purple: #a855f7;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-title: 'DM Serif Display', Georgia, serif;
+      --font-code: 'IBM Plex Mono', monospace;
+      --badge-color: #00f0ff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.75;
+      font-size: 1.05rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59, 130, 246, 0.12), transparent),
+        radial-gradient(circle at 100% 40%, rgba(168, 85, 247, 0.06), transparent 50%),
+        radial-gradient(circle at 0% 70%, rgba(0, 240, 255, 0.05), transparent 50%);
+      background-attachment: fixed;
+    }
+    header.magazine-header {
+      background: rgba(7, 8, 12, 0.85);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--card-border);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 0.9rem 2rem;
+    }
+    .nav-container {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand-logo {
+      font-family: var(--font-code);
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--text-main);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      letter-spacing: 0.5px;
+    }
+    .brand-logo:hover { color: var(--cyan); }
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #10b981;
+    }
+    nav.nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.8rem;
+    }
+    nav.nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav.nav-links a:hover, nav.nav-links a.active { color: #fff; }
+    .lang-switcher-pill {
+      display: flex;
+      align-items: center;
+      background: rgba(14, 17, 26, 0.8);
+      border: 1px solid var(--card-border);
+      border-radius: 9999px;
+      padding: 3px;
+      gap: 2px;
+    }
+    .lang-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-family: var(--font-code);
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .lang-btn.active {
+      background: rgba(0, 240, 255, 0.15);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+    }
+    .lang-btn:hover:not(.active) {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .reading-progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #00f0ff, #3b82f6, #a855f7);
+      width: 0%;
+      z-index: 9999;
+      transition: width 0.1s ease;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.7);
+    }
+    main.article-layout {
+      max-width: 860px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      flex: 1;
+      width: 100%;
+    }
+    .breadcrumb-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-code);
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      margin-bottom: 1.2rem;
+    }
+    .breadcrumb-nav a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb-nav a:hover { color: var(--cyan); }
+    .breadcrumb-current { color: var(--cyan); }
+    .article-header { margin-bottom: 2.5rem; }
+    .article-meta-badges {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .category-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(10, 12, 18, 0.9);
+      border: 1px solid var(--badge-color);
+      color: var(--badge-color);
+      font-family: var(--font-code);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      letter-spacing: 0.5px;
+    }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .article-meta-text { color: var(--text-dim); font-size: 0.85rem; font-family: var(--font-code); }
+    .article-main-title {
+      font-family: var(--font-title);
+      font-size: clamp(2.3rem, 4.5vw, 3.6rem);
+      font-weight: normal;
+      line-height: 1.15;
+      color: #fff;
+      margin-bottom: 1.2rem;
+      letter-spacing: -0.5px;
+    }
+    .article-lead-paragraph {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1.65;
+      margin-bottom: 2rem;
+    }
+    .article-author-share-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1.2rem 0;
+      margin-bottom: 2rem;
+    }
+    .author-info-box {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+    .author-photo {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid var(--card-border);
+      object-fit: cover;
+    }
+    .author-name-title {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .author-subtitle {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      font-family: var(--font-code);
+    }
+    .article-hero-cover-figure {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      margin-bottom: 3rem;
+      background: var(--panel);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+    .article-hero-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      aspect-ratio: 1376 / 768;
+      object-fit: cover;
+    }
+    .article-prose {
+      color: #cbd5e1;
+      font-size: 1.08rem;
+      line-height: 1.8;
+    }
+    .article-prose h2 {
+      font-family: var(--font-title);
+      font-size: 1.95rem;
+      color: #fff;
+      margin: 2.8rem 0 1rem;
+      letter-spacing: -0.3px;
+    }
+    .article-prose h3 {
+      font-family: var(--font-title);
+      font-size: 1.45rem;
+      color: #f1f5f9;
+      margin: 2rem 0 0.8rem;
+    }
+    .article-prose p {
+      margin-bottom: 1.4rem;
+    }
+    .article-prose ul, .article-prose ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+    }
+    .article-prose li {
+      margin-bottom: 0.5rem;
+    }
+    .article-prose code {
+      font-family: var(--font-code);
+      background: rgba(255, 255, 255, 0.06);
+      padding: 0.2rem 0.45rem;
+      border-radius: 6px;
+      font-size: 0.9em;
+      color: var(--cyan);
+    }
+    .article-prose pre {
+      background: #040507;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      overflow-x: auto;
+      margin: 1.6rem 0;
+    }
+    .article-prose pre code {
+      background: transparent;
+      padding: 0;
+      color: #e2e8f0;
+      font-size: 0.88rem;
+    }
+    .mermaid {
+      background: #040507;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      display: flex;
+      justify-content: center;
+    }
+    .table-container {
+      overflow-x: auto;
+      margin: 2rem 0;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+    th, td {
+      padding: 1rem 1.2rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+    th {
+      background: var(--panel);
+      color: #fff;
+      font-family: var(--font-code);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    .article-cta-box {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.05), rgba(59, 130, 246, 0.08));
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      border-radius: 16px;
+      padding: 2.2rem;
+      margin: 3.5rem 0;
+      text-align: center;
+    }
+    .article-cta-title {
+      font-family: var(--font-title);
+      font-size: 1.6rem;
+      color: #fff;
+      margin-bottom: 0.8rem;
+    }
+    .article-cta-btn {
+      display: inline-block;
+      background: var(--cyan);
+      color: #000;
+      font-weight: 700;
+      padding: 0.85rem 2rem;
+      border-radius: 9999px;
+      text-decoration: none;
+      font-family: var(--font-code);
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      transition: all 0.2s;
+    }
+    .article-cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 240, 255, 0.4);
+    }
+    .article-faq-section {
+      background: var(--panel);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      margin: 3.5rem 0;
+    }
+    .faq-main-heading {
+      font-family: var(--font-title);
+      font-size: 1.8rem;
+      color: #fff;
+      margin-bottom: 1.5rem;
+    }
+    .faq-item-card { border-bottom: 1px solid var(--card-border); padding: 1.2rem 0; }
+    .faq-item-card:last-child { border-bottom: none; }
+    .faq-item-q { font-weight: 700; font-size: 1.1rem; color: var(--cyan); margin-bottom: 0.5rem; }
+    .faq-item-a { color: var(--text-muted); font-size: 0.98rem; line-height: 1.65; }
+    footer.magazine-footer {
+      background: #050608;
+      border-top: 1px solid var(--card-border);
+      padding: 3.5rem 2rem 2rem;
+      margin-top: 5rem;
+    }
+    .footer-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 2.5rem;
+    }
+    @media (max-width: 900px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .footer-grid { grid-template-columns: 1fr; }
+      nav.nav-links { display: none; }
+    }
+    .footer-col h4 {
+      font-family: var(--font-code);
+      font-size: 0.85rem;
+      color: var(--cyan);
+      margin-bottom: 1.2rem;
+      letter-spacing: 1px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.6rem; }
+    .footer-col ul li a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .footer-col ul li a:hover { color: #fff; }
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 1.8rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-dim);
+      font-size: 0.82rem;
+      font-family: var(--font-code);
+    }
+  </style>
+  <script defer src="/assets/blog-telemetry.js"></script>
+  <link rel="stylesheet" href="/assets/editorial-theme.css" />
+  <script src="/assets/editorial-theme.js"></script>
+</head>
+<body>
+  <div class="reading-progress-bar" id="progressBar"></div>
+
+  <header class="magazine-header">
+    <div class="nav-container">
+      <a href="/" class="brand-logo">
+        <span class="status-dot"></span>
+        BENNI OS // MAGAZINE
+      </a>
+      <nav class="nav-links">
+        <a href="/">Home</a>
+        <a href="/blog/pt.html" class="active">Magazine</a>
+        <a href="/blog/academy.html">Academy</a>
+        <a href="https://github.com/BenniAlencar" target="_blank">GitHub</a>
+        <a href="https://dev.to/bennialencar" target="_blank">Dev.to</a>
+        <div class="lang-switcher-pill" role="navigation" aria-label="Seletor de Idioma">
+          <a href="/blog/en/60fps-motion-engineering-and-editorial-web-architecture.html" class="lang-btn" title="Switch to English">
+            <span>🇺🇸</span> EN
+          </a>
+          <a href="/blog/engenharia-de-motion-60fps-e-arquitetura-web-editorial.html" class="lang-btn active" title="Português (Ativo)">
+            <span>🇧🇷</span> PT-BR
+          </a>
+        </div>
+        <a href="/#monetizacao" style="color: var(--cyan); font-weight: 700;">Operator Mode &rarr;</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-layout">
+    <nav class="breadcrumb-nav">
+      <a href="/blog/pt.html">Magazine</a>
+      <span>/</span>
+      <span class="breadcrumb-current">MOTION &amp; ARQUITETURA WEB</span>
+    </nav>
+
+    <header class="article-header">
+      <div class="article-meta-badges">
+        <span class="category-badge-pill">
+          <span class="badge-dot"></span>
+          MOTION &amp; ARQUITETURA WEB
+        </span>
+        <span class="article-meta-text">14 min de leitura • 15 Nov, 2026</span>
+      </div>
+
+      <h1 class="article-main-title">Engenharia de Motion 60 FPS e Core Web Vitals: Projetando Interfaces Editoriais para Ranquear no Google Discover</h1>
+      <p class="article-lead-paragraph">A maioria dos sites editoriais com animações pesadas reprova nos Core Web Vitals e desaparece do Google Discover. Veja como combinar transforms exclusivos de compositor, cleanup determinístico de Lenis e GSAP e tokens do Benni Canvas para entregar 60 FPS com INP abaixo de 200 ms.</p>
+
+      <div class="article-author-share-bar">
+        <div class="author-info-box">
+          <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-photo" width="44" height="44" />
+          <div>
+            <div class="author-name-title">Benni Alencar</div>
+            <div class="author-subtitle">Chief AI Systems Architect &amp; Founder</div>
+          </div>
+        </div>
+        <div class="lang-switcher-pill" role="navigation" aria-label="Seletor de Idioma">
+          <a href="/blog/en/60fps-motion-engineering-and-editorial-web-architecture.html" class="lang-btn" title="Switch to English">
+            <span>🇺🇸</span> EN
+          </a>
+          <a href="/blog/engenharia-de-motion-60fps-e-arquitetura-web-editorial.html" class="lang-btn active" title="Português (Ativo)">
+            <span>🇧🇷</span> PT-BR
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <figure class="article-hero-cover-figure">
+      <img src="/blog/assets/flow_hero_agent-browser-mesh.jpg" alt="Engenharia de Motion 60 FPS e Arquitetura Web Editorial no Benni Canvas" width="1376" height="768" class="article-hero-img" loading="eager" fetchpriority="high" decoding="async" />
+    </figure>
+
+    <article class="article-prose">
+      <hr />
+      <h2>Resumo Executivo &amp; O Orçamento de 16,67 ms por Frame</h2>
+      <p>
+        A engenharia editorial moderna opera em uma interseção implacável: leitores exigem narrativa tátil e fluida sem engasgos visuais, enquanto os algoritmos de busca e descoberta—especialmente o <strong>Google Discover</strong>—penalizam qualquer site que ultrapasse os limites estritos dos <strong>Core Web Vitals</strong>. Em uma tela de 60 Hz, todo o pipeline de JavaScript, recálculo de estilo, layout, pintura e composição em GPU tem exatamente <strong>16,67 milissegundos</strong> para entregar um frame (ou 8,33 ms em painéis de 120 Hz).
+      </p>
+      <p>
+        Quando equipes acoplam listeners de scroll arbitrários ou transições CSS sem critério a um layout editorial, provocam <em>layout thrashing</em> síncrono na main thread. O Interaction to Next Paint (INP) dispara acima de 200 ms, o Cumulative Layout Shift (CLS) quebra a continuidade da leitura e os rastreadores do Google rebaixam a página nos feeds do Discover. Na arquitetura <strong>Benni Canvas</strong>, motion e estética são contratos determinísticos de engenharia—governados pela Skill 56 (Motion Engineering) e pela Skill 57 (Aesthetic Engineering).
+      </p>
+
+      <h2>Pipeline de Renderização &amp; Transforms Exclusivos de Compositor</h2>
+      <p>
+        Para garantir 60 FPS travados, animações jamais podem tocar nas etapas de <strong>Layout</strong> (geometria) ou <strong>Paint</strong> (rasterização) do navegador. Animar <code>top</code>, <code>left</code>, <code>width</code>, <code>height</code> ou <code>margin</code> obriga a CPU a recalcular a geometria de caixa de todos os nós afetados no DOM a cada tick.
+      </p>
+      <p>
+        Em vez disso, o motion editorial deve ser estritamente confinado a <strong>propriedades exclusivas de compositor</strong>: <code>transform</code> (<code>translate3d</code>, <code>scale</code>, <code>rotate</code>), <code>opacity</code> e <code>clip-path</code> acelerado por hardware. Essas propriedades são delegadas diretamente para a thread do compositor na GPU, mantendo a main thread livre para responder a toques e cliques—protegendo seu orçamento de INP.
+      </p>
+
+      <div class="mermaid">
+flowchart LR
+  A["Scroll / Input do Usuário"] --> B{"Propriedade Animada?"}
+  B -->|"top / left / width / margin"| C["Main Thread: Layout &amp; Reflow"]
+  C --> D["CPU Paint &amp; Rasterização"]
+  D --> E["Queda de Frame &gt; 16,67ms (Jank + INP Alto)"]
+  B -->|"transform / opacity / clip-path"| F["Thread do Compositor GPU"]
+  F --> G["Atualização de Matriz (&lt; 2ms)"]
+  G --> H["60 FPS Travados + CWV Saudáveis"]
+      </div>
+
+      <h3>Promoção de Camadas na GPU sem Esgotar VRAM</h3>
+      <p>
+        Promover um elemento para sua própria camada de compositor via <code>will-change: transform, opacity</code> elimina invalidações de pintura durante o movimento. Contudo, aplicar <code>will-change</code> globalmente em dezenas de cards aloca memória de textura excessiva (VRAM) na GPU, causando travamentos ou crashes em dispositivos móveis. Promova camadas apenas <strong>just-in-time</strong>—imediatamente antes do início de uma timeline—e libere-as assim que a sequência terminar.
+      </p>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Propriedade / Padrão</th>
+              <th>Etapa Acionada no Pipeline</th>
+              <th>Impacto nos Core Web Vitals</th>
+              <th>Veredito Benni Canvas</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>transform: translate3d()</code> / <code>opacity</code></td>
+              <td>Apenas Compositor (GPU)</td>
+              <td>Zero CLS, overhead mínimo no INP</td>
+              <td>Aprovado (Token Padrão de Motion)</td>
+            </tr>
+            <tr>
+              <td><code>top</code> / <code>left</code> / <code>height</code></td>
+              <td>Layout + Paint + Compositor</td>
+              <td>Picos severos de INP e queda de FPS</td>
+              <td>Banido em timelines de produção</td>
+            </tr>
+            <tr>
+              <td><code>box-shadow</code> / <code>filter: blur()</code></td>
+              <td>Paint + Compositor (CPU/GPU)</td>
+              <td>Alto custo de rasterização no scroll</td>
+              <td>Estático ou fade de opacidade em pseudo-elemento</td>
+            </tr>
+            <tr>
+              <td><code>aspect-ratio</code> + <code>width/height</code> explícitos</td>
+              <td>Caixa de Layout Pré-alocada</td>
+              <td>Evita CLS (&lt; 0,01) ao carregar imagens</td>
+              <td>Obrigatório para todos os slots de mídia</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Cleanup Determinístico de Lenis e GSAP ScrollTrigger</h2>
+      <p>
+        Combinar <strong>Lenis</strong> (smooth scroll) com <strong>GSAP ScrollTrigger</strong> entrega coreografias cinematográficas de rolagem, mas também é a principal origem de vazamentos de memória em SPAs e sites editoriais com view transitions. Loops órfãos de <code>requestAnimationFrame</code>, pins antigos do <code>ScrollTrigger</code> e listeners duplicados no ticker se acumulam entre navegações, degradando o INP progressivamente.
+      </p>
+      <p>
+        Todo módulo de motion no Benni Canvas deve implementar um ciclo de vida atômico de montagem e desmontagem usando <code>gsap.context()</code>, remoção explícita do ticker e <code>lenis.destroy()</code>:
+      </p>
+
+      <pre><code>import Lenis from 'lenis';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
+
+export function mountEditorialMotion(container) {
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return () =&gt; {};
+
+  const lenis = new Lenis({
+    duration: 1.15,
+    easing: (t) =&gt; Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: true,
+  });
+
+  lenis.on('scroll', ScrollTrigger.update);
+
+  const tick = (time) =&gt; {
+    lenis.raf(time * 1000);
+  };
+  gsap.ticker.add(tick);
+  gsap.ticker.lagSmoothing(0);
+
+  const ctx = gsap.context(() =&gt; {
+    gsap.from('.editorial-reveal', {
+      y: 28,
+      opacity: 0,
+      duration: 0.75,
+      stagger: 0.08,
+      ease: 'power3.out',
+      clearProps: 'transform,opacity',
+      scrollTrigger: {
+        trigger: container,
+        start: 'top 82%',
+        once: true,
+      },
+    });
+  }, container);
+
+  // Teardown determinístico na troca de rota ou desmontagem
+  return () =&gt; {
+    ctx.revert();
+    gsap.ticker.remove(tick);
+    lenis.destroy();
+  };
+}</code></pre>
+
+      <p>
+        Observe dois detalhes críticos nesse padrão: <code>clearProps: 'transform,opacity'</code> libera as camadas promovidas na GPU assim que o reveal termina, e a função de cleanup retornada garante zero listeners pendurados quando o leitor navega entre artigos.
+      </p>
+
+      <h2>Hierarquia Tipográfica &amp; Ritmo Óptico</h2>
+      <p>
+        Uma arquitetura editorial de alta performance depende de tipografia disciplinada antes mesmo de qualquer animação rodar. No Benni Canvas (Skill 57: Aesthetic Engineering), combinamos uma serifa display de alto contraste (<code>DM Serif Display</code>) para títulos com uma sans-serif geométrica humanista (<code>Plus Jakarta Sans</code>) para corpo de texto e uma monoespaçada nítida (<code>IBM Plex Mono</code>) para telemetria, badges e código.
+      </p>
+      <ul>
+        <li><strong>Escala Fluida com <code>clamp()</code>:</strong> Utilize <code>font-size: clamp(2.3rem, 4.5vw, 3.6rem)</code> no único <code>&lt;h1&gt;</code> da página para que títulos escalem suavemente de viewports móveis de 375 px até desktops de 1440 px sem saltos de media queries.</li>
+        <li><strong>Medida Ótima de Leitura:</strong> Limite contêineres de prosa a <code>65ch–75ch</code> (aproximadamente <code>860px</code> de largura máxima com padding) para evitar fadiga ocular e quebras excessivas de linha.</li>
+        <li><strong>Carregamento de Fontes Zero-FOIT:</strong> Combine dicas <code>preconnect</code> para <code>fonts.googleapis.com</code> e <code>fonts.gstatic.com</code> com <code>display=swap</code> para que o texto de Largest Contentful Paint (LCP) renderize imediatamente sem bloqueio.</li>
+      </ul>
+
+      <h2>Acessibilidade Primeiro: Respeito Estrito a <code>prefers-reduced-motion</code></h2>
+      <p>
+        Engenharia de motion sem acessibilidade é engenharia quebrada. Cerca de 35% dos adultos acima de 40 anos apresentam sensibilidade vestibular a parallax, scroll-jacking contínuo ou translações amplas. Suas camadas CSS e JS devem tratar <code>prefers-reduced-motion: reduce</code> como invariante de primeira classe, colapsando deslocamentos espaciais em transições instantâneas ou fades sutis de opacidade:
+      </p>
+
+      <pre><code>@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}</code></pre>
+
+      <h2>Orçamentos de Core Web Vitals &amp; Ranqueamento no Google Discover</h2>
+      <p>
+        O Google Discover é um motor de recomendação visual e mobile-first. Diferente da busca tradicional, o Discover distribui artigos com base em autoridade tópica, clareza de entidades, experiência de página e imagens de alto impacto. Omitir um único sinal técnico desqualifica um artigo excelente dos cards do Discover.
+      </p>
+      <p>
+        Para aprovar tanto nos dados de campo dos <strong>Core Web Vitals</strong> quanto nos portões de elegibilidade do Google Discover, imponha estes orçamentos inegociáveis:
+      </p>
+      <ol>
+        <li><strong>Diretiva Robots (<code>max-image-preview:large</code>):</strong> Inclua sempre <code>&lt;meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" /&gt;</code> no <code>&lt;head&gt;</code>. Sem <code>max-image-preview:large</code>, o Google restringe seu card no Discover a uma miniatura pequena, derrubando a taxa de cliques.</li>
+        <li><strong>Ativo Hero 16:9 de Alta Resolução:</strong> Sirva uma imagem hero limpa, sem marcas d'água, com pelo menos <strong>1200 px de largura</strong> (como nosso ativo <code>1376&times;768</code>) com <code>fetchpriority="high"</code>, <code>loading="eager"</code> e atributos explícitos de <code>width</code>/<code>height</code> para travar LCP &le; 2,5 s e CLS &le; 0,01.</li>
+        <li><strong>Grafo Unificado de Entidades (JSON-LD):</strong> Declare os schemas <code>TechArticle</code> e <code>FAQPage</code> em JSON-LD, referenciando exatamente a mesma URL canônica, dimensões de <code>ImageObject</code> e entidades verificadas de autor e publisher.</li>
+        <li><strong>Estrutura Semântica com <code>&lt;h1&gt;</code> Único:</strong> Mantenha exatamente um <code>&lt;h1&gt;</code> por documento seguido por uma hierarquia estrita <code>&lt;h2&gt;</code> &rarr; <code>&lt;h3&gt;</code> para que leitores de tela e parsers semânticos mapeiem seu grafo de tópicos sem ruído.</li>
+      </ol>
+
+      <h2>Design Systems Benni Canvas: Portões Automatizados de Qualidade</h2>
+      <p>
+        No ecossistema Benni OS, não dependemos de checklists manuais para sustentar esses padrões. O <strong>Benni Canvas</strong> integra a <strong>Skill 56 (Motion Engineering)</strong> e a <strong>Skill 57 (Aesthetic Engineering)</strong> em portões de validação automatizados que inspecionam cada interface gerada quanto a tokens exclusivos de compositor, cobertura de reduced-motion, taxas de contraste e prontidão para Core Web Vitals antes do deploy.
+      </p>
+
+      <div class="article-cta-box">
+        <h3 class="article-cta-title">Construa com Benni Canvas &amp; Arquitetura Web Soberana</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; max-width: 600px; margin: 0 auto;">
+          Entregue interfaces editoriais a 60 FPS com ciclos de vida determinísticos de GSAP/Lenis, orçamentos verificados de Core Web Vitals e dados estruturados prontos para o Google Discover.
+        </p>
+        <a href="/#monetizacao" class="article-cta-btn">Acessar Operator Mode &amp; Playbook &rarr;</a>
+      </div>
+
+      <section class="article-faq-section">
+        <h2 class="faq-main-heading">Perguntas Frequentes</h2>
+
+        <div class="faq-item-card">
+          <div class="faq-item-q">Por que propriedades exclusivas de compositor são essenciais para motion a 60 FPS?</div>
+          <div class="faq-item-a">Animar <code>transform</code>, <code>opacity</code> ou <code>clip-path</code> ignora as etapas de Layout e Paint na main thread do navegador, executando diretamente na thread do compositor de GPU para que cada frame termine dentro do orçamento de 16,67 ms.</div>
+        </div>
+        <div class="faq-item-card">
+          <div class="faq-item-q">Como evitar vazamentos de memória ao combinar Lenis e GSAP ScrollTrigger?</div>
+          <div class="faq-item-a">Envolva todas as timelines em <code>gsap.context()</code>, remova o callback do ticker, chame <code>ctx.revert()</code> na desmontagem e execute <code>lenis.destroy()</code> para que nenhum loop de <code>requestAnimationFrame</code> ou listener de scroll persista após mudanças de rota.</div>
+        </div>
+        <div class="faq-item-card">
+          <div class="faq-item-q">Quais requisitos técnicos são obrigatórios para ranquear no Google Discover?</div>
+          <div class="faq-item-a">As páginas devem incluir a diretiva <code>max-image-preview:large</code> na meta robots, servir imagem hero de alta resolução com pelo menos 1200 px de largura (como 1376&times;768) referenciada em <code>og:image</code> e <code>TechArticle</code> JSON-LD, além de cumprir os limites de Core Web Vitals (LCP &le; 2,5 s, CLS &le; 0,1, INP &le; 200 ms).</div>
+        </div>
+        <div class="faq-item-card">
+          <div class="faq-item-q">Como o Benni Canvas garante acessibilidade e performance em motion?</div>
+          <div class="faq-item-a">O Benni Canvas combina a Skill 56 (Motion Engineering) e a Skill 57 (Aesthetic Engineering) para impor tokens exclusivos de compositor, fallbacks estritos de <code>prefers-reduced-motion</code> e portões automatizados de Core Web Vitals antes da publicação.</div>
+        </div>
+      </section>
+    </article>
+  </main>
+
+  <footer class="magazine-footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>BENNI OS // SOVEREIGN AUTONOMY</h4>
+        <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; margin-top: 0.5rem;">
+          O Sistema de Autonomia Soberana construído a partir dos primeiros princípios. Eliminando alucinações de agentes, explosões de loops e dependência de nuvem.
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>PLATAFORMA</h4>
+        <ul>
+          <li><a href="/blog/pt.html">Revista Técnica</a></li>
+          <li><a href="/blog/academy.html">Academy &amp; Masterclass</a></li>
+          <li><a href="https://github.com/BenniAlencar" target="_blank">Repositórios Open Source</a></li>
+          <li><a href="https://dev.to/bennialencar" target="_blank">Série no Dev.to</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>SUÍTE OPEN SOURCE</h4>
+        <ul>
+          <li><a href="https://github.com/BenniAlencar/agent-cyber-sentinel" target="_blank">agent-cyber-sentinel</a></li>
+          <li><a href="https://github.com/BenniAlencar/agent-run-ledger" target="_blank">agent-run-ledger</a></li>
+          <li><a href="https://github.com/BenniAlencar/agent-code-sandbox" target="_blank">agent-code-sandbox</a></li>
+          <li><a href="https://github.com/BenniAlencar/agent-deep-research" target="_blank">agent-deep-research</a></li>
+          <li><a href="https://github.com/BenniAlencar/agent-browser-mesh" target="_blank">agent-browser-mesh</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>ACESSO SOBERANO</h4>
+        <ul>
+          <li><a href="/#monetizacao">Operator Mode Pass</a></li>
+          <li><a href="/#monetizacao">MCP Forge Playbook</a></li>
+          <li><a href="https://agensi.io/sell" target="_blank">Agensi.io Skills</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>&copy; 2026 Benni OS. Engenharia por Benni Alencar. Todos os direitos reservados.</div>
+      <div style="display:flex; gap: 1rem;">
+        <a href="/blog/index.html" style="color: var(--text-dim); text-decoration: none;">English</a>
+        <a href="/blog/pt.html" style="color: var(--text-dim); text-decoration: none;">Português</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { darkMode: true, background: '#040507', primaryColor: '#00f0ff', edgeColor: '#3b82f6' } });
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+      document.getElementById('progressBar').style.width = scrolled + '%';
+    }, { passive: true });
+  </script>
+</body>
+</html>
