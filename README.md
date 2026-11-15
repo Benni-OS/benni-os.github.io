@@ -29,3 +29,29 @@
 ### Architecture Highlights
 - **Nodes:** PORTAL · EDITORIAL BLOG · DISCOVER SEO · GA4 TELEMETRY · ACADEMY · OSS HUB
 - **Ecosystem:** Native integration with **Benni Master OS** (`benni-os.net`).
+---
+
+## 🏛️ Commercial & Sovereign Architecture
+
+Need autonomous multi-agent swarm orchestration, private datacenter infrastructure, or enterprise governance?
+
+- **Official Website:** [https://benni-os.net](https://benni-os.net)
+- **Operator Mode Playbook:** [https://benni-os.net/blog/academy.html](https://benni-os.net/blog/academy.html)
+- **GitHub Organization:** [https://github.com/Benni-OS](https://github.com/Benni-OS)
+- **Maintainer:** [Benni Alencar](https://github.com/BenniAlencar)
+
+---
+
+## 📄 License & Provenance
+
+- **License:** [MIT License](LICENSE)
+- **Author:** Benni Alencar (`bennialencar@benni-os.net`)
+- **Architecture:** Benni Master OS v9.4 Tier-0 Governance Standard
+
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:7000FF,50:1a1a2e,100:0D0D0D&height=120&section=footer" width="100%"/>
+
+**Benni OS Portal & Magazine** — *Official Sovereign AI Engineering Portal, Blog & Telemetry Hub* • [benni-os.net](https://benni-os.net) • `MIT License`
+
+</div>
