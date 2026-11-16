@@ -569,10 +569,10 @@
         
       <div class="lang-switcher-pill" role="navigation" aria-label="Language Selector">
         <a href="/blog/index.html" class="lang-btn active" title="English (Global Priority)">
-          <span>🇺🇸</span> EN
+          EN
         </a>
         <a href="/blog/pt.html" class="lang-btn " title="Português (Brasil)">
-          <span>🇧🇷</span> PT-BR
+          PT-BR
         </a>
       </div>
     
@@ -584,18 +584,7 @@
   <main class="magazine-main">
 
     <!-- Top Billboard AdSense Container -->
-    <div class="adsense-wrapper">
-      <span class="adsense-label">Advertisement // Google AdSense Billboard</span>
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-6415277800729792"
-           data-ad-slot="1122334455"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
-    <!-- Editorial Header Title -->
+<!-- Editorial Header Title -->
     <div class="magazine-hero-header">
       <div class="hero-badge-pill">
         <span>⚡</span> ⚡ TIER-1 ENGINEERING JOURNAL
@@ -635,13 +624,29 @@
           </div>
         </div>
       </div>
-    
-                        <article class="bento-card" data-category="Zero-Trust Security">
+    </section>
+
+    <section class="filter-section" aria-label="Article Filters">
+      <div class="filter-bar">
+        <div class="filter-pills-wrap">
+          <button class="filter-btn active" type="button" data-filter="all">All (24)</button>
+          <button class="filter-btn" type="button" data-filter="security">Security &amp; Zero-Trust (4)</button>
+          <button class="filter-btn" type="button" data-filter="swarms">Swarms &amp; Control Plane (6)</button>
+          <button class="filter-btn" type="button" data-filter="memory">Memory, Research &amp; Replay (4)</button>
+          <button class="filter-btn" type="button" data-filter="runtime">Runtime, Evals &amp; FinOps (7)</button>
+          <button class="filter-btn" type="button" data-filter="spatial">Spatial 3D &amp; Motion (3)</button>
+        </div>
+        <input id="ed-search-input" class="ed-search-input" type="search" placeholder="Search articles by title or topic..." aria-label="Search articles by title or topic..." />
+      </div>
+    </section>
+
+    <section class="bento-grid" id="articles-grid">
+      <article class="bento-card" data-track="security" data-category="Zero-Trust Security">
           <a href="/blog/en/agent-context-firewall-indirect-prompt-injection-quarantine.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_zero-trust.jpg" alt="Indirect Prompt Injection & Context Smuggling: Isolating Untrusted Data with agent-context-firewall" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #10b981; border-color: #10b981;">
-                <span class="badge-dot" style="background: #10b981;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 Zero-Trust Security
               </div>
             </div>
@@ -656,12 +661,12 @@
             </div>
           </div>
         </article>
-        <article class="bento-card" data-category="Multi-Agent Governance">
+<article class="bento-card" data-track="security" data-category="Multi-Agent Governance">
           <a href="/blog/en/zero-drift-agent-swarms-typed-contracts-egm-blind-review.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_reality-lock.jpg" alt="Zero-Drift Agent Swarms: Typed Contracts, Atomic Leases & EGM Blind Reviews" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #0f4c81; border-color: #0f4c81;">
-                <span class="badge-dot" style="background: #0f4c81;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 Multi-Agent Governance
               </div>
             </div>
@@ -676,12 +681,12 @@
             </div>
           </div>
         </article>
-        <article class="bento-card" data-category="State &amp; Memory">
+<article class="bento-card" data-track="memory" data-category="State &amp; Memory">
           <a href="/blog/en/bitemporal-memory-for-ai-agents-graphs-lossless-compression.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_bitemporal-memory.jpg" alt="Bi-Temporal Memory for AI Agents: Knowledge Graphs & Lossless Context Compression" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #8b5cf6; border-color: #8b5cf6;">
-                <span class="badge-dot" style="background: #8b5cf6;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 State &amp; Memory
               </div>
             </div>
@@ -696,12 +701,12 @@
             </div>
           </div>
         </article>
-        <article class="bento-card" data-category="Time-Travel Debugging">
+<article class="bento-card" data-track="memory" data-category="Time-Travel Debugging">
           <a href="/blog/en/agent-trace-replay-time-travel-debugging-ai-agents.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_agent-run-ledger.jpg" alt="Time-Travel Debugging for AI Agents: Deterministic Trajectory Replay and Counterfactual Forking" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #0f4c81; border-color: #0f4c81;">
-                <span class="badge-dot" style="background: #0f4c81;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 Time-Travel Debugging
               </div>
             </div>
@@ -716,12 +721,12 @@
             </div>
           </div>
         </article>
-        <article class="bento-card" data-category="FinOps &amp; LLM Routing">
+<article class="bento-card" data-track="runtime" data-category="FinOps &amp; LLM Routing">
           <a href="/blog/en/token-economics-hybrid-local-cloud-llm-routing.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_token-optimizer.jpg" alt="FinOps for AI Swarms: Hybrid Local-Cloud LLM Routing & Semantic Compression" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #10b981; border-color: #10b981;">
-                <span class="badge-dot" style="background: #10b981;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 FinOps &amp; LLM Routing
               </div>
             </div>
@@ -736,12 +741,12 @@
             </div>
           </div>
         </article>
-        <article class="bento-card" data-category="Motion &amp; Web Vitals">
+<article class="bento-card" data-track="spatial" data-category="Motion &amp; Web Vitals">
           <a href="/blog/en/60fps-motion-engineering-and-editorial-web-architecture.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_agent-browser-mesh.jpg" alt="60 FPS Motion Engineering & Core Web Vitals: Designing Editorial Interfaces for Google Discover" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #8b5cf6; border-color: #8b5cf6;">
-                <span class="badge-dot" style="background: #8b5cf6;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 Motion &amp; Web Vitals
               </div>
             </div>
@@ -756,12 +761,12 @@
             </div>
           </div>
         </article>
-        <article class="bento-card" data-category="Runtime & Sandboxing">
+<article class="bento-card" data-track="runtime" data-category="Runtime & Sandboxing">
           <a href="/blog/en/ephemeral-ast-code-sandboxes-zero-cold-start.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_agent-code-sandbox.jpg" alt="Ephemeral AST Code Sandboxes: Zero Cold-Start Execution Without Cloud VM Latency" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #00f0ff; border-color: #00f0ff;">
-                <span class="badge-dot" style="background: #00f0ff;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 Runtime & Sandboxing
               </div>
             </div>
@@ -785,12 +790,12 @@
             </div>
           </div>
         </article>
-        <article class="bento-card" data-category="Evaluation & Testing">
+<article class="bento-card" data-track="runtime" data-category="Evaluation & Testing">
           <a href="/blog/en/deterministic-zero-cloud-evaluation-ai-agents.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_agent-eval-harness.jpg" alt="Deterministic Zero-Cloud Evaluation: Eliminating LLM-Judge Token Burn via Merkle Receipts" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #10b981; border-color: #10b981;">
-                <span class="badge-dot" style="background: #10b981;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 Evaluation & Testing
               </div>
             </div>
@@ -814,12 +819,12 @@
             </div>
           </div>
         </article>
-        <article class="bento-card" data-category="Autonomous Research">
+<article class="bento-card" data-track="memory" data-category="Autonomous Research">
           <a href="/blog/en/autonomous-deep-research-bm25-zero-hallucination.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_agent-deep-research.jpg" alt="Autonomous Deep Research: Eliminating Hallucinated Citations and 85% Token Burn in Python" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #a855f7; border-color: #a855f7;">
-                <span class="badge-dot" style="background: #a855f7;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 Autonomous Research
               </div>
             </div>
@@ -843,12 +848,12 @@
             </div>
           </div>
         </article>
-        <article class="bento-card" data-category="Browser Automation">
+<article class="bento-card" data-track="runtime" data-category="Browser Automation">
           <a href="/blog/en/autonomous-ai-browser-engine-zero-token-waste.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_agent-browser-mesh.jpg" alt="High-Speed, Zero-Token-Waste Autonomous Browser Engine for AI Agents" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #ff6b00; border-color: #ff6b00;">
-                <span class="badge-dot" style="background: #ff6b00;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 Browser Automation
               </div>
             </div>
@@ -872,12 +877,12 @@
             </div>
           </div>
         </article>
-        <article class="bento-card" data-category="Integrity & Non-Repudiation">
+<article class="bento-card" data-track="security" data-category="Integrity & Non-Repudiation">
           <a href="/blog/en/reality-lock-cryptographic-proofs-zero-hallucination.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/hero-03-decision.png" alt="Reality Lock: Eliminating AI Agent 'Hallucination of Done' via Cryptographic Proofs" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #3b82f6; border-color: #3b82f6;">
-                <span class="badge-dot" style="background: #3b82f6;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 Integrity & Non-Repudiation
               </div>
             </div>
@@ -901,12 +906,12 @@
             </div>
           </div>
         </article>
-        <article class="bento-card" data-category="State & Memory">
+<article class="bento-card" data-track="memory" data-category="State & Memory">
           <a href="/blog/en/bitemporal-knowledge-graphs-ai-agents-memory.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/hero-07-the-memory-below.png" alt="Bi-Temporal Knowledge Graphs: Cutting Agent Context Blowout by 74% in Python" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #00f0ff; border-color: #00f0ff;">
-                <span class="badge-dot" style="background: #00f0ff;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 State & Memory
               </div>
             </div>
@@ -930,205 +935,12 @@
             </div>
           </div>
         </article>
-    </section>
-
-    <!-- Category Filter Bar -->
-    <section class="filter-section">
-      <div class="filter-bar">
-        <button class="filter-btn active" data-filter="all">All (10)</button>
-<button class="filter-btn" data-filter="Security & Defense">Security & Defense</button>
-<button class="filter-btn" data-filter="Architecture & MCP">Architecture & MCP</button>
-<button class="filter-btn" data-filter="Multi-Agent Swarms">Multi-Agent Swarms</button>
-<button class="filter-btn" data-filter="Local & Hybrid AI">Local & Hybrid AI</button>
-<button class="filter-btn" data-filter="Autonomous Systems">Autonomous Systems</button>
-<button class="filter-btn" data-filter="Monetization & Infra">Monetization & Infra</button>
-<button class="filter-btn" data-filter="Visual & Spatial 3D">Visual & Spatial 3D</button>
-      </div>
-    
-        <article class="bento-card" data-category="Runtime & Sandboxing">
-          <a href="/blog/en/ephemeral-ast-code-sandboxes-zero-cold-start.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-code-sandbox.jpg" alt="Ephemeral AST Code Sandboxes: Zero Cold-Start Execution Without Cloud VM Latency" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #00f0ff; border-color: #00f0ff;">
-                <span class="badge-dot" style="background: #00f0ff;"></span>
-                Runtime & Sandboxing
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min read</span>
-              <span>•</span>
-              <span>Nov 3, 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/en/ephemeral-ast-code-sandboxes-zero-cold-start.html">Ephemeral AST Code Sandboxes: Zero Cold-Start Execution Without Cloud VM Latency</a>
-            </h2>
-            <p class="card-excerpt">Sub-millisecond code execution for AI agents. Halts malicious breakouts via AST pre-execution static analysis and token shields.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/en/ephemeral-ast-code-sandboxes-zero-cold-start.html" class="card-read-link">Read Guide &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Evaluation & Testing">
-          <a href="/blog/en/deterministic-zero-cloud-evaluation-ai-agents.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-eval-harness.jpg" alt="Deterministic Zero-Cloud Evaluation: Eliminating LLM-Judge Token Burn via Merkle Receipts" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #10b981; border-color: #10b981;">
-                <span class="badge-dot" style="background: #10b981;"></span>
-                Evaluation & Testing
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min read</span>
-              <span>•</span>
-              <span>Nov 3, 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/en/deterministic-zero-cloud-evaluation-ai-agents.html">Deterministic Zero-Cloud Evaluation: Eliminating LLM-Judge Token Burn via Merkle Receipts</a>
-            </h2>
-            <p class="card-excerpt">100% deterministic agent benchmarks without cloud API costs or LLM-judge bias using invariant assertion matrices.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/en/deterministic-zero-cloud-evaluation-ai-agents.html" class="card-read-link">Read Guide &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Autonomous Research">
-          <a href="/blog/en/autonomous-deep-research-bm25-zero-hallucination.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-deep-research.jpg" alt="Autonomous Deep Research: Eliminating Hallucinated Citations and 85% Token Burn in Python" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #a855f7; border-color: #a855f7;">
-                <span class="badge-dot" style="background: #a855f7;"></span>
-                Autonomous Research
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min read</span>
-              <span>•</span>
-              <span>Nov 3, 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/en/autonomous-deep-research-bm25-zero-hallucination.html">Autonomous Deep Research: Eliminating Hallucinated Citations and 85% Token Burn in Python</a>
-            </h2>
-            <p class="card-excerpt">Multi-source autonomous research pipeline with BM25 paragraph distillation and cryptographic citation verification.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/en/autonomous-deep-research-bm25-zero-hallucination.html" class="card-read-link">Read Guide &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Browser Automation">
-          <a href="/blog/en/autonomous-ai-browser-engine-zero-token-waste.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-browser-mesh.jpg" alt="High-Speed, Zero-Token-Waste Autonomous Browser Engine for AI Agents" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #ff6b00; border-color: #ff6b00;">
-                <span class="badge-dot" style="background: #ff6b00;"></span>
-                Browser Automation
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min read</span>
-              <span>•</span>
-              <span>Nov 3, 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/en/autonomous-ai-browser-engine-zero-token-waste.html">High-Speed, Zero-Token-Waste Autonomous Browser Engine for AI Agents</a>
-            </h2>
-            <p class="card-excerpt">Eliminate the 1,500-token vision tax using semantic DOM delta streaming and sub-millisecond injection shields.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/en/autonomous-ai-browser-engine-zero-token-waste.html" class="card-read-link">Read Guide &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Integrity & Non-Repudiation">
-          <a href="/blog/en/reality-lock-cryptographic-proofs-zero-hallucination.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/hero-03-decision.png" alt="Reality Lock: Eliminating AI Agent 'Hallucination of Done' via Cryptographic Proofs" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #3b82f6; border-color: #3b82f6;">
-                <span class="badge-dot" style="background: #3b82f6;"></span>
-                Integrity & Non-Repudiation
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min read</span>
-              <span>•</span>
-              <span>Nov 3, 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/en/reality-lock-cryptographic-proofs-zero-hallucination.html">Reality Lock: Eliminating AI Agent 'Hallucination of Done' via Cryptographic Proofs</a>
-            </h2>
-            <p class="card-excerpt">Default-deny execution gate requiring physical OS evidence before issuing SHA-256 Merkle completion receipts.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/en/reality-lock-cryptographic-proofs-zero-hallucination.html" class="card-read-link">Read Guide &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="State & Memory">
-          <a href="/blog/en/bitemporal-knowledge-graphs-ai-agents-memory.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/hero-07-the-memory-below.png" alt="Bi-Temporal Knowledge Graphs: Cutting Agent Context Blowout by 74% in Python" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #00f0ff; border-color: #00f0ff;">
-                <span class="badge-dot" style="background: #00f0ff;"></span>
-                State & Memory
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min read</span>
-              <span>•</span>
-              <span>Nov 3, 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/en/bitemporal-knowledge-graphs-ai-agents-memory.html">Bi-Temporal Knowledge Graphs: Cutting Agent Context Blowout by 74% in Python</a>
-            </h2>
-            <p class="card-excerpt">Local-first bi-temporal knowledge graph tracking valid vs transaction time to eliminate temporal hallucination in agent RAG.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/en/bitemporal-knowledge-graphs-ai-agents-memory.html" class="card-read-link">Read Guide &rarr;</a>
-            </div>
-          </div>
-        </article>
-    </section>
-
-    <!-- Bento Grid of Remaining 9 Articles -->
-    <section class="bento-grid">
-        <article class="bento-card" data-category="Sovereign Systems & Genesis Manifesto">
+<article class="bento-card" data-track="swarms" data-category="Sovereign Systems & Genesis Manifesto">
           <a href="/blog/en/genesis-manifesto-sovereign-ai-engineering-substrate.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/hero-05-genesis.png" alt="The Genesis Manifesto: Why We Don't Sell Model Routing, and How We Engineered the Sovereign Autonomous Substrate" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #00f0ff; border-color: #00f0ff;">
-                <span class="badge-dot" style="background: #00f0ff;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 Sovereign Systems & Genesis Manifesto
               </div>
             </div>
@@ -1148,13 +960,12 @@
             </div>
           </div>
         </article>
-
-        <article class="bento-card" data-category="Enterprise Tool Mesh & Security">
+<article class="bento-card" data-track="security" data-category="Enterprise Tool Mesh & Security">
           <a href="/blog/en/sovereign-multi-agent-brokerage-zero-trust-97-connectors.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_nemesis-gateway.jpg" alt="Sovereign Multi-Agent Brokerage: Zero-Trust Security, Dynamic Leases, and Rate-Limiting for 97+ Enterprise Connectors" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #00f0ff; border-color: #00f0ff;">
-                <span class="badge-dot" style="background: #00f0ff;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 Enterprise Tool Mesh & Security
               </div>
             </div>
@@ -1174,13 +985,12 @@
             </div>
           </div>
         </article>
-
-        <article class="bento-card" data-category="Spatial UI & Generative Frontends">
+<article class="bento-card" data-track="spatial" data-category="Spatial UI & Generative Frontends">
           <a href="/blog/en/autonomous-spatial-canvas-engineering-120fps-living-interfaces.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/hero-08-bridge.png" alt="Autonomous Spatial Canvas Engineering: Compiling Natural Language into 120 FPS Living Interfaces Without Design Debt" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #00f0ff; border-color: #00f0ff;">
-                <span class="badge-dot" style="background: #00f0ff;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 Spatial UI & Generative Frontends
               </div>
             </div>
@@ -1200,9 +1010,7 @@
             </div>
           </div>
         </article>
-
-
-        <article class="bento-card" data-category="Architecture & MCP">
+<article class="bento-card" data-track="swarms" data-category="Architecture & MCP">
           <a href="/blog/en/control-plane-orchestration-durable-state-ai-agents.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_control-plane.jpg" alt="Control Plane OS: Durable State Orchestration and Infinite Loop Prevention for AI Agents" loading="lazy" class="card-thumb" />
@@ -1236,9 +1044,7 @@
             </div>
           </div>
         </article>
-        
-
-        <article class="bento-card" data-category="Multi-Agent Swarms">
+<article class="bento-card" data-track="swarms" data-category="Multi-Agent Swarms">
           <a href="/blog/en/agent-armies-multi-agent-swarms-typed-leases.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_agent-armies.jpg" alt="Agent Armies: Coordinating Massive Multi-Agent Swarms with Typed Leases and Deterministic Handoffs" loading="lazy" class="card-thumb" />
@@ -1272,9 +1078,7 @@
             </div>
           </div>
         </article>
-        
-
-        <article class="bento-card" data-category="Architecture & MCP">
+<article class="bento-card" data-track="swarms" data-category="Architecture & MCP">
           <a href="/blog/en/nemesis-gateway-model-context-protocol-enterprise-tools.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/hero-08-bridge.png" alt="Nemesis Gateway: The Enterprise Model Context Protocol (MCP) Blueprint for Tool Federation" loading="lazy" class="card-thumb" />
@@ -1308,24 +1112,7 @@
             </div>
           </div>
         </article>
-        
-
-        <!-- In-Feed Google AdSense Slot -->
-        <div class="adsense-card-infeed" style="grid-column: 1 / -1; margin: 1.5rem 0;">
-          <div class="adsense-wrapper" style="margin: 0; padding: 1.5rem 1rem;">
-            <span class="adsense-label">Advertisement // In-Feed Google AdSense</span>
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-format="fluid"
-                 data-ad-layout-key="-fb+5w+4e-db+86"
-                 data-ad-client="ca-pub-6415277800729792"
-                 data-ad-slot="9876543210"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-          </div>
-        </div>
-            
-
-        <article class="bento-card" data-category="Local & Hybrid AI">
+<article class="bento-card" data-track="runtime" data-category="Local & Hybrid AI">
           <a href="/blog/en/autonomous-swarm-consensus-local-ollama-zero-cloud-cost.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_inference-engine.jpg" alt="Autonomous Swarm Consensus with Local Ollama Models: Zero-Cloud Cost Distributed AI Inference" loading="lazy" class="card-thumb" />
@@ -1359,9 +1146,7 @@
             </div>
           </div>
         </article>
-        
-
-        <article class="bento-card" data-category="Autonomous Systems">
+<article class="bento-card" data-track="swarms" data-category="Autonomous Systems">
           <a href="/blog/en/project-adam-recursive-self-evolution-autonomous-ai-agents.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/hero-11-adam.png" alt="Project Adam: Recursive Self-Evolution and Algorithmic Prompt Optimization for AI Agents" loading="lazy" class="card-thumb" />
@@ -1395,9 +1180,7 @@
             </div>
           </div>
         </article>
-        
-
-        <article class="bento-card" data-category="Software Engineering">
+<article class="bento-card" data-track="swarms" data-category="Software Engineering">
           <a href="/blog/en/deterministic-handoffs-eliminating-context-drift-ai-pipelines.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/hero-11-adam.png" alt="Deterministic Handoffs: Eliminating Context Drift in Multi-LLM Agent Pipelines" loading="lazy" class="card-thumb" />
@@ -1431,9 +1214,7 @@
             </div>
           </div>
         </article>
-        
-
-        <article class="bento-card" data-category="Monetization & Infra">
+<article class="bento-card" data-track="runtime" data-category="Monetization & Infra">
           <a href="/blog/en/sovereign-serverless-backend-puter-js-zero-fixed-cost.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_puter-serverless.jpg" alt="Sovereign Serverless AI Backends with Puter.js: Zero Fixed Infrastructure Cost" loading="lazy" class="card-thumb" />
@@ -1467,9 +1248,7 @@
             </div>
           </div>
         </article>
-        
-
-        <article class="bento-card" data-category="Monetization & Infra">
+<article class="bento-card" data-track="runtime" data-category="Monetization & Infra">
           <a href="/blog/en/autonomous-revenue-loop-ai-funnel-optimization.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/hero-03-decision.png" alt="Autonomous Revenue Loop: Engineering Self-Optimizing Funnels and Automated AI Sales Operations" loading="lazy" class="card-thumb" />
@@ -1503,9 +1282,7 @@
             </div>
           </div>
         </article>
-        
-
-        <article class="bento-card" data-category="Visual & Spatial 3D">
+<article class="bento-card" data-track="spatial" data-category="Visual & Spatial 3D">
           <a href="/blog/en/spatial-3d-webgl-shaders-visual-interfaces-ai-systems.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/hero-01-arrival.png" alt="Spatial 3D & WebGL Shaders in Benni OS: 60 FPS Visual Interfaces for AI Topologies" loading="lazy" class="card-thumb" />
@@ -1539,185 +1316,9 @@
             </div>
           </div>
         </article>
-        
-    
-        <article class="bento-card" data-category="Runtime & Sandboxing">
-          <a href="/blog/en/ephemeral-ast-code-sandboxes-zero-cold-start.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-code-sandbox.jpg" alt="Ephemeral AST Code Sandboxes: Zero Cold-Start Execution Without Cloud VM Latency" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #00f0ff; border-color: #00f0ff;">
-                <span class="badge-dot" style="background: #00f0ff;"></span>
-                Runtime & Sandboxing
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min read</span>
-              <span>•</span>
-              <span>Nov 3, 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/en/ephemeral-ast-code-sandboxes-zero-cold-start.html">Ephemeral AST Code Sandboxes: Zero Cold-Start Execution Without Cloud VM Latency</a>
-            </h2>
-            <p class="card-excerpt">Sub-millisecond code execution for AI agents. Halts malicious breakouts via AST pre-execution static analysis and token shields.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/en/ephemeral-ast-code-sandboxes-zero-cold-start.html" class="card-read-link">Read Guide &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Evaluation & Testing">
-          <a href="/blog/en/deterministic-zero-cloud-evaluation-ai-agents.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-eval-harness.jpg" alt="Deterministic Zero-Cloud Evaluation: Eliminating LLM-Judge Token Burn via Merkle Receipts" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #10b981; border-color: #10b981;">
-                <span class="badge-dot" style="background: #10b981;"></span>
-                Evaluation & Testing
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min read</span>
-              <span>•</span>
-              <span>Nov 3, 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/en/deterministic-zero-cloud-evaluation-ai-agents.html">Deterministic Zero-Cloud Evaluation: Eliminating LLM-Judge Token Burn via Merkle Receipts</a>
-            </h2>
-            <p class="card-excerpt">100% deterministic agent benchmarks without cloud API costs or LLM-judge bias using invariant assertion matrices.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/en/deterministic-zero-cloud-evaluation-ai-agents.html" class="card-read-link">Read Guide &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Autonomous Research">
-          <a href="/blog/en/autonomous-deep-research-bm25-zero-hallucination.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-deep-research.jpg" alt="Autonomous Deep Research: Eliminating Hallucinated Citations and 85% Token Burn in Python" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #a855f7; border-color: #a855f7;">
-                <span class="badge-dot" style="background: #a855f7;"></span>
-                Autonomous Research
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min read</span>
-              <span>•</span>
-              <span>Nov 3, 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/en/autonomous-deep-research-bm25-zero-hallucination.html">Autonomous Deep Research: Eliminating Hallucinated Citations and 85% Token Burn in Python</a>
-            </h2>
-            <p class="card-excerpt">Multi-source autonomous research pipeline with BM25 paragraph distillation and cryptographic citation verification.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/en/autonomous-deep-research-bm25-zero-hallucination.html" class="card-read-link">Read Guide &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Browser Automation">
-          <a href="/blog/en/autonomous-ai-browser-engine-zero-token-waste.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-browser-mesh.jpg" alt="High-Speed, Zero-Token-Waste Autonomous Browser Engine for AI Agents" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #ff6b00; border-color: #ff6b00;">
-                <span class="badge-dot" style="background: #ff6b00;"></span>
-                Browser Automation
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min read</span>
-              <span>•</span>
-              <span>Nov 3, 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/en/autonomous-ai-browser-engine-zero-token-waste.html">High-Speed, Zero-Token-Waste Autonomous Browser Engine for AI Agents</a>
-            </h2>
-            <p class="card-excerpt">Eliminate the 1,500-token vision tax using semantic DOM delta streaming and sub-millisecond injection shields.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/en/autonomous-ai-browser-engine-zero-token-waste.html" class="card-read-link">Read Guide &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Integrity & Non-Repudiation">
-          <a href="/blog/en/reality-lock-cryptographic-proofs-zero-hallucination.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/hero-03-decision.png" alt="Reality Lock: Eliminating AI Agent 'Hallucination of Done' via Cryptographic Proofs" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #3b82f6; border-color: #3b82f6;">
-                <span class="badge-dot" style="background: #3b82f6;"></span>
-                Integrity & Non-Repudiation
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min read</span>
-              <span>•</span>
-              <span>Nov 3, 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/en/reality-lock-cryptographic-proofs-zero-hallucination.html">Reality Lock: Eliminating AI Agent 'Hallucination of Done' via Cryptographic Proofs</a>
-            </h2>
-            <p class="card-excerpt">Default-deny execution gate requiring physical OS evidence before issuing SHA-256 Merkle completion receipts.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/en/reality-lock-cryptographic-proofs-zero-hallucination.html" class="card-read-link">Read Guide &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="State & Memory">
-          <a href="/blog/en/bitemporal-knowledge-graphs-ai-agents-memory.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/hero-07-the-memory-below.png" alt="Bi-Temporal Knowledge Graphs: Cutting Agent Context Blowout by 74% in Python" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #00f0ff; border-color: #00f0ff;">
-                <span class="badge-dot" style="background: #00f0ff;"></span>
-                State & Memory
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min read</span>
-              <span>•</span>
-              <span>Nov 3, 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/en/bitemporal-knowledge-graphs-ai-agents-memory.html">Bi-Temporal Knowledge Graphs: Cutting Agent Context Blowout by 74% in Python</a>
-            </h2>
-            <p class="card-excerpt">Local-first bi-temporal knowledge graph tracking valid vs transaction time to eliminate temporal hallucination in agent RAG.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/en/bitemporal-knowledge-graphs-ai-agents-memory.html" class="card-read-link">Read Guide &rarr;</a>
-            </div>
-          </div>
-        </article>
     </section>
+    <p id="ed-empty-state" style="display:none; text-align:center; padding: 2.5rem 1rem; color: var(--ed-text-muted); font-family: var(--font-code); font-size: 0.88rem;">No articles match your current filter.</p>
 
-    <!-- VIP Newsletter Lead Capture -->
     <section class="newsletter-card">
       <h2 class="newsletter-title">AI Architecture Notebooks</h2>
       <p class="newsletter-desc">
@@ -1727,386 +1328,36 @@
         <input type="email" required placeholder="Enter your corporate email..." class="newsletter-input" />
         <button type="submit" class="newsletter-btn">Subscribe for Free</button>
       </form>
-    
-        <article class="bento-card" data-category="Runtime & Sandboxing">
-          <a href="/blog/en/ephemeral-ast-code-sandboxes-zero-cold-start.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-code-sandbox.jpg" alt="Ephemeral AST Code Sandboxes: Zero Cold-Start Execution Without Cloud VM Latency" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #00f0ff; border-color: #00f0ff;">
-                <span class="badge-dot" style="background: #00f0ff;"></span>
-                Runtime & Sandboxing
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min read</span>
-              <span>•</span>
-              <span>Nov 3, 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/en/ephemeral-ast-code-sandboxes-zero-cold-start.html">Ephemeral AST Code Sandboxes: Zero Cold-Start Execution Without Cloud VM Latency</a>
-            </h2>
-            <p class="card-excerpt">Sub-millisecond code execution for AI agents. Halts malicious breakouts via AST pre-execution static analysis and token shields.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/en/ephemeral-ast-code-sandboxes-zero-cold-start.html" class="card-read-link">Read Guide &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Evaluation & Testing">
-          <a href="/blog/en/deterministic-zero-cloud-evaluation-ai-agents.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-eval-harness.jpg" alt="Deterministic Zero-Cloud Evaluation: Eliminating LLM-Judge Token Burn via Merkle Receipts" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #10b981; border-color: #10b981;">
-                <span class="badge-dot" style="background: #10b981;"></span>
-                Evaluation & Testing
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min read</span>
-              <span>•</span>
-              <span>Nov 3, 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/en/deterministic-zero-cloud-evaluation-ai-agents.html">Deterministic Zero-Cloud Evaluation: Eliminating LLM-Judge Token Burn via Merkle Receipts</a>
-            </h2>
-            <p class="card-excerpt">100% deterministic agent benchmarks without cloud API costs or LLM-judge bias using invariant assertion matrices.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/en/deterministic-zero-cloud-evaluation-ai-agents.html" class="card-read-link">Read Guide &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Autonomous Research">
-          <a href="/blog/en/autonomous-deep-research-bm25-zero-hallucination.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-deep-research.jpg" alt="Autonomous Deep Research: Eliminating Hallucinated Citations and 85% Token Burn in Python" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #a855f7; border-color: #a855f7;">
-                <span class="badge-dot" style="background: #a855f7;"></span>
-                Autonomous Research
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min read</span>
-              <span>•</span>
-              <span>Nov 3, 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/en/autonomous-deep-research-bm25-zero-hallucination.html">Autonomous Deep Research: Eliminating Hallucinated Citations and 85% Token Burn in Python</a>
-            </h2>
-            <p class="card-excerpt">Multi-source autonomous research pipeline with BM25 paragraph distillation and cryptographic citation verification.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/en/autonomous-deep-research-bm25-zero-hallucination.html" class="card-read-link">Read Guide &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Browser Automation">
-          <a href="/blog/en/autonomous-ai-browser-engine-zero-token-waste.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-browser-mesh.jpg" alt="High-Speed, Zero-Token-Waste Autonomous Browser Engine for AI Agents" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #ff6b00; border-color: #ff6b00;">
-                <span class="badge-dot" style="background: #ff6b00;"></span>
-                Browser Automation
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min read</span>
-              <span>•</span>
-              <span>Nov 3, 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/en/autonomous-ai-browser-engine-zero-token-waste.html">High-Speed, Zero-Token-Waste Autonomous Browser Engine for AI Agents</a>
-            </h2>
-            <p class="card-excerpt">Eliminate the 1,500-token vision tax using semantic DOM delta streaming and sub-millisecond injection shields.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/en/autonomous-ai-browser-engine-zero-token-waste.html" class="card-read-link">Read Guide &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Integrity & Non-Repudiation">
-          <a href="/blog/en/reality-lock-cryptographic-proofs-zero-hallucination.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/hero-03-decision.png" alt="Reality Lock: Eliminating AI Agent 'Hallucination of Done' via Cryptographic Proofs" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #3b82f6; border-color: #3b82f6;">
-                <span class="badge-dot" style="background: #3b82f6;"></span>
-                Integrity & Non-Repudiation
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min read</span>
-              <span>•</span>
-              <span>Nov 3, 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/en/reality-lock-cryptographic-proofs-zero-hallucination.html">Reality Lock: Eliminating AI Agent 'Hallucination of Done' via Cryptographic Proofs</a>
-            </h2>
-            <p class="card-excerpt">Default-deny execution gate requiring physical OS evidence before issuing SHA-256 Merkle completion receipts.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/en/reality-lock-cryptographic-proofs-zero-hallucination.html" class="card-read-link">Read Guide &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="State & Memory">
-          <a href="/blog/en/bitemporal-knowledge-graphs-ai-agents-memory.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/hero-07-the-memory-below.png" alt="Bi-Temporal Knowledge Graphs: Cutting Agent Context Blowout by 74% in Python" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #00f0ff; border-color: #00f0ff;">
-                <span class="badge-dot" style="background: #00f0ff;"></span>
-                State & Memory
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min read</span>
-              <span>•</span>
-              <span>Nov 3, 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/en/bitemporal-knowledge-graphs-ai-agents-memory.html">Bi-Temporal Knowledge Graphs: Cutting Agent Context Blowout by 74% in Python</a>
-            </h2>
-            <p class="card-excerpt">Local-first bi-temporal knowledge graph tracking valid vs transaction time to eliminate temporal hallucination in agent RAG.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/en/bitemporal-knowledge-graphs-ai-agents-memory.html" class="card-read-link">Read Guide &rarr;</a>
-            </div>
-          </div>
-        </article>
     </section>
 
     <!-- Monetization Section -->
     <section id="monetizacao" style="margin: 4rem 0;">
-      <div style="text-align: center; margin-bottom: 2.5rem;">
-        <span style="font-family: var(--font-code); color: var(--cyan); font-size: 0.8rem; letter-spacing: 2px;">ECOSYSTEM & PRODUCTION ADVISORY</span>
-        <h2 style="font-family: var(--font-title); font-size: 2.4rem; color: #fff; margin-top: 0.5rem;">Deploy Benni Master OS in Your Organization</h2>
+      <div style="text-align: center; margin-bottom: 2.2rem;">
+        <span style="font-family: var(--font-code); color: var(--ed-accent); font-size: 0.78rem; letter-spacing: 0.14em; font-weight: 600;">ECOSYSTEM &amp; PRODUCTION ADVISORY</span>
+        <h2 style="font-family: var(--font-title); font-size: clamp(1.8rem, 3vw, 2.4rem); color: var(--ed-text); margin-top: 0.5rem; font-weight: 400;">Deploy Benni Master OS in Your Organization</h2>
       </div>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
-        <div style="background: var(--panel); border: 1px solid rgba(0, 240, 255, 0.25); border-radius: 16px; padding: 2.5rem; position: relative;">
-          <span style="background: rgba(0, 240, 255, 0.12); color: var(--cyan); font-family: var(--font-code); font-size: 0.75rem; font-weight: 700; padding: 4px 12px; border-radius: 9999px;">PRACTICAL TRAINING</span>
-          <h3 style="font-size: 1.5rem; color: #fff; margin: 1.2rem 0 0.8rem;">Operator Mode: AI as an Execution Layer</h3>
-          <p style="color: var(--text-muted); font-size: 0.98rem; margin-bottom: 2rem; line-height: 1.6;">
+      <div class="cta-monetization-grid">
+        <div class="monetization-card">
+          <span class="badge-tag cyan">Practical Training</span>
+          <h3 class="card-title" style="margin-top:0.2rem;">Operator Mode: AI as an Execution Layer</h3>
+          <p class="card-desc">
             Master autonomous agent orchestration, production MCP gateway engineering, and deterministic system governance.
           </p>
-          <a href="https://github.com/Benni-OS/modo-operador" target="_blank" style="display: inline-block; width: 100%; text-align: center; background: var(--cyan); color: #000; font-weight: 700; padding: 0.85rem; border-radius: 8px; text-decoration: none;">
+          <a href="https://github.com/Benni-OS/modo-operador" target="_blank" class="btn-action-cta primary">
             Access Operator Mode &rarr;
           </a>
         </div>
-        <div style="background: var(--panel); border: 1px solid rgba(201, 164, 92, 0.35); border-radius: 16px; padding: 2.5rem; position: relative;">
-          <span style="background: rgba(201, 164, 92, 0.12); color: #c9a45c; font-family: var(--font-code); font-size: 0.75rem; font-weight: 700; padding: 4px 12px; border-radius: 9999px;">B2B & ENTERPRISE</span>
-          <h3 style="font-size: 1.5rem; color: #fff; margin: 1.2rem 0 0.8rem;">Enterprise AI Architecture Advisory</h3>
-          <p style="color: var(--text-muted); font-size: 0.98rem; margin-bottom: 2rem; line-height: 1.6;">
+        <div class="monetization-card gold-tier">
+          <span class="badge-tag gold">B2B &amp; Enterprise</span>
+          <h3 class="card-title" style="margin-top:0.2rem;">Enterprise AI Architecture Advisory</h3>
+          <p class="card-desc">
             We design and deploy multi-agent swarms, Zero-Trust compliance layers, and sovereign on-prem inference topologies.
           </p>
-          <a href="https://www.linkedin.com/in/benni-alencar/" target="_blank" style="display: inline-block; width: 100%; text-align: center; background: #c9a45c; color: #000; font-weight: 700; padding: 0.85rem; border-radius: 8px; text-decoration: none;">
+          <a href="https://www.linkedin.com/in/benni-alencar/" target="_blank" class="btn-action-cta secondary">
             Schedule Architecture Review with Benni Alencar &rarr;
           </a>
         </div>
       </div>
-    
-        <article class="bento-card" data-category="Runtime & Sandboxing">
-          <a href="/blog/en/ephemeral-ast-code-sandboxes-zero-cold-start.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-code-sandbox.jpg" alt="Ephemeral AST Code Sandboxes: Zero Cold-Start Execution Without Cloud VM Latency" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #00f0ff; border-color: #00f0ff;">
-                <span class="badge-dot" style="background: #00f0ff;"></span>
-                Runtime & Sandboxing
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min read</span>
-              <span>•</span>
-              <span>Nov 3, 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/en/ephemeral-ast-code-sandboxes-zero-cold-start.html">Ephemeral AST Code Sandboxes: Zero Cold-Start Execution Without Cloud VM Latency</a>
-            </h2>
-            <p class="card-excerpt">Sub-millisecond code execution for AI agents. Halts malicious breakouts via AST pre-execution static analysis and token shields.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/en/ephemeral-ast-code-sandboxes-zero-cold-start.html" class="card-read-link">Read Guide &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Evaluation & Testing">
-          <a href="/blog/en/deterministic-zero-cloud-evaluation-ai-agents.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-eval-harness.jpg" alt="Deterministic Zero-Cloud Evaluation: Eliminating LLM-Judge Token Burn via Merkle Receipts" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #10b981; border-color: #10b981;">
-                <span class="badge-dot" style="background: #10b981;"></span>
-                Evaluation & Testing
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min read</span>
-              <span>•</span>
-              <span>Nov 3, 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/en/deterministic-zero-cloud-evaluation-ai-agents.html">Deterministic Zero-Cloud Evaluation: Eliminating LLM-Judge Token Burn via Merkle Receipts</a>
-            </h2>
-            <p class="card-excerpt">100% deterministic agent benchmarks without cloud API costs or LLM-judge bias using invariant assertion matrices.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/en/deterministic-zero-cloud-evaluation-ai-agents.html" class="card-read-link">Read Guide &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Autonomous Research">
-          <a href="/blog/en/autonomous-deep-research-bm25-zero-hallucination.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-deep-research.jpg" alt="Autonomous Deep Research: Eliminating Hallucinated Citations and 85% Token Burn in Python" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #a855f7; border-color: #a855f7;">
-                <span class="badge-dot" style="background: #a855f7;"></span>
-                Autonomous Research
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min read</span>
-              <span>•</span>
-              <span>Nov 3, 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/en/autonomous-deep-research-bm25-zero-hallucination.html">Autonomous Deep Research: Eliminating Hallucinated Citations and 85% Token Burn in Python</a>
-            </h2>
-            <p class="card-excerpt">Multi-source autonomous research pipeline with BM25 paragraph distillation and cryptographic citation verification.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/en/autonomous-deep-research-bm25-zero-hallucination.html" class="card-read-link">Read Guide &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Browser Automation">
-          <a href="/blog/en/autonomous-ai-browser-engine-zero-token-waste.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-browser-mesh.jpg" alt="High-Speed, Zero-Token-Waste Autonomous Browser Engine for AI Agents" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #ff6b00; border-color: #ff6b00;">
-                <span class="badge-dot" style="background: #ff6b00;"></span>
-                Browser Automation
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min read</span>
-              <span>•</span>
-              <span>Nov 3, 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/en/autonomous-ai-browser-engine-zero-token-waste.html">High-Speed, Zero-Token-Waste Autonomous Browser Engine for AI Agents</a>
-            </h2>
-            <p class="card-excerpt">Eliminate the 1,500-token vision tax using semantic DOM delta streaming and sub-millisecond injection shields.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/en/autonomous-ai-browser-engine-zero-token-waste.html" class="card-read-link">Read Guide &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Integrity & Non-Repudiation">
-          <a href="/blog/en/reality-lock-cryptographic-proofs-zero-hallucination.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/hero-03-decision.png" alt="Reality Lock: Eliminating AI Agent 'Hallucination of Done' via Cryptographic Proofs" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #3b82f6; border-color: #3b82f6;">
-                <span class="badge-dot" style="background: #3b82f6;"></span>
-                Integrity & Non-Repudiation
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min read</span>
-              <span>•</span>
-              <span>Nov 3, 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/en/reality-lock-cryptographic-proofs-zero-hallucination.html">Reality Lock: Eliminating AI Agent 'Hallucination of Done' via Cryptographic Proofs</a>
-            </h2>
-            <p class="card-excerpt">Default-deny execution gate requiring physical OS evidence before issuing SHA-256 Merkle completion receipts.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/en/reality-lock-cryptographic-proofs-zero-hallucination.html" class="card-read-link">Read Guide &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="State & Memory">
-          <a href="/blog/en/bitemporal-knowledge-graphs-ai-agents-memory.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/hero-07-the-memory-below.png" alt="Bi-Temporal Knowledge Graphs: Cutting Agent Context Blowout by 74% in Python" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #00f0ff; border-color: #00f0ff;">
-                <span class="badge-dot" style="background: #00f0ff;"></span>
-                State & Memory
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min read</span>
-              <span>•</span>
-              <span>Nov 3, 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/en/bitemporal-knowledge-graphs-ai-agents-memory.html">Bi-Temporal Knowledge Graphs: Cutting Agent Context Blowout by 74% in Python</a>
-            </h2>
-            <p class="card-excerpt">Local-first bi-temporal knowledge graph tracking valid vs transaction time to eliminate temporal hallucination in agent RAG.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/en/bitemporal-knowledge-graphs-ai-agents-memory.html" class="card-read-link">Read Guide &rarr;</a>
-            </div>
-          </div>
-        </article>
     </section>
 
   </main>
@@ -2152,33 +1403,55 @@
     </div>
     <div class="footer-bottom">
       <div>&copy; 2026 Benni Alencar & Benni OS Engineering Council. All rights reserved.</div>
-      <div>Canonical Domain: <a href="https://benni-os.net" style="color: var(--cyan); text-decoration: none;">benni-os.net</a></div>
+      <div>Canonical Domain: <a href="https://benni-os.net" style="color: var(--ed-accent); text-decoration: none;">benni-os.net</a></div>
     </div>
   </footer>
-
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    (function () {
       const filterBtns = document.querySelectorAll('.filter-btn');
-      const cards = document.querySelectorAll('.bento-card');
+      const cards = document.querySelectorAll('#articles-grid .bento-card');
+      const searchInput = document.getElementById('ed-search-input');
+      const emptyState = document.getElementById('ed-empty-state');
+      let activeTrack = 'all';
 
-      filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          filterBtns.forEach(b => b.classList.remove('active'));
+      function applyFilters() {
+        const query = (searchInput ? searchInput.value : '').trim().toLowerCase();
+        let visibleCount = 0;
+
+        cards.forEach(function (card) {
+          const track = (card.getAttribute('data-track') || '').toLowerCase();
+          const cat = (card.getAttribute('data-category') || '').toLowerCase();
+          const text = (card.textContent || '').toLowerCase();
+
+          const matchesTrack = activeTrack === 'all' || track === activeTrack;
+          const matchesQuery = !query || text.indexOf(query) !== -1 || cat.indexOf(query) !== -1;
+
+          if (matchesTrack && matchesQuery) {
+            card.style.display = 'flex';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        if (emptyState) {
+          emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+        }
+      }
+
+      filterBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          filterBtns.forEach(function (b) { b.classList.remove('active'); });
           btn.classList.add('active');
-
-          const filter = btn.getAttribute('data-filter');
-
-          cards.forEach(card => {
-            const cardCat = card.getAttribute('data-category');
-            if (filter === 'all' || cardCat === filter) {
-              card.style.display = 'flex';
-            } else {
-              card.style.display = 'none';
-            }
-          });
+          activeTrack = (btn.getAttribute('data-filter') || 'all').toLowerCase();
+          applyFilters();
         });
       });
-    });
+
+      if (searchInput) {
+        searchInput.addEventListener('input', applyFilters);
+      }
+    })();
   </script>
 </body>
 </html>

@@ -569,10 +569,10 @@
         
       <div class="lang-switcher-pill" role="navigation" aria-label="Language Selector">
         <a href="/blog/index.html" class="lang-btn " title="English (Global Priority)">
-          <span>🇺🇸</span> EN
+          EN
         </a>
         <a href="/blog/pt.html" class="lang-btn active" title="Português (Brasil)">
-          <span>🇧🇷</span> PT-BR
+          PT-BR
         </a>
       </div>
     
@@ -584,18 +584,7 @@
   <main class="magazine-main">
 
     <!-- Top Billboard AdSense Container -->
-    <div class="adsense-wrapper">
-      <span class="adsense-label">Advertisement // Google AdSense Billboard</span>
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-6415277800729792"
-           data-ad-slot="1122334455"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
-    <!-- Editorial Header Title -->
+<!-- Editorial Header Title -->
     <div class="magazine-hero-header">
       <div class="hero-badge-pill">
         <span>⚡</span> ⚡ TIER-1 ENGINEERING JOURNAL
@@ -635,13 +624,29 @@
           </div>
         </div>
       </div>
-    
-                        <article class="bento-card" data-category="Segurança Zero-Trust">
+    </section>
+
+    <section class="filter-section" aria-label="Article Filters">
+      <div class="filter-bar">
+        <div class="filter-pills-wrap">
+          <button class="filter-btn active" type="button" data-filter="all">Todos (24)</button>
+          <button class="filter-btn" type="button" data-filter="security">Segurança &amp; Zero-Trust (4)</button>
+          <button class="filter-btn" type="button" data-filter="swarms">Enxames &amp; Control Plane (6)</button>
+          <button class="filter-btn" type="button" data-filter="memory">Memória, Pesquisa &amp; Replay (4)</button>
+          <button class="filter-btn" type="button" data-filter="runtime">Runtime, Evals &amp; FinOps (7)</button>
+          <button class="filter-btn" type="button" data-filter="spatial">Spatial 3D &amp; Motion (3)</button>
+        </div>
+        <input id="ed-search-input" class="ed-search-input" type="search" placeholder="Filtrar artigos por título ou tópico..." aria-label="Filtrar artigos por título ou tópico..." />
+      </div>
+    </section>
+
+    <section class="bento-grid" id="articles-grid">
+      <article class="bento-card" data-track="security" data-category="Segurança Zero-Trust">
           <a href="/blog/agent-context-firewall-bloqueando-prompt-injection-indireto.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_zero-trust.jpg" alt="Indirect Prompt Injection & Context Smuggling com agent-context-firewall" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #10b981; border-color: #10b981;">
-                <span class="badge-dot" style="background: #10b981;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 Segurança Zero-Trust
               </div>
             </div>
@@ -656,12 +661,12 @@
             </div>
           </div>
         </article>
-        <article class="bento-card" data-category="Governança Multiagente">
+<article class="bento-card" data-track="security" data-category="Governança Multiagente">
           <a href="/blog/enxames-sem-deriva-contratos-tipados-e-egm-blind-review.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_reality-lock.jpg" alt="Enxames Sem Deriva: Contratos Tipados, Leases Atômicos e Revisão Cega EGM" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #0f4c81; border-color: #0f4c81;">
-                <span class="badge-dot" style="background: #0f4c81;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 Governança Multiagente
               </div>
             </div>
@@ -676,12 +681,12 @@
             </div>
           </div>
         </article>
-        <article class="bento-card" data-category="Estado &amp; Memória">
+<article class="bento-card" data-track="memory" data-category="Estado &amp; Memória">
           <a href="/blog/memoria-bitemporal-para-agentes-ia-grafos-e-compressao-sem-perda.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_bitemporal-memory.jpg" alt="Memória Bi-Temporal para Agentes de IA: Grafos de Conhecimento e Compressão Sem Perda" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #8b5cf6; border-color: #8b5cf6;">
-                <span class="badge-dot" style="background: #8b5cf6;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 Estado &amp; Memória
               </div>
             </div>
@@ -696,12 +701,12 @@
             </div>
           </div>
         </article>
-        <article class="bento-card" data-category="Debug &amp; Replay">
+<article class="bento-card" data-track="memory" data-category="Debug &amp; Replay">
           <a href="/blog/agent-trace-replay-debug-viagem-no-tempo-agentes-ia.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_agent-run-ledger.jpg" alt="Time-Travel Debugging para Agentes de IA: Replay Determinístico e Bifurcação Contrafactual" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #0f4c81; border-color: #0f4c81;">
-                <span class="badge-dot" style="background: #0f4c81;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 Debug &amp; Replay
               </div>
             </div>
@@ -716,12 +721,12 @@
             </div>
           </div>
         </article>
-        <article class="bento-card" data-category="FinOps &amp; Roteamento">
+<article class="bento-card" data-track="runtime" data-category="FinOps &amp; Roteamento">
           <a href="/blog/economia-de-tokens-e-roteamento-hibrido-llm-local-cloud.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_token-optimizer.jpg" alt="FinOps para Enxames de IA: Roteamento Híbrido Local-Cloud e Compressão Semântica" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #10b981; border-color: #10b981;">
-                <span class="badge-dot" style="background: #10b981;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 FinOps &amp; Roteamento
               </div>
             </div>
@@ -736,12 +741,12 @@
             </div>
           </div>
         </article>
-        <article class="bento-card" data-category="Motion &amp; Web Vitals">
+<article class="bento-card" data-track="spatial" data-category="Motion &amp; Web Vitals">
           <a href="/blog/engenharia-de-motion-60fps-e-arquitetura-web-editorial.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_agent-browser-mesh.jpg" alt="Engenharia de Motion a 60 FPS e Core Web Vitals para Google Discover" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #8b5cf6; border-color: #8b5cf6;">
-                <span class="badge-dot" style="background: #8b5cf6;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 Motion &amp; Web Vitals
               </div>
             </div>
@@ -756,12 +761,12 @@
             </div>
           </div>
         </article>
-        <article class="bento-card" data-category="Runtime & Sandbox">
+<article class="bento-card" data-track="runtime" data-category="Runtime & Sandbox">
           <a href="/blog/como-utilizar-agent-code-sandbox-no-ecossistema-benni-os.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_agent-code-sandbox.jpg" alt="Como Dominar o Agent Code Sandbox: Execução Sub-Milissegundo Sem Cold Start de Nuvem" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #00f0ff; border-color: #00f0ff;">
-                <span class="badge-dot" style="background: #00f0ff;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 Runtime & Sandbox
               </div>
             </div>
@@ -785,12 +790,12 @@
             </div>
           </div>
         </article>
-        <article class="bento-card" data-category="Avaliação & Testes">
+<article class="bento-card" data-track="runtime" data-category="Avaliação & Testes">
           <a href="/blog/como-utilizar-agent-eval-harness-no-ecossistema-benni-os.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_agent-eval-harness.jpg" alt="Como Dominar o Agent Eval Harness: Avaliação Determinística Sem Alucinação de LLM-Judge" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #10b981; border-color: #10b981;">
-                <span class="badge-dot" style="background: #10b981;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 Avaliação & Testes
               </div>
             </div>
@@ -814,12 +819,12 @@
             </div>
           </div>
         </article>
-        <article class="bento-card" data-category="Pesquisa Profunda">
+<article class="bento-card" data-track="memory" data-category="Pesquisa Profunda">
           <a href="/blog/como-utilizar-agent-deep-research-no-ecossistema-benni-os.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_agent-deep-research.jpg" alt="Como Dominar o Agent Deep Research: Elimine Alucinações de Citação com BM25" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #a855f7; border-color: #a855f7;">
-                <span class="badge-dot" style="background: #a855f7;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 Pesquisa Profunda
               </div>
             </div>
@@ -843,12 +848,12 @@
             </div>
           </div>
         </article>
-        <article class="bento-card" data-category="Automação de Browser">
+<article class="bento-card" data-track="runtime" data-category="Automação de Browser">
           <a href="/blog/como-utilizar-agent-browser-mesh-no-ecossistema-benni-os.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_agent-browser-mesh.jpg" alt="Como Dominar o Agent Browser Mesh: Elimine o Imposto de 1.500 Tokens de Visão" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #ff6b00; border-color: #ff6b00;">
-                <span class="badge-dot" style="background: #ff6b00;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 Automação de Browser
               </div>
             </div>
@@ -872,12 +877,12 @@
             </div>
           </div>
         </article>
-        <article class="bento-card" data-category="Integridade Criptográfica">
+<article class="bento-card" data-track="security" data-category="Integridade Criptográfica">
           <a href="/blog/como-utilizar-reality-lock-no-ecossistema-benni-os.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/hero-03-decision.png" alt="Como Dominar o Reality Lock: Eliminando a 'Alucinação de Conclusão' via Provas Físicas" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #3b82f6; border-color: #3b82f6;">
-                <span class="badge-dot" style="background: #3b82f6;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 Integridade Criptográfica
               </div>
             </div>
@@ -901,12 +906,12 @@
             </div>
           </div>
         </article>
-        <article class="bento-card" data-category="Memória & Estado">
+<article class="bento-card" data-track="memory" data-category="Memória & Estado">
           <a href="/blog/como-utilizar-agent-memory-mesh-no-ecossistema-benni-os.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/hero-07-the-memory-below.png" alt="Como Dominar o Agent Memory Mesh: Grafos de Conhecimento Bi-Temporais e Compressão de 74%" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #00f0ff; border-color: #00f0ff;">
-                <span class="badge-dot" style="background: #00f0ff;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 Memória & Estado
               </div>
             </div>
@@ -930,205 +935,12 @@
             </div>
           </div>
         </article>
-    </section>
-
-    <!-- Category Filter Bar -->
-    <section class="filter-section">
-      <div class="filter-bar">
-        <button class="filter-btn active" data-filter="all">Todos (10)</button>
-<button class="filter-btn" data-filter="Segurança & Defesa">Segurança & Defesa</button>
-<button class="filter-btn" data-filter="Arquitetura & MCP">Arquitetura & MCP</button>
-<button class="filter-btn" data-filter="Enxames Multiagente">Enxames Multiagente</button>
-<button class="filter-btn" data-filter="IA Local & Híbrida">IA Local & Híbrida</button>
-<button class="filter-btn" data-filter="Sistemas Autônomos">Sistemas Autônomos</button>
-<button class="filter-btn" data-filter="Monetização & Infra">Monetização & Infra</button>
-<button class="filter-btn" data-filter="Visual & Spatial 3D">Visual & Spatial 3D</button>
-      </div>
-    
-        <article class="bento-card" data-category="Runtime & Sandbox">
-          <a href="/blog/como-utilizar-agent-code-sandbox-no-ecossistema-benni-os.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-code-sandbox.jpg" alt="Como Dominar o Agent Code Sandbox: Execução Sub-Milissegundo Sem Cold Start de Nuvem" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #00f0ff; border-color: #00f0ff;">
-                <span class="badge-dot" style="background: #00f0ff;"></span>
-                Runtime & Sandbox
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min de leitura</span>
-              <span>•</span>
-              <span>03 Nov 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/como-utilizar-agent-code-sandbox-no-ecossistema-benni-os.html">Como Dominar o Agent Code Sandbox: Execução Sub-Milissegundo Sem Cold Start de Nuvem</a>
-            </h2>
-            <p class="card-excerpt">Sandbox de execução de código com análise estática de AST e escudo de tokens contra fugas maliciosas.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/como-utilizar-agent-code-sandbox-no-ecossistema-benni-os.html" class="card-read-link">Ler Artigo &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Avaliação & Testes">
-          <a href="/blog/como-utilizar-agent-eval-harness-no-ecossistema-benni-os.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-eval-harness.jpg" alt="Como Dominar o Agent Eval Harness: Avaliação Determinística Sem Alucinação de LLM-Judge" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #10b981; border-color: #10b981;">
-                <span class="badge-dot" style="background: #10b981;"></span>
-                Avaliação & Testes
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min de leitura</span>
-              <span>•</span>
-              <span>03 Nov 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/como-utilizar-agent-eval-harness-no-ecossistema-benni-os.html">Como Dominar o Agent Eval Harness: Avaliação Determinística Sem Alucinação de LLM-Judge</a>
-            </h2>
-            <p class="card-excerpt">Avaliação determinística de agentes de IA com zero custo em nuvem e recibos Merkle SHA-256.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/como-utilizar-agent-eval-harness-no-ecossistema-benni-os.html" class="card-read-link">Ler Artigo &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Pesquisa Profunda">
-          <a href="/blog/como-utilizar-agent-deep-research-no-ecossistema-benni-os.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-deep-research.jpg" alt="Como Dominar o Agent Deep Research: Elimine Alucinações de Citação com BM25" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #a855f7; border-color: #a855f7;">
-                <span class="badge-dot" style="background: #a855f7;"></span>
-                Pesquisa Profunda
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min de leitura</span>
-              <span>•</span>
-              <span>03 Nov 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/como-utilizar-agent-deep-research-no-ecossistema-benni-os.html">Como Dominar o Agent Deep Research: Elimine Alucinações de Citação com BM25</a>
-            </h2>
-            <p class="card-excerpt">Motor de pesquisa autônoma multi-fonte com destilação BM25 e verificação criptográfica de fontes.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/como-utilizar-agent-deep-research-no-ecossistema-benni-os.html" class="card-read-link">Ler Artigo &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Automação de Browser">
-          <a href="/blog/como-utilizar-agent-browser-mesh-no-ecossistema-benni-os.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-browser-mesh.jpg" alt="Como Dominar o Agent Browser Mesh: Elimine o Imposto de 1.500 Tokens de Visão" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #ff6b00; border-color: #ff6b00;">
-                <span class="badge-dot" style="background: #ff6b00;"></span>
-                Automação de Browser
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min de leitura</span>
-              <span>•</span>
-              <span>03 Nov 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/como-utilizar-agent-browser-mesh-no-ecossistema-benni-os.html">Como Dominar o Agent Browser Mesh: Elimine o Imposto de 1.500 Tokens de Visão</a>
-            </h2>
-            <p class="card-excerpt">Automação de navegação autônoma em alta velocidade usando streaming delta do DOM e filtros anti-injeção.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/como-utilizar-agent-browser-mesh-no-ecossistema-benni-os.html" class="card-read-link">Ler Artigo &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Integridade Criptográfica">
-          <a href="/blog/como-utilizar-reality-lock-no-ecossistema-benni-os.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/hero-03-decision.png" alt="Como Dominar o Reality Lock: Eliminando a 'Alucinação de Conclusão' via Provas Físicas" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #3b82f6; border-color: #3b82f6;">
-                <span class="badge-dot" style="background: #3b82f6;"></span>
-                Integridade Criptográfica
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min de leitura</span>
-              <span>•</span>
-              <span>03 Nov 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/como-utilizar-reality-lock-no-ecossistema-benni-os.html">Como Dominar o Reality Lock: Eliminando a 'Alucinação de Conclusão' via Provas Físicas</a>
-            </h2>
-            <p class="card-excerpt">Gate de execução Default-Deny que exige evidência física no sistema operacional antes de emitir recibos SHA-256.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/como-utilizar-reality-lock-no-ecossistema-benni-os.html" class="card-read-link">Ler Artigo &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Memória & Estado">
-          <a href="/blog/como-utilizar-agent-memory-mesh-no-ecossistema-benni-os.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/hero-07-the-memory-below.png" alt="Como Dominar o Agent Memory Mesh: Grafos de Conhecimento Bi-Temporais e Compressão de 74%" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #00f0ff; border-color: #00f0ff;">
-                <span class="badge-dot" style="background: #00f0ff;"></span>
-                Memória & Estado
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min de leitura</span>
-              <span>•</span>
-              <span>03 Nov 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/como-utilizar-agent-memory-mesh-no-ecossistema-benni-os.html">Como Dominar o Agent Memory Mesh: Grafos de Conhecimento Bi-Temporais e Compressão de 74%</a>
-            </h2>
-            <p class="card-excerpt">Grafo bi-temporal rastreando Valid Time e Transaction Time para eliminar confusão temporal no RAG de agentes.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/como-utilizar-agent-memory-mesh-no-ecossistema-benni-os.html" class="card-read-link">Ler Artigo &rarr;</a>
-            </div>
-          </div>
-        </article>
-    </section>
-
-    <!-- Bento Grid of Remaining 9 Articles -->
-    <section class="bento-grid">
-        <article class="bento-card" data-category="Sovereign Systems & Genesis Manifesto">
+<article class="bento-card" data-track="swarms" data-category="Sovereign Systems & Genesis Manifesto">
           <a href="/blog/o-manifesto-genesis-engenharia-soberana-de-agentes-ia.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/hero-05-genesis.png" alt="O Manifesto Genesis: Por Que Não Vendemos Roteamento de Modelos, e Como Construímos o Substrato Autônomo Soberano" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #00f0ff; border-color: #00f0ff;">
-                <span class="badge-dot" style="background: #00f0ff;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 Sovereign Systems & Genesis Manifesto
               </div>
             </div>
@@ -1148,13 +960,12 @@
             </div>
           </div>
         </article>
-
-        <article class="bento-card" data-category="Enterprise Tool Mesh & Security">
+<article class="bento-card" data-track="security" data-category="Enterprise Tool Mesh & Security">
           <a href="/blog/como-utilizar-nemesis-gateway-corretagem-soberana-97-conectores-no-ecossistema-benni-os.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_nemesis-gateway.jpg" alt="Corretagem Multiagente Soberana: Segurança Zero-Trust, Leases Dinâmicos e Rate-Limiting para 97+ Conectores Corporativos" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #00f0ff; border-color: #00f0ff;">
-                <span class="badge-dot" style="background: #00f0ff;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 Enterprise Tool Mesh & Security
               </div>
             </div>
@@ -1174,13 +985,12 @@
             </div>
           </div>
         </article>
-
-        <article class="bento-card" data-category="Spatial UI & Generative Frontends">
+<article class="bento-card" data-track="spatial" data-category="Spatial UI & Generative Frontends">
           <a href="/blog/como-utilizar-benni-canvas-espacial-interfaces-vivas-no-ecossistema-benni-os.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/hero-08-bridge.png" alt="Engenharia de Canvas Espacial Autônomo: Compilando Linguagem Natural em Interfaces Vivas a 120 FPS Sem Dívida Técnica" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #00f0ff; border-color: #00f0ff;">
-                <span class="badge-dot" style="background: #00f0ff;"></span>
+              <div class="card-badge">
+                <span class="badge-dot"></span>
                 Spatial UI & Generative Frontends
               </div>
             </div>
@@ -1200,9 +1010,7 @@
             </div>
           </div>
         </article>
-
-
-        <article class="bento-card" data-category="Arquitetura & MCP">
+<article class="bento-card" data-track="swarms" data-category="Arquitetura & MCP">
           <a href="/blog/como-utilizar-control-plane-no-ecossistema-benni-os.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_control-plane.jpg" alt="Control Plane OS: Orquestração de Agentes com Estado Durável e Reconciliação Contínua" loading="lazy" class="card-thumb" />
@@ -1236,9 +1044,7 @@
             </div>
           </div>
         </article>
-        
-
-        <article class="bento-card" data-category="Enxames Multiagente">
+<article class="bento-card" data-track="swarms" data-category="Enxames Multiagente">
           <a href="/blog/como-utilizar-agent-armies-no-ecossistema-benni-os.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_agent-armies.jpg" alt="Agent Armies: Formação e Coordenação de Enxames de IA com Leases Tipados" loading="lazy" class="card-thumb" />
@@ -1272,9 +1078,7 @@
             </div>
           </div>
         </article>
-        
-
-        <article class="bento-card" data-category="Arquitetura & MCP">
+<article class="bento-card" data-track="swarms" data-category="Arquitetura & MCP">
           <a href="/blog/como-utilizar-nemesis-gateway-no-ecossistema-benni-os.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/hero-08-bridge.png" alt="Nemesis Gateway: Conectando Modelos de IA a Bancos, Nuvem e Ferramentas Corporativas" loading="lazy" class="card-thumb" />
@@ -1308,24 +1112,7 @@
             </div>
           </div>
         </article>
-        
-
-        <!-- In-Feed Google AdSense Slot -->
-        <div class="adsense-card-infeed" style="grid-column: 1 / -1; margin: 1.5rem 0;">
-          <div class="adsense-wrapper" style="margin: 0; padding: 1.5rem 1rem;">
-            <span class="adsense-label">Publicidade // In-Feed Google AdSense</span>
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-format="fluid"
-                 data-ad-layout-key="-fb+5w+4e-db+86"
-                 data-ad-client="ca-pub-6415277800729792"
-                 data-ad-slot="9876543210"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-          </div>
-        </div>
-            
-
-        <article class="bento-card" data-category="IA Local & Híbrida">
+<article class="bento-card" data-track="runtime" data-category="IA Local & Híbrida">
           <a href="/blog/como-utilizar-autonomous-swarm-consensus-with-local-ollama-no-ecossistema-benni-os-exec-3728.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_inference-engine.jpg" alt="Consenso em Enxames de IA com Modelos Locais via Ollama: Eficiência Sem Dependência de Nuvem" loading="lazy" class="card-thumb" />
@@ -1359,9 +1146,7 @@
             </div>
           </div>
         </article>
-        
-
-        <article class="bento-card" data-category="Sistemas Autônomos">
+<article class="bento-card" data-track="swarms" data-category="Sistemas Autônomos">
           <a href="/blog/como-utilizar-project-adam-no-ecossistema-benni-os-cont-2345.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/hero-11-adam.png" alt="Projeto Adam: Autoevolução e Otimização Recursiva de Agentes de IA" loading="lazy" class="card-thumb" />
@@ -1395,9 +1180,7 @@
             </div>
           </div>
         </article>
-        
-
-        <article class="bento-card" data-category="Engenharia de Software">
+<article class="bento-card" data-track="swarms" data-category="Engenharia de Software">
           <a href="/blog/como-utilizar-project-adam-no-ecossistema-benni-os-hand-8765.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/hero-11-adam.png" alt="Handoffs Determinísticos: Eliminando Divergência de Contexto em Fluxos Complexos" loading="lazy" class="card-thumb" />
@@ -1431,9 +1214,7 @@
             </div>
           </div>
         </article>
-        
-
-        <article class="bento-card" data-category="Monetização & Infra">
+<article class="bento-card" data-track="runtime" data-category="Monetização & Infra">
           <a href="/blog/como-utilizar-puter-backend-no-ecossistema-benni-os.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/flow_hero_puter-serverless.jpg" alt="Backend Soberano e Serverless com Puter.js: Autonomia Sem Servidores Centralizados" loading="lazy" class="card-thumb" />
@@ -1467,9 +1248,7 @@
             </div>
           </div>
         </article>
-        
-
-        <article class="bento-card" data-category="Monetização & Infra">
+<article class="bento-card" data-track="runtime" data-category="Monetização & Infra">
           <a href="/blog/como-utilizar-revenue-loop-no-ecossistema-benni-os.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/hero-03-decision.png" alt="Autonomous Revenue Loop: Otimização de Funis e Conversão Operada por IA" loading="lazy" class="card-thumb" />
@@ -1503,9 +1282,7 @@
             </div>
           </div>
         </article>
-        
-
-        <article class="bento-card" data-category="Visual & Spatial 3D">
+<article class="bento-card" data-track="spatial" data-category="Visual & Spatial 3D">
           <a href="/blog/como-utilizar-spatial-3d-no-ecossistema-benni-os.html" class="card-image-link">
             <div class="card-image-wrap">
               <img src="/blog/assets/hero-01-arrival.png" alt="Spatial 3D & Shaders WebGL no Benni OS: Interfaces Espaciais para Sistemas de IA" loading="lazy" class="card-thumb" />
@@ -1539,185 +1316,9 @@
             </div>
           </div>
         </article>
-        
-    
-        <article class="bento-card" data-category="Runtime & Sandbox">
-          <a href="/blog/como-utilizar-agent-code-sandbox-no-ecossistema-benni-os.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-code-sandbox.jpg" alt="Como Dominar o Agent Code Sandbox: Execução Sub-Milissegundo Sem Cold Start de Nuvem" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #00f0ff; border-color: #00f0ff;">
-                <span class="badge-dot" style="background: #00f0ff;"></span>
-                Runtime & Sandbox
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min de leitura</span>
-              <span>•</span>
-              <span>03 Nov 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/como-utilizar-agent-code-sandbox-no-ecossistema-benni-os.html">Como Dominar o Agent Code Sandbox: Execução Sub-Milissegundo Sem Cold Start de Nuvem</a>
-            </h2>
-            <p class="card-excerpt">Sandbox de execução de código com análise estática de AST e escudo de tokens contra fugas maliciosas.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/como-utilizar-agent-code-sandbox-no-ecossistema-benni-os.html" class="card-read-link">Ler Artigo &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Avaliação & Testes">
-          <a href="/blog/como-utilizar-agent-eval-harness-no-ecossistema-benni-os.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-eval-harness.jpg" alt="Como Dominar o Agent Eval Harness: Avaliação Determinística Sem Alucinação de LLM-Judge" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #10b981; border-color: #10b981;">
-                <span class="badge-dot" style="background: #10b981;"></span>
-                Avaliação & Testes
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min de leitura</span>
-              <span>•</span>
-              <span>03 Nov 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/como-utilizar-agent-eval-harness-no-ecossistema-benni-os.html">Como Dominar o Agent Eval Harness: Avaliação Determinística Sem Alucinação de LLM-Judge</a>
-            </h2>
-            <p class="card-excerpt">Avaliação determinística de agentes de IA com zero custo em nuvem e recibos Merkle SHA-256.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/como-utilizar-agent-eval-harness-no-ecossistema-benni-os.html" class="card-read-link">Ler Artigo &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Pesquisa Profunda">
-          <a href="/blog/como-utilizar-agent-deep-research-no-ecossistema-benni-os.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-deep-research.jpg" alt="Como Dominar o Agent Deep Research: Elimine Alucinações de Citação com BM25" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #a855f7; border-color: #a855f7;">
-                <span class="badge-dot" style="background: #a855f7;"></span>
-                Pesquisa Profunda
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min de leitura</span>
-              <span>•</span>
-              <span>03 Nov 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/como-utilizar-agent-deep-research-no-ecossistema-benni-os.html">Como Dominar o Agent Deep Research: Elimine Alucinações de Citação com BM25</a>
-            </h2>
-            <p class="card-excerpt">Motor de pesquisa autônoma multi-fonte com destilação BM25 e verificação criptográfica de fontes.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/como-utilizar-agent-deep-research-no-ecossistema-benni-os.html" class="card-read-link">Ler Artigo &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Automação de Browser">
-          <a href="/blog/como-utilizar-agent-browser-mesh-no-ecossistema-benni-os.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-browser-mesh.jpg" alt="Como Dominar o Agent Browser Mesh: Elimine o Imposto de 1.500 Tokens de Visão" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #ff6b00; border-color: #ff6b00;">
-                <span class="badge-dot" style="background: #ff6b00;"></span>
-                Automação de Browser
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min de leitura</span>
-              <span>•</span>
-              <span>03 Nov 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/como-utilizar-agent-browser-mesh-no-ecossistema-benni-os.html">Como Dominar o Agent Browser Mesh: Elimine o Imposto de 1.500 Tokens de Visão</a>
-            </h2>
-            <p class="card-excerpt">Automação de navegação autônoma em alta velocidade usando streaming delta do DOM e filtros anti-injeção.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/como-utilizar-agent-browser-mesh-no-ecossistema-benni-os.html" class="card-read-link">Ler Artigo &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Integridade Criptográfica">
-          <a href="/blog/como-utilizar-reality-lock-no-ecossistema-benni-os.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/hero-03-decision.png" alt="Como Dominar o Reality Lock: Eliminando a 'Alucinação de Conclusão' via Provas Físicas" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #3b82f6; border-color: #3b82f6;">
-                <span class="badge-dot" style="background: #3b82f6;"></span>
-                Integridade Criptográfica
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min de leitura</span>
-              <span>•</span>
-              <span>03 Nov 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/como-utilizar-reality-lock-no-ecossistema-benni-os.html">Como Dominar o Reality Lock: Eliminando a 'Alucinação de Conclusão' via Provas Físicas</a>
-            </h2>
-            <p class="card-excerpt">Gate de execução Default-Deny que exige evidência física no sistema operacional antes de emitir recibos SHA-256.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/como-utilizar-reality-lock-no-ecossistema-benni-os.html" class="card-read-link">Ler Artigo &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Memória & Estado">
-          <a href="/blog/como-utilizar-agent-memory-mesh-no-ecossistema-benni-os.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/hero-07-the-memory-below.png" alt="Como Dominar o Agent Memory Mesh: Grafos de Conhecimento Bi-Temporais e Compressão de 74%" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #00f0ff; border-color: #00f0ff;">
-                <span class="badge-dot" style="background: #00f0ff;"></span>
-                Memória & Estado
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min de leitura</span>
-              <span>•</span>
-              <span>03 Nov 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/como-utilizar-agent-memory-mesh-no-ecossistema-benni-os.html">Como Dominar o Agent Memory Mesh: Grafos de Conhecimento Bi-Temporais e Compressão de 74%</a>
-            </h2>
-            <p class="card-excerpt">Grafo bi-temporal rastreando Valid Time e Transaction Time para eliminar confusão temporal no RAG de agentes.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/como-utilizar-agent-memory-mesh-no-ecossistema-benni-os.html" class="card-read-link">Ler Artigo &rarr;</a>
-            </div>
-          </div>
-        </article>
     </section>
+    <p id="ed-empty-state" style="display:none; text-align:center; padding: 2.5rem 1rem; color: var(--ed-text-muted); font-family: var(--font-code); font-size: 0.88rem;">Nenhum artigo corresponde ao filtro atual.</p>
 
-    <!-- VIP Newsletter Lead Capture -->
     <section class="newsletter-card">
       <h2 class="newsletter-title">Cadernos de Arquitetura de IA</h2>
       <p class="newsletter-desc">
@@ -1727,386 +1328,36 @@
         <input type="email" required placeholder="Digite seu melhor e-mail corporativo..." class="newsletter-input" />
         <button type="submit" class="newsletter-btn">Inscrever-se Gratuitamente</button>
       </form>
-    
-        <article class="bento-card" data-category="Runtime & Sandbox">
-          <a href="/blog/como-utilizar-agent-code-sandbox-no-ecossistema-benni-os.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-code-sandbox.jpg" alt="Como Dominar o Agent Code Sandbox: Execução Sub-Milissegundo Sem Cold Start de Nuvem" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #00f0ff; border-color: #00f0ff;">
-                <span class="badge-dot" style="background: #00f0ff;"></span>
-                Runtime & Sandbox
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min de leitura</span>
-              <span>•</span>
-              <span>03 Nov 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/como-utilizar-agent-code-sandbox-no-ecossistema-benni-os.html">Como Dominar o Agent Code Sandbox: Execução Sub-Milissegundo Sem Cold Start de Nuvem</a>
-            </h2>
-            <p class="card-excerpt">Sandbox de execução de código com análise estática de AST e escudo de tokens contra fugas maliciosas.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/como-utilizar-agent-code-sandbox-no-ecossistema-benni-os.html" class="card-read-link">Ler Artigo &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Avaliação & Testes">
-          <a href="/blog/como-utilizar-agent-eval-harness-no-ecossistema-benni-os.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-eval-harness.jpg" alt="Como Dominar o Agent Eval Harness: Avaliação Determinística Sem Alucinação de LLM-Judge" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #10b981; border-color: #10b981;">
-                <span class="badge-dot" style="background: #10b981;"></span>
-                Avaliação & Testes
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min de leitura</span>
-              <span>•</span>
-              <span>03 Nov 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/como-utilizar-agent-eval-harness-no-ecossistema-benni-os.html">Como Dominar o Agent Eval Harness: Avaliação Determinística Sem Alucinação de LLM-Judge</a>
-            </h2>
-            <p class="card-excerpt">Avaliação determinística de agentes de IA com zero custo em nuvem e recibos Merkle SHA-256.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/como-utilizar-agent-eval-harness-no-ecossistema-benni-os.html" class="card-read-link">Ler Artigo &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Pesquisa Profunda">
-          <a href="/blog/como-utilizar-agent-deep-research-no-ecossistema-benni-os.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-deep-research.jpg" alt="Como Dominar o Agent Deep Research: Elimine Alucinações de Citação com BM25" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #a855f7; border-color: #a855f7;">
-                <span class="badge-dot" style="background: #a855f7;"></span>
-                Pesquisa Profunda
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min de leitura</span>
-              <span>•</span>
-              <span>03 Nov 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/como-utilizar-agent-deep-research-no-ecossistema-benni-os.html">Como Dominar o Agent Deep Research: Elimine Alucinações de Citação com BM25</a>
-            </h2>
-            <p class="card-excerpt">Motor de pesquisa autônoma multi-fonte com destilação BM25 e verificação criptográfica de fontes.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/como-utilizar-agent-deep-research-no-ecossistema-benni-os.html" class="card-read-link">Ler Artigo &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Automação de Browser">
-          <a href="/blog/como-utilizar-agent-browser-mesh-no-ecossistema-benni-os.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-browser-mesh.jpg" alt="Como Dominar o Agent Browser Mesh: Elimine o Imposto de 1.500 Tokens de Visão" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #ff6b00; border-color: #ff6b00;">
-                <span class="badge-dot" style="background: #ff6b00;"></span>
-                Automação de Browser
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min de leitura</span>
-              <span>•</span>
-              <span>03 Nov 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/como-utilizar-agent-browser-mesh-no-ecossistema-benni-os.html">Como Dominar o Agent Browser Mesh: Elimine o Imposto de 1.500 Tokens de Visão</a>
-            </h2>
-            <p class="card-excerpt">Automação de navegação autônoma em alta velocidade usando streaming delta do DOM e filtros anti-injeção.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/como-utilizar-agent-browser-mesh-no-ecossistema-benni-os.html" class="card-read-link">Ler Artigo &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Integridade Criptográfica">
-          <a href="/blog/como-utilizar-reality-lock-no-ecossistema-benni-os.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/hero-03-decision.png" alt="Como Dominar o Reality Lock: Eliminando a 'Alucinação de Conclusão' via Provas Físicas" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #3b82f6; border-color: #3b82f6;">
-                <span class="badge-dot" style="background: #3b82f6;"></span>
-                Integridade Criptográfica
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min de leitura</span>
-              <span>•</span>
-              <span>03 Nov 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/como-utilizar-reality-lock-no-ecossistema-benni-os.html">Como Dominar o Reality Lock: Eliminando a 'Alucinação de Conclusão' via Provas Físicas</a>
-            </h2>
-            <p class="card-excerpt">Gate de execução Default-Deny que exige evidência física no sistema operacional antes de emitir recibos SHA-256.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/como-utilizar-reality-lock-no-ecossistema-benni-os.html" class="card-read-link">Ler Artigo &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Memória & Estado">
-          <a href="/blog/como-utilizar-agent-memory-mesh-no-ecossistema-benni-os.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/hero-07-the-memory-below.png" alt="Como Dominar o Agent Memory Mesh: Grafos de Conhecimento Bi-Temporais e Compressão de 74%" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #00f0ff; border-color: #00f0ff;">
-                <span class="badge-dot" style="background: #00f0ff;"></span>
-                Memória & Estado
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min de leitura</span>
-              <span>•</span>
-              <span>03 Nov 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/como-utilizar-agent-memory-mesh-no-ecossistema-benni-os.html">Como Dominar o Agent Memory Mesh: Grafos de Conhecimento Bi-Temporais e Compressão de 74%</a>
-            </h2>
-            <p class="card-excerpt">Grafo bi-temporal rastreando Valid Time e Transaction Time para eliminar confusão temporal no RAG de agentes.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/como-utilizar-agent-memory-mesh-no-ecossistema-benni-os.html" class="card-read-link">Ler Artigo &rarr;</a>
-            </div>
-          </div>
-        </article>
     </section>
 
     <!-- Monetization Section -->
     <section id="monetizacao" style="margin: 4rem 0;">
-      <div style="text-align: center; margin-bottom: 2.5rem;">
-        <span style="font-family: var(--font-code); color: var(--cyan); font-size: 0.8rem; letter-spacing: 2px;">ECOSSISTEMA & SOLUÇÕES</span>
-        <h2 style="font-family: var(--font-title); font-size: 2.4rem; color: #fff; margin-top: 0.5rem;">Implante o Benni Master OS na sua Organização</h2>
+      <div style="text-align: center; margin-bottom: 2.2rem;">
+        <span style="font-family: var(--font-code); color: var(--ed-accent); font-size: 0.78rem; letter-spacing: 0.14em; font-weight: 600;">ECOSSISTEMA &amp; CONSULTORIA DE PRODUÇÃO</span>
+        <h2 style="font-family: var(--font-title); font-size: clamp(1.8rem, 3vw, 2.4rem); color: var(--ed-text); margin-top: 0.5rem; font-weight: 400;">Implante o Benni Master OS na Sua Organização</h2>
       </div>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
-        <div style="background: var(--panel); border: 1px solid rgba(0, 240, 255, 0.25); border-radius: 16px; padding: 2.5rem; position: relative;">
-          <span style="background: rgba(0, 240, 255, 0.12); color: var(--cyan); font-family: var(--font-code); font-size: 0.75rem; font-weight: 700; padding: 4px 12px; border-radius: 9999px;">FORMAÇÃO PRÁTICA</span>
-          <h3 style="font-size: 1.5rem; color: #fff; margin: 1.2rem 0 0.8rem;">Modo Operador: IA como Camada de Execução</h3>
-          <p style="color: var(--text-muted); font-size: 0.98rem; margin-bottom: 2rem; line-height: 1.6;">
-            Aprenda a orquestrar agentes autônomos, construir gateways MCP em produção e operar sistemas de IA com controle absoluto e rentabilidade.
+      <div class="cta-monetization-grid">
+        <div class="monetization-card">
+          <span class="badge-tag cyan">Treinamento Prático</span>
+          <h3 class="card-title" style="margin-top:0.2rem;">Modo Operador: IA como Camada de Execução</h3>
+          <p class="card-desc">
+            Domine orquestração de agentes autônomos, engenharia de gateways MCP em produção e governança determinística de enxames.
           </p>
-          <a href="https://github.com/Benni-OS/modo-operador" target="_blank" style="display: inline-block; width: 100%; text-align: center; background: var(--cyan); color: #000; font-weight: 700; padding: 0.85rem; border-radius: 8px; text-decoration: none;">
-            Acessar o Modo Operador &rarr;
+          <a href="https://github.com/Benni-OS/modo-operador" target="_blank" class="btn-action-cta primary">
+            Acessar Modo Operador &rarr;
           </a>
         </div>
-        <div style="background: var(--panel); border: 1px solid rgba(201, 164, 92, 0.35); border-radius: 16px; padding: 2.5rem; position: relative;">
-          <span style="background: rgba(201, 164, 92, 0.12); color: #c9a45c; font-family: var(--font-code); font-size: 0.75rem; font-weight: 700; padding: 4px 12px; border-radius: 9999px;">B2B & ENTERPRISE</span>
-          <h3 style="font-size: 1.5rem; color: #fff; margin: 1.2rem 0 0.8rem;">Consultoria & Arquitetura Corporativa de IA</h3>
-          <p style="color: var(--text-muted); font-size: 0.98rem; margin-bottom: 2rem; line-height: 1.6;">
-            Projetamos e implementamos enxames autônomos, auditoria Zero-Trust e infraestruturas locais com isolamento absoluto de dados.
+        <div class="monetization-card gold-tier">
+          <span class="badge-tag gold">B2B &amp; Enterprise</span>
+          <h3 class="card-title" style="margin-top:0.2rem;">Consultoria de Arquitetura IA Enterprise</h3>
+          <p class="card-desc">
+            Projetamos e implantamos enxames multiagente, camadas de compliance Zero-Trust e topologias de inferência soberana local.
           </p>
-          <a href="https://www.linkedin.com/in/benni-alencar/" target="_blank" style="display: inline-block; width: 100%; text-align: center; background: #c9a45c; color: #000; font-weight: 700; padding: 0.85rem; border-radius: 8px; text-decoration: none;">
-            Agendar Diagnóstico com Benni Alencar &rarr;
+          <a href="https://www.linkedin.com/in/benni-alencar/" target="_blank" class="btn-action-cta secondary">
+            Agendar Revisão de Arquitetura &rarr;
           </a>
         </div>
       </div>
-    
-        <article class="bento-card" data-category="Runtime & Sandbox">
-          <a href="/blog/como-utilizar-agent-code-sandbox-no-ecossistema-benni-os.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-code-sandbox.jpg" alt="Como Dominar o Agent Code Sandbox: Execução Sub-Milissegundo Sem Cold Start de Nuvem" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #00f0ff; border-color: #00f0ff;">
-                <span class="badge-dot" style="background: #00f0ff;"></span>
-                Runtime & Sandbox
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min de leitura</span>
-              <span>•</span>
-              <span>03 Nov 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/como-utilizar-agent-code-sandbox-no-ecossistema-benni-os.html">Como Dominar o Agent Code Sandbox: Execução Sub-Milissegundo Sem Cold Start de Nuvem</a>
-            </h2>
-            <p class="card-excerpt">Sandbox de execução de código com análise estática de AST e escudo de tokens contra fugas maliciosas.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/como-utilizar-agent-code-sandbox-no-ecossistema-benni-os.html" class="card-read-link">Ler Artigo &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Avaliação & Testes">
-          <a href="/blog/como-utilizar-agent-eval-harness-no-ecossistema-benni-os.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-eval-harness.jpg" alt="Como Dominar o Agent Eval Harness: Avaliação Determinística Sem Alucinação de LLM-Judge" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #10b981; border-color: #10b981;">
-                <span class="badge-dot" style="background: #10b981;"></span>
-                Avaliação & Testes
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min de leitura</span>
-              <span>•</span>
-              <span>03 Nov 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/como-utilizar-agent-eval-harness-no-ecossistema-benni-os.html">Como Dominar o Agent Eval Harness: Avaliação Determinística Sem Alucinação de LLM-Judge</a>
-            </h2>
-            <p class="card-excerpt">Avaliação determinística de agentes de IA com zero custo em nuvem e recibos Merkle SHA-256.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/como-utilizar-agent-eval-harness-no-ecossistema-benni-os.html" class="card-read-link">Ler Artigo &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Pesquisa Profunda">
-          <a href="/blog/como-utilizar-agent-deep-research-no-ecossistema-benni-os.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-deep-research.jpg" alt="Como Dominar o Agent Deep Research: Elimine Alucinações de Citação com BM25" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #a855f7; border-color: #a855f7;">
-                <span class="badge-dot" style="background: #a855f7;"></span>
-                Pesquisa Profunda
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min de leitura</span>
-              <span>•</span>
-              <span>03 Nov 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/como-utilizar-agent-deep-research-no-ecossistema-benni-os.html">Como Dominar o Agent Deep Research: Elimine Alucinações de Citação com BM25</a>
-            </h2>
-            <p class="card-excerpt">Motor de pesquisa autônoma multi-fonte com destilação BM25 e verificação criptográfica de fontes.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/como-utilizar-agent-deep-research-no-ecossistema-benni-os.html" class="card-read-link">Ler Artigo &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Automação de Browser">
-          <a href="/blog/como-utilizar-agent-browser-mesh-no-ecossistema-benni-os.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/flow_hero_agent-browser-mesh.jpg" alt="Como Dominar o Agent Browser Mesh: Elimine o Imposto de 1.500 Tokens de Visão" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #ff6b00; border-color: #ff6b00;">
-                <span class="badge-dot" style="background: #ff6b00;"></span>
-                Automação de Browser
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min de leitura</span>
-              <span>•</span>
-              <span>03 Nov 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/como-utilizar-agent-browser-mesh-no-ecossistema-benni-os.html">Como Dominar o Agent Browser Mesh: Elimine o Imposto de 1.500 Tokens de Visão</a>
-            </h2>
-            <p class="card-excerpt">Automação de navegação autônoma em alta velocidade usando streaming delta do DOM e filtros anti-injeção.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/como-utilizar-agent-browser-mesh-no-ecossistema-benni-os.html" class="card-read-link">Ler Artigo &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Integridade Criptográfica">
-          <a href="/blog/como-utilizar-reality-lock-no-ecossistema-benni-os.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/hero-03-decision.png" alt="Como Dominar o Reality Lock: Eliminando a 'Alucinação de Conclusão' via Provas Físicas" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #3b82f6; border-color: #3b82f6;">
-                <span class="badge-dot" style="background: #3b82f6;"></span>
-                Integridade Criptográfica
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min de leitura</span>
-              <span>•</span>
-              <span>03 Nov 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/como-utilizar-reality-lock-no-ecossistema-benni-os.html">Como Dominar o Reality Lock: Eliminando a 'Alucinação de Conclusão' via Provas Físicas</a>
-            </h2>
-            <p class="card-excerpt">Gate de execução Default-Deny que exige evidência física no sistema operacional antes de emitir recibos SHA-256.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/como-utilizar-reality-lock-no-ecossistema-benni-os.html" class="card-read-link">Ler Artigo &rarr;</a>
-            </div>
-          </div>
-        </article>
-        <article class="bento-card" data-category="Memória & Estado">
-          <a href="/blog/como-utilizar-agent-memory-mesh-no-ecossistema-benni-os.html" class="card-image-link">
-            <div class="card-image-wrap">
-              <img src="/blog/assets/hero-07-the-memory-below.png" alt="Como Dominar o Agent Memory Mesh: Grafos de Conhecimento Bi-Temporais e Compressão de 74%" loading="lazy" class="card-thumbnail" />
-              <div class="card-badge" style="color: #00f0ff; border-color: #00f0ff;">
-                <span class="badge-dot" style="background: #00f0ff;"></span>
-                Memória & Estado
-              </div>
-            </div>
-          </a>
-          <div class="card-content">
-            <div class="card-meta">
-              <span>15 min de leitura</span>
-              <span>•</span>
-              <span>03 Nov 2026</span>
-            </div>
-            <h2 class="card-title">
-              <a href="/blog/como-utilizar-agent-memory-mesh-no-ecossistema-benni-os.html">Como Dominar o Agent Memory Mesh: Grafos de Conhecimento Bi-Temporais e Compressão de 74%</a>
-            </h2>
-            <p class="card-excerpt">Grafo bi-temporal rastreando Valid Time e Transaction Time para eliminar confusão temporal no RAG de agentes.</p>
-            <div class="card-footer">
-              <div class="card-author">
-                <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-avatar" />
-                <span>Benni Alencar</span>
-              </div>
-              <a href="/blog/como-utilizar-agent-memory-mesh-no-ecossistema-benni-os.html" class="card-read-link">Ler Artigo &rarr;</a>
-            </div>
-          </div>
-        </article>
     </section>
 
   </main>
@@ -2152,33 +1403,55 @@
     </div>
     <div class="footer-bottom">
       <div>&copy; 2026 Benni Alencar & Benni OS Engineering Council. All rights reserved.</div>
-      <div>Canonical Domain: <a href="https://benni-os.net" style="color: var(--cyan); text-decoration: none;">benni-os.net</a></div>
+      <div>Canonical Domain: <a href="https://benni-os.net" style="color: var(--ed-accent); text-decoration: none;">benni-os.net</a></div>
     </div>
   </footer>
-
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    (function () {
       const filterBtns = document.querySelectorAll('.filter-btn');
-      const cards = document.querySelectorAll('.bento-card');
+      const cards = document.querySelectorAll('#articles-grid .bento-card');
+      const searchInput = document.getElementById('ed-search-input');
+      const emptyState = document.getElementById('ed-empty-state');
+      let activeTrack = 'all';
 
-      filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          filterBtns.forEach(b => b.classList.remove('active'));
+      function applyFilters() {
+        const query = (searchInput ? searchInput.value : '').trim().toLowerCase();
+        let visibleCount = 0;
+
+        cards.forEach(function (card) {
+          const track = (card.getAttribute('data-track') || '').toLowerCase();
+          const cat = (card.getAttribute('data-category') || '').toLowerCase();
+          const text = (card.textContent || '').toLowerCase();
+
+          const matchesTrack = activeTrack === 'all' || track === activeTrack;
+          const matchesQuery = !query || text.indexOf(query) !== -1 || cat.indexOf(query) !== -1;
+
+          if (matchesTrack && matchesQuery) {
+            card.style.display = 'flex';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        if (emptyState) {
+          emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+        }
+      }
+
+      filterBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          filterBtns.forEach(function (b) { b.classList.remove('active'); });
           btn.classList.add('active');
-
-          const filter = btn.getAttribute('data-filter');
-
-          cards.forEach(card => {
-            const cardCat = card.getAttribute('data-category');
-            if (filter === 'all' || cardCat === filter) {
-              card.style.display = 'flex';
-            } else {
-              card.style.display = 'none';
-            }
-          });
+          activeTrack = (btn.getAttribute('data-filter') || 'all').toLowerCase();
+          applyFilters();
         });
       });
-    });
+
+      if (searchInput) {
+        searchInput.addEventListener('input', applyFilters);
+      }
+    })();
   </script>
 </body>
 </html>
