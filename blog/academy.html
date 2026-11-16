@@ -418,15 +418,7 @@
       if (window.mermaid) {
         mermaid.initialize({
           startOnLoad: true,
-          theme: 'dark',
-          themeVariables: {
-            darkMode: true,
-            background: '#09090b',
-            primaryColor: '#141418',
-            primaryBorderColor: '#00ffff',
-            primaryTextColor: '#e8e1d5',
-            lineColor: '#426bff'
-          }
+          theme: document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
         });
       }
     });
@@ -440,20 +432,18 @@
   <script type="module">!function(){if(window.__vite_is_modern_browser)return;console.warn("vite: loading legacy chunks, syntax error above and the same error below should be ignored");var e=document.getElementById("vite-legacy-polyfill"),n=document.createElement("script");n.src=e.src,n.onload=function(){System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))},document.body.appendChild(n)}();</script>
 <link rel="manifest" href="/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/registerSW.js"></script></head>
 <body>
-  <header>
+  <header class="site-header">
     <div class="nav-container">
       <a href="/" class="brand-logo">
         <span class="status-dot"></span>
-        BENNI OS // SOVEREIGN PORTAL
+        BENNI OS <span class="brand-sub">// ACADEMY</span>
       </a>
-      <nav>
-        <a href="/">HOME</a>
-        <a href="/blog/index.html" class="active">REVISTA</a>
-        <a href="/blog/academy.html">PÓS-GRADUAÇÃO</a>
-        <a href="#monetization" style="color:var(--cyan);font-weight:700;">PRODUTOS & CTA</a>
-        <a href="https://github.com/BenniAlencar" target="_blank">GITHUB</a>
-        <a href="https://www.linkedin.com/in/benni-alencar/" target="_blank">LINKEDIN</a>
-        <a href="https://github.com/nsfwbunny/benni-master-os-skills" target="_blank">REPOSITÓRIO SOBERANO</a>
+      <nav class="nav-links" aria-label="Academy Navigation">
+        <a href="/">Home</a>
+        <a href="/blog/pt.html">Revista PT</a>
+        <a href="/blog/index.html">Magazine EN</a>
+        <a href="/blog/academy.html" class="active">Pós-Graduação</a>
+        <a href="#monetization" class="nav-cta-btn">Modo Operador &rarr;</a>
       </nav>
     </div>
   </header>
@@ -562,7 +552,7 @@
 
   <footer>
     <p>BENNI OS — OPERATIONAL EXCELLENCE &amp; SOVEREIGN AI ENGINEERING &copy; 2026</p>
-    <p style="margin-top: 0.5rem; color: var(--gold);">VERIFIED REALITY LOCK: SHA-256 CANONICAL COMMIT</p>
+    <p style="margin-top: 0.5rem; color: var(--ed-gold);">VERIFIED REALITY LOCK: SHA-256 CANONICAL COMMIT</p>
   </footer>
   <script nomodule>!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",(function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()}),!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();</script>
   <script nomodule crossorigin id="vite-legacy-polyfill" src="/assets/polyfills-legacy-Bj7NGYSK.js"></script>
