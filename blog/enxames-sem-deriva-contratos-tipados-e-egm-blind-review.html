@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6415277800729792" crossorigin="anonymous"></script>
+
+  <title>Enxames Sem Deriva: Como Contratos Tipados, Leases Atômicos e Revisões Cegas EGM Eliminam Bugs Multiagente — Benni Alencar // Benni OS</title>
+  <meta name="description" content="Por que enxames multiagente de IA sofrem deriva silenciosa de especificação e sobrescrevem estados concorrentes, e como Benni-OS/conductor-sdd, BenniAlencar/agent-run-ledger e BenniAlencar/reality-lock garantem execução sem deriva." />
+  <link rel="canonical" href="https://benni-os.net/blog/enxames-sem-deriva-contratos-tipados-e-egm-blind-review.html" />
+  <link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/enxames-sem-deriva-contratos-tipados-e-egm-blind-review.html" />
+  <link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/zero-drift-agent-swarms-typed-contracts-egm-blind-review.html" />
+  <link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/zero-drift-agent-swarms-typed-contracts-egm-blind-review.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Enxames Sem Deriva: Como Contratos Tipados, Leases Atômicos e Revisões Cegas EGM Eliminam Bugs Multiagente" />
+  <meta property="og:description" content="Elimine deriva de especificação, condições de corrida e falsas conclusões em enxames de IA usando travas SHA-256, leases atômicos com fencing tokens, revisões cegas Elephant-Goldfish e recibos criptográficos." />
+  <meta property="og:image" content="https://benni-os.net/blog/assets/flow_hero_reality-lock.jpg" />
+  <meta property="og:url" content="https://benni-os.net/blog/enxames-sem-deriva-contratos-tipados-e-egm-blind-review.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://benni-os.net/blog/assets/flow_hero_reality-lock.jpg" />
+  <meta name="twitter:creator" content="@BenniAlencar" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": ["TechArticle", "BlogPosting"],
+        "@id": "https://benni-os.net/blog/enxames-sem-deriva-contratos-tipados-e-egm-blind-review.html#article",
+        "isPartOf": {
+          "@type": "WebSite",
+          "@id": "https://benni-os.net/#website",
+          "name": "Benni OS",
+          "url": "https://benni-os.net"
+        },
+        "headline": "Enxames Sem Deriva: Como Contratos Tipados, Leases Atômicos e Revisões Cegas EGM Eliminam Bugs Multiagente",
+        "description": "Por que enxames multiagente de IA sofrem deriva silenciosa de especificação e sobrescrevem estados concorrentes, e como Benni-OS/conductor-sdd, BenniAlencar/agent-run-ledger e BenniAlencar/reality-lock garantem execução sem deriva.",
+        "inLanguage": "pt-BR",
+        "mainEntityOfPage": "https://benni-os.net/blog/enxames-sem-deriva-contratos-tipados-e-egm-blind-review.html",
+        "url": "https://benni-os.net/blog/enxames-sem-deriva-contratos-tipados-e-egm-blind-review.html",
+        "image": "https://benni-os.net/blog/assets/flow_hero_reality-lock.jpg",
+        "datePublished": "2026-11-16T00:00:00Z",
+        "dateModified": "2026-11-16T00:00:00Z",
+        "keywords": "enxames sem deriva, contratos tipados, leases atomicos, revisao cega EGM, Elephant-Goldfish Model, conductor-sdd, agent-run-ledger, reality-lock, benni os",
+        "author": {
+          "@type": "Person",
+          "@id": "https://benni-os.net/#author",
+          "name": "Benni Alencar",
+          "jobTitle": "Chief AI Systems Architect & Founder",
+          "url": "https://benni-os.net",
+          "sameAs": [
+            "https://github.com/BenniAlencar",
+            "https://github.com/Benni-OS",
+            "https://dev.to/bennialencar",
+            "https://www.linkedin.com/in/benni-alencar/",
+            "https://benni-os.net"
+          ]
+        },
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://benni-os.net/#organization",
+          "name": "Benni OS",
+          "url": "https://benni-os.net",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://benni-os.net/blog/assets/benni_avatar.png"
+          }
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://benni-os.net/blog/enxames-sem-deriva-contratos-tipados-e-egm-blind-review.html#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "O que causa deriva de especificação (spec drift) em enxames multiagente de IA?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A deriva ocorre quando um coordenador delega subtarefas por meio de prompts em linguagem natural sem travar um contrato imutável. Cada worker interpreta casos de borda, schemas e convenções de nomenclatura de forma ligeiramente distinta, e janelas de contexto longas fazem os agentes esquecerem restrições iniciais antes do merge."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Como os leases atômicos do agent-run-ledger evitam condições de corrida?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "O agent-run-ledger emite leases com prazo limitado (TTL) e fencing tokens monotônicos para cada etapa e escopo de artefato. Apenas o worker que detém o fencing token válido mais recente pode confirmar uma transição de estado ou gravar em um arquivo alvo, rejeitando retries atrasados de forma determinística."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Por que o Modelo Elefante-Peixinho (EGM) usa um revisor com contexto zero?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "O agente Elefante mantém todo o histórico do sistema e o grafo de dependências, o que o torna vulnerável ao viés de confirmação ao revisar seu próprio plano. O revisor Goldfish (Peixinho) é instanciado sem histórico conversacional — recebendo apenas o contrato congelado da spec e o diff resultante — detectando violações sem pontos cegos herdados."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "O que é um recibo de verificação SHA-256 no reality-lock?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Um recibo de verificação do reality-lock é um manifesto JSON assinado que vincula o hash da spec congelada, os hashes dos artefatos modificados e os códigos de saída reais dos comandos de teste. Um agente não pode encerrar uma tarefa apenas afirmando sucesso em texto; o control plane exige um recibo criptográfico correspondente."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #07080c;
+      --panel: #0e111a;
+      --panel-hover: #141824;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-border-hover: rgba(0, 240, 255, 0.35);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --cyan: #00f0ff;
+      --cyan-glow: rgba(0, 240, 255, 0.15);
+      --blue: #3b82f6;
+      --lime: #10b981;
+      --orange: #ff6b00;
+      --purple: #a855f7;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-title: 'DM Serif Display', Georgia, serif;
+      --font-code: 'IBM Plex Mono', monospace;
+      --badge-color: #00f0ff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.75;
+      font-size: 1.05rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59, 130, 246, 0.12), transparent),
+        radial-gradient(circle at 100% 40%, rgba(168, 85, 247, 0.06), transparent 50%),
+        radial-gradient(circle at 0% 70%, rgba(0, 240, 255, 0.05), transparent 50%);
+      background-attachment: fixed;
+    }
+    header.magazine-header {
+      background: rgba(7, 8, 12, 0.85);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--card-border);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 0.9rem 2rem;
+    }
+    .nav-container {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand-logo {
+      font-family: var(--font-code);
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--text-main);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      letter-spacing: 0.5px;
+    }
+    .brand-logo:hover { color: var(--cyan); }
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #10b981;
+    }
+    nav.nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.8rem;
+    }
+    nav.nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav.nav-links a:hover, nav.nav-links a.active { color: #fff; }
+    .lang-switcher-pill {
+      display: flex;
+      align-items: center;
+      background: rgba(14, 17, 26, 0.8);
+      border: 1px solid var(--card-border);
+      border-radius: 9999px;
+      padding: 3px;
+      gap: 2px;
+    }
+    .lang-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-family: var(--font-code);
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .lang-btn.active {
+      background: rgba(0, 240, 255, 0.15);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+    }
+    .lang-btn:hover:not(.active) {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .reading-progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #00f0ff, #3b82f6, #a855f7);
+      width: 0%;
+      z-index: 9999;
+      transition: width 0.1s ease;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.7);
+    }
+    main.article-layout {
+      max-width: 860px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      flex: 1;
+      width: 100%;
+    }
+    .breadcrumb-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-code);
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      margin-bottom: 1.2rem;
+    }
+    .breadcrumb-nav a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb-nav a:hover { color: var(--cyan); }
+    .breadcrumb-current { color: var(--cyan); }
+    .article-header { margin-bottom: 2.5rem; }
+    .article-meta-badges {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .category-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(10, 12, 18, 0.9);
+      border: 1px solid var(--badge-color);
+      color: var(--badge-color);
+      font-family: var(--font-code);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      letter-spacing: 0.5px;
+    }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .article-meta-text { color: var(--text-dim); font-size: 0.85rem; font-family: var(--font-code); }
+    .article-main-title {
+      font-family: var(--font-title);
+      font-size: clamp(2.3rem, 4.5vw, 3.6rem);
+      font-weight: normal;
+      line-height: 1.15;
+      color: #fff;
+      margin-bottom: 1.2rem;
+      letter-spacing: -0.5px;
+    }
+    .article-lead-paragraph {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1.65;
+      margin-bottom: 2rem;
+    }
+    .article-author-share-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1.2rem 0;
+      margin-bottom: 2rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .author-info-box {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+    .author-photo {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid var(--card-border);
+      object-fit: cover;
+    }
+    .author-name-title {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .author-subtitle {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      font-family: var(--font-code);
+    }
+    .article-hero-cover-figure {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      margin-bottom: 3rem;
+      background: var(--panel);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+    .article-hero-img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .article-prose {
+      color: #cbd5e1;
+      font-size: 1.08rem;
+      line-height: 1.8;
+    }
+    .article-prose h2 {
+      font-family: var(--font-title);
+      font-size: 1.95rem;
+      color: #fff;
+      margin: 2.8rem 0 1rem;
+      letter-spacing: -0.3px;
+    }
+    .article-prose h3 {
+      font-family: var(--font-title);
+      font-size: 1.45rem;
+      color: #f1f5f9;
+      margin: 2rem 0 0.8rem;
+    }
+    .article-prose p {
+      margin-bottom: 1.4rem;
+    }
+    .article-prose ul, .article-prose ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+    }
+    .article-prose li {
+      margin-bottom: 0.5rem;
+    }
+    .article-prose hr {
+      border: none;
+      border-top: 1px solid var(--card-border);
+      margin: 2.5rem 0;
+    }
+    .article-prose code {
+      font-family: var(--font-code);
+      background: rgba(255, 255, 255, 0.06);
+      padding: 0.2rem 0.45rem;
+      border-radius: 6px;
+      font-size: 0.9em;
+      color: var(--cyan);
+    }
+    .article-prose pre {
+      background: #040507;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      overflow-x: auto;
+      margin: 1.6rem 0;
+    }
+    .article-prose pre code {
+      background: transparent;
+      padding: 0;
+      color: #e2e8f0;
+      font-size: 0.88rem;
+    }
+    .callout-box {
+      background: rgba(0, 240, 255, 0.04);
+      border-left: 3px solid var(--cyan);
+      border-radius: 0 12px 12px 0;
+      padding: 1.2rem 1.5rem;
+      margin: 1.8rem 0;
+      color: var(--text-main);
+    }
+    .mermaid {
+      background: #040507;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      display: flex;
+      justify-content: center;
+    }
+    .table-container {
+      overflow-x: auto;
+      margin: 2rem 0;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+    th, td {
+      padding: 1rem 1.2rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+    th {
+      background: var(--panel);
+      color: #fff;
+      font-family: var(--font-code);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    .article-cta-box {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.05), rgba(59, 130, 246, 0.08));
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      border-radius: 16px;
+      padding: 2.2rem;
+      margin: 3.5rem 0;
+      text-align: center;
+    }
+    .article-cta-title {
+      font-family: var(--font-title);
+      font-size: 1.6rem;
+      color: #fff;
+      margin-bottom: 0.8rem;
+    }
+    .article-cta-btn {
+      display: inline-block;
+      background: var(--cyan);
+      color: #000;
+      font-weight: 700;
+      padding: 0.85rem 2rem;
+      border-radius: 9999px;
+      text-decoration: none;
+      font-family: var(--font-code);
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      margin-inline: 0.4rem;
+      transition: all 0.2s;
+    }
+    .article-cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 240, 255, 0.4);
+    }
+    .article-faq-section {
+      background: var(--panel);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      margin: 3.5rem 0;
+    }
+    .faq-main-heading {
+      font-family: var(--font-title);
+      font-size: 1.8rem;
+      color: #fff;
+      margin-bottom: 1.5rem;
+    }
+    .faq-item-card { border-bottom: 1px solid var(--card-border); padding: 1.2rem 0; }
+    .faq-item-card:last-child { border-bottom: none; }
+    .faq-item-q { font-weight: 700; font-size: 1.1rem; color: var(--cyan); margin-bottom: 0.5rem; }
+    .faq-item-a { color: var(--text-muted); font-size: 0.98rem; line-height: 1.65; }
+    footer.magazine-footer {
+      background: #050608;
+      border-top: 1px solid var(--card-border);
+      padding: 3.5rem 2rem 2rem;
+      margin-top: 5rem;
+    }
+    .footer-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 2.5rem;
+    }
+    @media (max-width: 900px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .footer-grid { grid-template-columns: 1fr; }
+      nav.nav-links { display: none; }
+    }
+    .footer-col h4 {
+      font-family: var(--font-code);
+      font-size: 0.85rem;
+      color: var(--cyan);
+      margin-bottom: 1.2rem;
+      letter-spacing: 1px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.6rem; }
+    .footer-col ul li a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .footer-col ul li a:hover { color: #fff; }
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 1.8rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-dim);
+      font-size: 0.82rem;
+      font-family: var(--font-code);
+    }
+  </style>
+  <link rel="stylesheet" href="/assets/editorial-theme.css" />
+  <script src="/assets/editorial-theme.js"></script>
+  <script defer src="/assets/blog-telemetry.js"></script>
+</head>
+<body>
+  <div class="reading-progress-bar" id="progressBar"></div>
+
+  <header class="magazine-header">
+    <div class="nav-container">
+      <a href="/" class="brand-logo">
+        <span class="status-dot"></span>
+        BENNI OS // MAGAZINE
+      </a>
+      <nav class="nav-links">
+        <a href="/">Home</a>
+        <a href="/blog/pt.html" class="active">Revista</a>
+        <a href="/blog/academy.html">Academy</a>
+        <a href="https://github.com/Benni-OS" target="_blank">GitHub</a>
+        <a href="https://dev.to/bennialencar" target="_blank">Dev.to</a>
+        <div class="lang-switcher-pill" role="navigation" aria-label="Seletor de Idioma">
+          <a href="/blog/en/zero-drift-agent-swarms-typed-contracts-egm-blind-review.html" class="lang-btn" title="Switch to English">
+            <span>🇺🇸</span> EN
+          </a>
+          <a href="/blog/enxames-sem-deriva-contratos-tipados-e-egm-blind-review.html" class="lang-btn active" title="Português (Brasil) Ativo">
+            <span>🇧🇷</span> PT-BR
+          </a>
+        </div>
+        <a href="/#monetizacao" style="color: var(--cyan); font-weight: 700;">Modo Operador &rarr;</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-layout">
+    <nav class="breadcrumb-nav">
+      <a href="/blog/pt.html">Revista</a>
+      <span>/</span>
+      <span class="breadcrumb-current">ARQUITETURA DE ENXAMES &amp; GOVERNANÇA</span>
+    </nav>
+
+    <header class="article-header">
+      <div class="article-meta-badges">
+        <span class="category-badge-pill">
+          <span class="badge-dot"></span>
+          ARQUITETURA DE ENXAMES &amp; GOVERNANÇA
+        </span>
+        <span class="article-meta-text">15 min de leitura • 16 Nov 2026</span>
+      </div>
+
+      <h1 class="article-main-title">Enxames Sem Deriva: Como Contratos Tipados, Leases Atômicos e Revisões Cegas EGM Eliminam Bugs Multiagente</h1>
+      <p class="article-lead-paragraph">Por que enxames multiagente ingênuos sofrem deriva silenciosa de especificação, sobrescrevem arquivos concorrentes e alucinam builds verdes — e como o <code>Benni-OS/conductor-sdd</code>, o <code>BenniAlencar/agent-run-ledger</code> e o <code>BenniAlencar/reality-lock</code> impõem execução determinística sem deriva.</p>
+
+      <div class="article-author-share-bar">
+        <div class="author-info-box">
+          <img src="/blog/assets/benni_avatar.png" alt="Benni Alencar" class="author-photo" />
+          <div>
+            <div class="author-name-title">Benni Alencar</div>
+            <div class="author-subtitle">Arquiteto Chefe de Sistemas de IA &amp; Fundador</div>
+          </div>
+        </div>
+        <div class="lang-switcher-pill" role="navigation" aria-label="Seletor de Idioma">
+          <a href="/blog/en/zero-drift-agent-swarms-typed-contracts-egm-blind-review.html" class="lang-btn" title="Switch to English">
+            <span>🇺🇸</span> EN
+          </a>
+          <a href="/blog/enxames-sem-deriva-contratos-tipados-e-egm-blind-review.html" class="lang-btn active" title="Português (Brasil) Ativo">
+            <span>🇧🇷</span> PT-BR
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <figure class="article-hero-cover-figure">
+      <img src="/blog/assets/flow_hero_reality-lock.jpg" alt="Enxames Sem Deriva: Contratos Tipados, Leases Atômicos e Revisões Cegas EGM" width="1376" height="768" class="article-hero-img" />
+    </figure>
+
+    <article class="article-prose">
+      <hr />
+      <h2>1. A Epidemia de Deriva e Split-Brain em Enxames Multiagente</h2>
+      <p>Instanciar cinco agentes de código em paralelo impressiona em demonstrações, mas em repositórios de produção isso costuma desencadear três modos de falha combinados:</p>
+      <ul>
+        <li><strong>Deriva de Especificação (Spec Drift):</strong> Um coordenador delega tarefas usando prompts soltos em linguagem natural. No passo 12, o Worker A inventa um payload em camelCase enquanto o Worker B implementa snake_case, e nenhum dos dois percebe até a integração quebrar.</li>
+        <li><strong>Mutações Split-Brain:</strong> Dois agentes fazem retry ou disputam o mesmo arquivo ou migração de banco sem exclusão mútua, sobrescrevendo silenciosamente os patches um do outro.</li>
+        <li><strong>Autorrevisão Sicofanta:</strong> Pedir ao mesmo agente (ou a um par que compartilha seu histórico conversacional) para revisar o próprio diff ativa o viés de confirmação — ele racionaliza casos de borda ausentes e declara "todos os testes passaram" sem executá-los.</li>
+      </ul>
+      <div class="callout-box">
+        <strong>Tese Central:</strong> Enxames multiagente confiáveis não são um problema de engenharia de prompt — são um <strong>problema de sistemas distribuídos e verificação formal</strong>. Você elimina bugs de enxame combinando <em>travas imutáveis de especificação</em> (<code>conductor-sdd</code>), <em>leases atômicos com fencing tokens</em> (<code>agent-run-ledger</code>), <em>revisões cegas sem contexto</em> (Modelo Elefante-Peixinho) e <em>recibos de verificação SHA-256</em> (<code>reality-lock</code>).
+      </div>
+
+      <hr />
+      <h2>2. O Pipeline de Enxame Sem Deriva</h2>
+      <p>No Benni OS, nenhum agente worker tem permissão para escrever código de produção a partir de um prompt solto. Toda missão de enxame atravessa quatro portões determinísticos antes que um único commit seja aceito:</p>
+
+      <div class="mermaid">
+flowchart LR
+    A["1. Trava de Spec\n(conductor-sdd)"] -->|"Contrato SHA-256 Congelado"| B["2. Lease Atômico\n(agent-run-ledger)"]
+    B -->|"Fencing Token + TTL"| C["3. Worker Isolado\n(Escopo Restrito)"]
+    C -->|"Diff do Artefato"| D["4. Revisão Cega EGM\n(Goldfish Sem Contexto)"]
+    D -->|"Contrato Aprovado"| E["5. Reality Lock\n(Recibo SHA-256)"]
+    D -->|"Deriva Detectada"| B
+      </div>
+
+      <p>Cada estágio impõe uma separação estrita de autoridade: o planejador não pode contornar o ledger de leases, o worker não pode alterar o contrato da spec e o revisor não pode enxergar as justificativas conversacionais do worker.</p>
+
+      <hr />
+      <h2>3. Camada 1: Travas de Especificação com <code>Benni-OS/conductor-sdd</code></h2>
+      <p>O Spec-Driven Development (SDD) inverte o fluxo típico de LLMs. Antes de qualquer worker ser instanciado, o <code>conductor-sdd</code> compila a decisão arquitetural, os tipos de interface e os invariantes de aceite em um artefato de especificação congelado e autenticado via SHA-256.</p>
+      <p>Cada worker recebe o <code>spec_hash</code> exato. Se um worker tentar alterar a assinatura de uma função, omitir um código de erro obrigatório ou introduzir uma dependência não aprovada, o detector de deriva dispara um erro <code>SPEC_DRIFT_VIOLATION</code> imediatamente.</p>
+
+<pre><code class="language-json">{
+  "spec_id": "swarm-billing-v2",
+  "spec_hash": "sha256:9f84c2e1a7d04b518c2e3d901a77f45b...",
+  "invariants": [
+    "idempotency_key MUST be UUIDv4",
+    "lease_ttl_seconds &lt;= 120",
+    "zero_unhandled_exceptions_on_timeout"
+  ],
+  "locked_interfaces": {
+    "LedgerLease": ["lease_id", "owner_agent", "fencing_token", "expires_at"]
+  }
+}
+</code></pre>
+
+      <hr />
+      <h2>4. Camada 2: Leases Atômicos e Fencing Tokens no <code>BenniAlencar/agent-run-ledger</code></h2>
+      <p>Quando múltiplos agentes operam em paralelo, a coordenação otimista de "torcer para ninguém editar o mesmo arquivo" falha sob retries ou respostas lentas de LLM. O <code>agent-run-ledger</code> resolve isso com <strong>leases atômicos tipados</strong> protegidos por fencing tokens monotonicamente crescentes.</p>
+      <p>Se o Worker A travar além do seu TTL e o ledger reatribuir a etapa ao Worker B com <code>fencing_token = 42</code>, qualquer gravação tardia do Worker A carregando <code>fencing_token = 41</code> é rejeitada de forma determinística na fronteira do ledger.</p>
+
+<pre><code class="language-python">from dataclasses import dataclass
+from datetime import datetime, timezone, timedelta
+from typing import Dict, Optional
+
+
+@dataclass(frozen=True)
+class AtomicLease:
+    step_id: str
+    owner_agent: str
+    fencing_token: int
+    spec_hash: str
+    expires_at: datetime
+
+
+class RunLedger:
+    """Impõe propriedade de escritor único com fencing tokens monotônicos."""
+
+    def __init__(self) -&gt; None:
+        self._leases: Dict[str, AtomicLease] = {}
+        self._tokens: Dict[str, int] = {}
+
+    def acquire_lease(
+        self, step_id: str, agent_id: str, spec_hash: str, ttl_seconds: int = 60
+    ) -&gt; Optional[AtomicLease]:
+        now = datetime.now(timezone.utc)
+        current = self._leases.get(step_id)
+        if current and current.expires_at &gt; now and current.owner_agent != agent_id:
+            return None  # Lease ativo detido por outro worker
+
+        next_token = self._tokens.get(step_id, 0) + 1
+        self._tokens[step_id] = next_token
+        lease = AtomicLease(
+            step_id=step_id,
+            owner_agent=agent_id,
+            fencing_token=next_token,
+            spec_hash=spec_hash,
+            expires_at=now + timedelta(seconds=ttl_seconds),
+        )
+        self._leases[step_id] = lease
+        return lease
+
+    def commit_step(self, step_id: str, fencing_token: int, receipt_hash: str) -&gt; None:
+        current = self._leases.get(step_id)
+        if not current or current.fencing_token != fencing_token:
+            raise PermissionError(
+                f"Fencing token obsoleto {fencing_token} rejeitado para etapa {step_id}"
+            )
+        if datetime.now(timezone.utc) &gt; current.expires_at:
+            raise TimeoutError(f"Lease expirado para etapa {step_id}")
+        # Persiste commit imutável com recibo de verificação SHA-256
+</code></pre>
+
+      <hr />
+      <h2>5. Camada 3: Revisão Cega Sem Contexto com o Modelo Elefante-Peixinho (EGM)</h2>
+      <p>Mesmo com uma spec travada e um lease atômico, o agente que escreveu 300 linhas de código carrega <strong>inércia contextual</strong> — ele se lembra do motivo pelo qual pegou um atalho e convence a si mesmo de que o atalho é seguro.</p>
+      <p>O <strong>Modelo Elefante-Peixinho (Elephant-Goldfish Model — EGM)</strong> quebra esse aprisionamento cognitivo dividindo a memória em dois papéis adversariais:</p>
+      <ul>
+        <li><strong>O Elefante (Memória Sistêmica):</strong> Mantém a arquitetura holística do repositório, o grafo de dependências e o histórico do run ledger. Ele planeja tarefas e despacha workers.</li>
+        <li><strong>O Peixinho / Goldfish (Revisor Cego Sem Contexto):</strong> Instanciado em um subagente isolado e limpo, com <em>zero</em> acesso à cadeia de pensamento, histórico de chat ou justificativas do autor. Ele recebe apenas duas entradas: o contrato congelado do <code>conductor-sdd</code> e o diff / artefato bruto.</li>
+      </ul>
+      <p>Como o Goldfish não possui memória da intenção do autor, ele avalia o código estritamente pelo que está gravado em disco — expondo deriva silenciosa de contrato, caminhos <code>None</code> desprotegidos e tratadores de erro ausentes em segundos.</p>
+
+      <hr />
+      <h2>6. Camada 4: Recibos de Verificação SHA-256 com <code>BenniAlencar/reality-lock</code></h2>
+      <p>O bug final em sistemas multiagente é a <strong>Falsa Declaração de Conclusão</strong>: um agente imprime <em>"Todos os testes unitários passaram e o build está verde"</em> sem realmente executar a suíte — ou após rodar apenas um subconjunto filtrado.</p>
+      <p>O <code>BenniAlencar/reality-lock</code> impõe uma fronteira rígida entre <em>Intenção</em>, <em>Execução</em> e <em>Evidência Observada</em>. Para fechar uma etapa no ledger, o runner precisa emitir um recibo criptográfico de verificação vinculando o hash da spec, o digest SHA-256 de cada arquivo alterado e o código de saída real do comando de verificação:</p>
+
+<pre><code class="language-json">{
+  "receipt_version": "1.0",
+  "step_id": "implement-atomic-lease-02",
+  "spec_hash": "sha256:9f84c2e1a7d04b518c2e3d901a77f45b",
+  "fencing_token": 42,
+  "egm_blind_review": "APPROVED_ZERO_DRIFT",
+  "artifacts": {
+    "runtime/ledger.py": "sha256:4b227777d4dd1fc61c6f884f48641d02",
+    "tests/test_ledger.py": "sha256:e3b0c44298fc1c149afbf4c8996fb924"
+  },
+  "observed_checks": [
+    {
+      "command": "pytest runtime/tests/test_ledger.py -q",
+      "exit_code": 0,
+      "passed": 18,
+      "failed": 0
+    }
+  ],
+  "receipt_sha256": "sha256:7d865e959b2466918c9863afca942d0f"
+}
+</code></pre>
+
+      <hr />
+      <h2>7. Comparação: Enxames Ad-Hoc vs. Orquestradores de Prompt vs. Stack Sem Deriva Benni OS</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Dimensão de Engenharia</th>
+              <th>Enxames Ad-Hoc</th>
+              <th>Orquestradores Apenas de Prompt</th>
+              <th>Stack Sem Deriva Benni OS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Imposição de Contrato</strong></td>
+              <td>Linguagem natural (alta deriva)</td>
+              <td>Checklists em Markdown (consultivos)</td>
+              <td><strong>Trava de Spec SHA-256 (conductor-sdd)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Controle de Concorrência</strong></td>
+              <td>Nenhum (sobrescrita de arquivos)</td>
+              <td>Revezamento por melhor esforço</td>
+              <td><strong>Leases Atômicos + Fencing Tokens (agent-run-ledger)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Viés na Revisão</strong></td>
+              <td>Autorrevisão (viés de confirmação)</td>
+              <td>Revisão com contexto compartilhado</td>
+              <td><strong>Revisão Cega EGM Goldfish Sem Contexto</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Prova de Conclusão</strong></td>
+              <td>Prosa do agente ("tudo certo!")</td>
+              <td>Trecho de stdout não verificado</td>
+              <td><strong>Recibo Criptográfico SHA-256 (reality-lock)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Recuperação de Falhas</strong></td>
+              <td>Git reset manual</td>
+              <td>Reinício completo do enxame</td>
+              <td><strong>Rollback Determinístico por Etapa</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="article-cta-box">
+        <h3 class="article-cta-title">Implante Sistemas Multiagente Sem Deriva</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; max-width: 640px; margin: 0 auto;">
+          Explore as primitivas open-source que sustentam os enxames do Benni OS: congele contratos com <strong>conductor-sdd</strong>, trave concorrência com <strong>agent-run-ledger</strong> e exija prova criptográfica com <strong>reality-lock</strong>.
+        </p>
+        <a href="https://github.com/Benni-OS/conductor-sdd" target="_blank" rel="noopener noreferrer" class="article-cta-btn">conductor-sdd &rarr;</a>
+        <a href="https://github.com/BenniAlencar/agent-run-ledger" target="_blank" rel="noopener noreferrer" class="article-cta-btn">agent-run-ledger &rarr;</a>
+        <a href="https://github.com/BenniAlencar/reality-lock" target="_blank" rel="noopener noreferrer" class="article-cta-btn">reality-lock &rarr;</a>
+      </div>
+
+      <section class="article-faq-section">
+        <h2 class="faq-main-heading">Perguntas Frequentes</h2>
+
+        <div class="faq-item-card">
+          <div class="faq-item-q">O que causa deriva de especificação (spec drift) em enxames multiagente de IA?</div>
+          <div class="faq-item-a">A deriva ocorre quando um coordenador delega subtarefas por meio de prompts em linguagem natural sem travar um contrato imutável. Cada worker interpreta casos de borda, schemas e convenções de nomenclatura de forma ligeiramente distinta, e janelas de contexto longas fazem os agentes esquecerem restrições iniciais antes do merge.</div>
+        </div>
+        <div class="faq-item-card">
+          <div class="faq-item-q">Como os leases atômicos do agent-run-ledger evitam condições de corrida?</div>
+          <div class="faq-item-a">O <code>agent-run-ledger</code> emite leases com prazo limitado (TTL) e fencing tokens monotônicos para cada etapa e escopo de artefato. Apenas o worker que detém o fencing token válido mais recente pode confirmar uma transição de estado ou gravar em um arquivo alvo, rejeitando retries atrasados de forma determinística.</div>
+        </div>
+        <div class="faq-item-card">
+          <div class="faq-item-q">Por que o Modelo Elefante-Peixinho (EGM) usa um revisor com contexto zero?</div>
+          <div class="faq-item-a">O agente Elefante mantém todo o histórico do sistema e o grafo de dependências, o que o torna vulnerável ao viés de confirmação ao revisar seu próprio plano. O revisor Goldfish (Peixinho) é instanciado sem histórico conversacional — recebendo apenas o contrato congelado da spec e o diff resultante — detectando violações sem pontos cegos herdados.</div>
+        </div>
+        <div class="faq-item-card">
+          <div class="faq-item-q">O que é um recibo de verificação SHA-256 no reality-lock?</div>
+          <div class="faq-item-a">Um recibo de verificação do <code>reality-lock</code> é um manifesto JSON assinado que vincula o hash da spec congelada, os hashes dos artefatos modificados e os códigos de saída reais dos comandos de teste. Um agente não pode encerrar uma tarefa apenas afirmando sucesso em texto; o control plane exige um recibo criptográfico correspondente.</div>
+        </div>
+      </section>
+    </article>
+  </main>
+
+  <footer class="magazine-footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>BENNI OS // SOVEREIGN AUTONOMY</h4>
+        <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; margin-top: 0.5rem;">
+          O Sistema de Autonomia Soberana construído a partir dos primeiros princípios. Eliminando alucinações de agentes, explosões de loops e aprisionamento em nuvem.
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>PLATAFORMA</h4>
+        <ul>
+          <li><a href="/blog/pt.html">Revista Técnica</a></li>
+          <li><a href="/blog/academy.html">Academy &amp; Masterclass</a></li>
+          <li><a href="https://github.com/Benni-OS" target="_blank">Repositórios Open Source</a></li>
+          <li><a href="https://dev.to/bennialencar" target="_blank">Série no Dev.to</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>SUÍTE OPEN SOURCE</h4>
+        <ul>
+          <li><a href="https://github.com/Benni-OS/conductor-sdd" target="_blank">conductor-sdd</a></li>
+          <li><a href="https://github.com/BenniAlencar/agent-run-ledger" target="_blank">agent-run-ledger</a></li>
+          <li><a href="https://github.com/BenniAlencar/reality-lock" target="_blank">reality-lock</a></li>
+          <li><a href="https://github.com/Benni-OS/agent-trace-replay" target="_blank">agent-trace-replay</a></li>
+          <li><a href="https://github.com/BenniAlencar/agent-cyber-sentinel" target="_blank">agent-cyber-sentinel</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>ACESSO SOBERANO</h4>
+        <ul>
+          <li><a href="/#monetizacao">Operator Mode Pass</a></li>
+          <li><a href="/#monetizacao">MCP Forge Playbook</a></li>
+          <li><a href="https://agensi.io/sell" target="_blank">Agensi.io Skills</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>&copy; 2026 Benni OS. Desenvolvido por Benni Alencar. Todos os direitos reservados.</div>
+      <div style="display:flex; gap: 1rem;">
+        <a href="/blog/en/zero-drift-agent-swarms-typed-contracts-egm-blind-review.html" style="color: var(--text-dim); text-decoration: none;">English</a>
+        <a href="/blog/enxames-sem-deriva-contratos-tipados-e-egm-blind-review.html" style="color: var(--text-dim); text-decoration: none;">Português</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { darkMode: true, background: '#040507', primaryColor: '#00f0ff', edgeColor: '#3b82f6' } });
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+      document.getElementById('progressBar').style.width = scrolled + '%';
+    });
+  </script>
+</body>
+</html>
