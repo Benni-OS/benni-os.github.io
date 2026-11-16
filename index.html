@@ -117,6 +117,90 @@
       width: 100%;
     }
 
+    html.sapphire-phase body {
+      background-image:
+        radial-gradient(ellipse 85% 60% at 76% 18%, rgba(96, 165, 250, 0.22) 0%, transparent 62%),
+        radial-gradient(ellipse 75% 55% at 18% 85%, rgba(251, 191, 36, 0.09) 0%, transparent 58%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+    }
+
+    html.sapphire-phase .top-nav {
+      background: rgba(13, 43, 107, 0.8);
+      border-bottom-color: rgba(255, 255, 255, 0.14);
+    }
+    html.sapphire-phase .brand-title,
+    html.sapphire-phase .nav-links a:hover {
+      color: #f8fafc;
+    }
+    html.sapphire-phase .nav-links a {
+      color: rgba(219, 234, 254, 0.78);
+    }
+    html.sapphire-phase .lang-switcher,
+    html.sapphire-phase .sfx-btn {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.22);
+      color: rgba(219, 234, 254, 0.82);
+    }
+    html.sapphire-phase .lang-btn {
+      color: rgba(219, 234, 254, 0.75);
+    }
+    html.sapphire-phase .lang-btn.active {
+      color: #ffffff;
+    }
+    html.sapphire-phase .sfx-btn.active {
+      color: #93c5fd;
+      border-color: rgba(147, 197, 253, 0.45);
+    }
+    html.sapphire-phase .nav-cta-btn {
+      background: #ffffff;
+      border-color: #ffffff;
+      color: #0e2e72;
+    }
+    html.sapphire-phase .nav-cta-btn:hover {
+      background: #dbeafe;
+      border-color: #dbeafe;
+    }
+    html.sapphire-phase #matTitle,
+    html.sapphire-phase #adoptTitle {
+      color: #f8fafc;
+    }
+    html.sapphire-phase #matKicker,
+    html.sapphire-phase #adoptKicker {
+      color: #f3cb74;
+    }
+    html.sapphire-phase #matSub,
+    html.sapphire-phase #adoptSub {
+      color: #dbeafe !important;
+    }
+    html.sapphire-phase .hud-pip-line {
+      background: rgba(219, 234, 254, 0.45);
+    }
+    html.sapphire-phase .hud-pip-row.active .hud-pip-line {
+      background: #f3cb74;
+    }
+    html.sapphire-phase .hud-pip-label {
+      color: #eff6ff;
+    }
+    html.sapphire-phase .sovereign-footer {
+      background: rgba(10, 32, 86, 0.58);
+      border-top-color: rgba(255, 255, 255, 0.14);
+      color: #dbeafe;
+    }
+    html.sapphire-phase .tier-slab,
+    html.sapphire-phase .matrix-shell {
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+    html.sapphire-phase .tier-slab.highlighted {
+      background: linear-gradient(170deg, rgba(255, 255, 255, 0.98), rgba(250, 246, 237, 0.96));
+    }
+
+    .top-nav, .brand-title, .nav-links a, .act-serif-title, .act-kicker, .sovereign-footer {
+      transition: background 0.55s ease, color 0.45s ease, border-color 0.45s ease;
+    }
+
     ::selection {
       background: var(--ink-pure);
       color: var(--bg-void);
@@ -1478,6 +1562,7 @@
         smoothWheel: true,
         smoothTouch: false
       });
+      window.__benniLenis = lenis;
 
       gsap.registerPlugin(ScrollTrigger);
       lenis.on('scroll', ScrollTrigger.update);
@@ -1496,7 +1581,7 @@
       }, { passive: true });
 
       /* ------------------------------------------------------------------------
-         3. WHISPER-QUIET STARLIGHT DEPTH FIELD (THREE.JS)
+         3. KINETIC MORPHING PARTICLE FIELD: ORBIT -> COMPRESS -> DNA -> EXPLODE -> ORBIT
          ------------------------------------------------------------------------ */
       const bgCanvas = document.getElementById('depth-canvas');
       const renderer = new THREE.WebGLRenderer({ canvas: bgCanvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
@@ -1504,37 +1589,208 @@
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
       const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 1000);
-      camera.position.z = 5;
+      const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
+      camera.position.z = 11.5;
 
       const dotCv = document.createElement('canvas');
-      dotCv.width = 32; dotCv.height = 32;
+      dotCv.width = 64; dotCv.height = 64;
       const dCtx = dotCv.getContext('2d');
-      const grd = dCtx.createRadialGradient(16, 16, 0, 16, 16, 16);
-      grd.addColorStop(0, 'rgba(29, 78, 216, 0.45)');
-      grd.addColorStop(0.5, 'rgba(154, 111, 34, 0.22)');
-      grd.addColorStop(1, 'rgba(245, 243, 238, 0)');
+      const grd = dCtx.createRadialGradient(32, 32, 0, 32, 32, 32);
+      grd.addColorStop(0, 'rgba(255, 255, 255, 1)');
+      grd.addColorStop(0.35, 'rgba(255, 255, 255, 0.75)');
+      grd.addColorStop(0.7, 'rgba(255, 255, 255, 0.18)');
+      grd.addColorStop(1, 'rgba(255, 255, 255, 0)');
       dCtx.fillStyle = grd;
-      dCtx.fillRect(0, 0, 32, 32);
+      dCtx.fillRect(0, 0, 64, 64);
+
+      const pCount = 1200;
+      const pPos = new Float32Array(pCount * 3);
+      const pCol = new Float32Array(pCount * 3);
+
+      // Per-particle parametric descriptors (zero allocations in frameLoop)
+      const pOrbRadius = new Float32Array(pCount);
+      const pOrbAngle = new Float32Array(pCount);
+      const pOrbSpeed = new Float32Array(pCount);
+      const pOrbTiltX = new Float32Array(pCount);
+      const pOrbTiltZ = new Float32Array(pCount);
+      const dnaY = new Float32Array(pCount);
+      const dnaStrand = new Uint8Array(pCount); // 0=strandA, 1=strandB, 2=rung
+      const dnaRungT = new Float32Array(pCount);
+      const expDirX = new Float32Array(pCount);
+      const expDirY = new Float32Array(pCount);
+      const expDirZ = new Float32Array(pCount);
+      const expMag = new Float32Array(pCount);
+      const colMixSeed = new Float32Array(pCount);
+
+      const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+      for (let i = 0; i < pCount; i++) {
+        // Ring orbits: 4 crisp inclined elliptical shells
+        const ringBand = i % 4;
+        pOrbRadius[i] = 2.4 + ringBand * 1.15 + (Math.random() - 0.5) * 0.42;
+        pOrbAngle[i] = Math.random() * Math.PI * 2;
+        pOrbSpeed[i] = (0.14 + (3 - ringBand) * 0.05) * (ringBand % 2 === 0 ? 1 : -0.85);
+        pOrbTiltX[i] = 1.08 + (ringBand - 1.5) * 0.14;
+        pOrbTiltZ[i] = (ringBand - 1.5) * 0.22;
+
+        // DNA double helix parameters
+        if (i % 7 === 0) {
+          dnaStrand[i] = 2; // base-pair rung
+          const rungIdx = Math.floor(i / 7);
+          const normH = ((rungIdx % 26) / 25) * 2 - 1;
+          dnaY[i] = normH * 3.9;
+          dnaRungT[i] = ((i * 0.37) % 1) * 2 - 1;
+        } else {
+          dnaStrand[i] = i % 2;
+          dnaY[i] = (((i / pCount) * 2) - 1) * 4.1 + (Math.random() - 0.5) * 0.14;
+          dnaRungT[i] = 0;
+        }
+
+        // Uniform Fibonacci spherical explosion vectors
+        const yU = 1 - (i / (pCount - 1)) * 2;
+        const rU = Math.sqrt(Math.max(0, 1 - yU * yU));
+        const thU = goldenAngle * i;
+        expDirX[i] = Math.cos(thU) * rU;
+        expDirY[i] = yU;
+        expDirZ[i] = Math.sin(thU) * rU;
+        expMag[i] = 7.2 + Math.random() * 6.8;
+        colMixSeed[i] = Math.random();
+      }
 
       const starGeo = new THREE.BufferGeometry();
-      const sCount = 340;
-      const sPos = new Float32Array(sCount * 3);
-      for (let i = 0; i < sCount * 3; i += 3) {
-        sPos[i] = (Math.random() - 0.5) * 45;
-        sPos[i + 1] = (Math.random() - 0.5) * 45;
-        sPos[i + 2] = (Math.random() - 0.5) * 70;
-      }
-      starGeo.setAttribute('position', new THREE.BufferAttribute(sPos, 3));
-      const starField = new THREE.Points(starGeo, new THREE.PointsMaterial({
+      starGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+      starGeo.setAttribute('color', new THREE.BufferAttribute(pCol, 3));
+
+      const particleMat = new THREE.PointsMaterial({
         map: new THREE.CanvasTexture(dotCv),
-        size: 0.26,
+        size: 0.22,
         transparent: true,
-        opacity: 0.48,
+        opacity: 0.72,
         depthWrite: false,
+        vertexColors: true,
         blending: THREE.NormalBlending
-      }));
+      });
+      const starField = new THREE.Points(starGeo, particleMat);
       scene.add(starField);
+
+      let smoothScrollP = 0;
+      let lastBluePhase = false;
+      function smoothStep(edge0, edge1, x) {
+        const k = Math.max(0, Math.min(1, (x - edge0) / (edge1 - edge0)));
+        return k * k * (3 - 2 * k);
+      }
+
+      function updateMorphParticles(t, p) {
+        // Background transition: White/Alabaster (#f5f3ee) -> Architectural Sapphire (#0f3180) after 70%
+        const blueMix = smoothStep(0.70, 0.90, p);
+        const bgR = Math.round(245 + (15 - 245) * blueMix);
+        const bgG = Math.round(243 + (49 - 243) * blueMix);
+        const bgB = Math.round(238 + (128 - 238) * blueMix);
+        const bgRgb = `rgb(${bgR},${bgG},${bgB})`;
+        document.documentElement.style.backgroundColor = bgRgb;
+        document.body.style.backgroundColor = bgRgb;
+
+        const inBlue = blueMix > 0.35;
+        if (inBlue !== lastBluePhase) {
+          lastBluePhase = inBlue;
+          document.documentElement.classList.toggle('sapphire-phase', inBlue);
+        }
+
+        // Morph weights across scroll p (0 -> 1)
+        const wDnaIn   = smoothStep(0.20, 0.38, p);
+        const wExplode = smoothStep(0.54, 0.67, p);
+        const wReOrbit = smoothStep(0.75, 0.94, p);
+        const pinch = 1.0 - 0.38 * smoothStep(0.16, 0.32, p) * (1.0 - smoothStep(0.32, 0.44, p));
+
+        const posArr = starGeo.attributes.position.array;
+        const colArr = starGeo.attributes.color.array;
+        particleMat.opacity = 0.50 + 0.36 * blueMix;
+
+        for (let i = 0; i < pCount; i++) {
+          const i3 = i * 3;
+          // 1. Orbit 1 (initial tilted elliptical rings)
+          const ang = pOrbAngle[i] + t * pOrbSpeed[i];
+          const r1 = pOrbRadius[i] * pinch;
+          const ox0 = Math.cos(ang) * r1;
+          const oz0 = Math.sin(ang) * r1;
+          const oyTilt = oz0 * Math.sin(pOrbTiltX[i]);
+          const ozTilt = oz0 * Math.cos(pOrbTiltX[i]);
+          const cT = Math.cos(pOrbTiltZ[i]), sT = Math.sin(pOrbTiltZ[i]);
+          const ox = ox0 * cT - oyTilt * sT;
+          const oy = ox0 * sT + oyTilt * cT;
+          const oz = ozTilt;
+
+          // 2. DNA Double Helix (counter-phased strands + rungs, slight 24deg diagonal lean)
+          const hy = dnaY[i];
+          const hAng = hy * 1.45 + t * 0.55;
+          const rad = 1.65;
+          let dxRaw, dzRaw;
+          if (dnaStrand[i] === 2) {
+            dxRaw = Math.cos(hAng) * rad * dnaRungT[i];
+            dzRaw = Math.sin(hAng) * rad * dnaRungT[i];
+          } else {
+            const ph = dnaStrand[i] * Math.PI;
+            dxRaw = Math.cos(hAng + ph) * rad;
+            dzRaw = Math.sin(hAng + ph) * rad;
+          }
+          // Tilt helix cleanly diagonally for sculpted depth
+          const dx = dxRaw * 0.92 - hy * 0.38;
+          const dy = dxRaw * 0.38 + hy * 0.92;
+          const dz = dzRaw - 1.2;
+
+          // 3. Radial Spiral Explosion
+          const burstSpin = t * 0.35 + (i % 9) * 0.08;
+          const ex = (expDirX[i] * Math.cos(burstSpin) - expDirZ[i] * Math.sin(burstSpin)) * expMag[i];
+          const ey = expDirY[i] * expMag[i] * 0.72;
+          const ez = (expDirX[i] * Math.sin(burstSpin) + expDirZ[i] * Math.cos(burstSpin)) * expMag[i];
+
+          // 4. Expanded Re-Orbit (wider sovereign halo in Sapphire phase)
+          const ang2 = pOrbAngle[i] - t * pOrbSpeed[i] * 1.15;
+          const r2 = pOrbRadius[i] * 1.32;
+          const o2x0 = Math.cos(ang2) * r2;
+          const o2z0 = Math.sin(ang2) * r2;
+          const o2yT = o2z0 * Math.sin(-pOrbTiltX[i] * 0.75);
+          const o2zT = o2z0 * Math.cos(-pOrbTiltX[i] * 0.75);
+          const o2x = o2x0 * cT + o2yT * sT;
+          const o2y = -o2x0 * sT + o2yT * cT;
+          const o2z = o2zT;
+
+          // Sequential piecewise smooth blending: Orbit -> DNA -> Explode -> Re-Orbit
+          let fx = ox + (dx - ox) * wDnaIn;
+          let fy = oy + (dy - oy) * wDnaIn;
+          let fz = oz + (dz - oz) * wDnaIn;
+
+          fx = fx + (ex - fx) * wExplode;
+          fy = fy + (ey - fy) * wExplode;
+          fz = fz + (ez - fz) * wExplode;
+
+          fx = fx + (o2x - fx) * wReOrbit;
+          fy = fy + (o2y - fy) * wReOrbit;
+          fz = fz + (o2z - fz) * wReOrbit;
+
+          posArr[i3]     = fx;
+          posArr[i3 + 1] = fy;
+          posArr[i3 + 2] = fz;
+
+          // Adaptive vertex color: Royal Cobalt + Bronze on Alabaster -> Ice Cyan + Pure White + Bright Gold on Sapphire
+          const isGold = colMixSeed[i] > 0.68;
+          const isIce  = colMixSeed[i] < 0.34;
+          const lightR = isGold ? 0.60 : (isIce ? 0.11 : 0.22);
+          const lightG = isGold ? 0.43 : (isIce ? 0.31 : 0.36);
+          const lightB = isGold ? 0.13 : (isIce ? 0.85 : 0.78);
+
+          const blueR  = isGold ? 0.99 : (isIce ? 0.98 : 0.49);
+          const blueG  = isGold ? 0.88 : (isIce ? 0.99 : 0.83);
+          const blueB  = isGold ? 0.54 : (isIce ? 1.00 : 0.99);
+
+          colArr[i3]     = lightR + (blueR - lightR) * blueMix;
+          colArr[i3 + 1] = lightG + (blueG - lightG) * blueMix;
+          colArr[i3 + 2] = lightB + (blueB - lightB) * blueMix;
+        }
+
+        starGeo.attributes.position.needsUpdate = true;
+        starGeo.attributes.color.needsUpdate = true;
+      }
+      updateMorphParticles(0, 0);
 
       /* ------------------------------------------------------------------------
          4. REAL LOOKDEV BLENDER FRAME SCRUBBER IN HERO (/frames/hero/*.webp)
@@ -1825,7 +2081,13 @@
         document.documentElement.style.setProperty('--light-x', `${curLX.toFixed(1)}%`);
         document.documentElement.style.setProperty('--light-y', `${curLY.toFixed(1)}%`);
 
-        starField.rotation.y += 0.0004;
+        const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        const rawP = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+        smoothScrollP += (rawP - smoothScrollP) * 0.09;
+
+        updateMorphParticles(t, smoothScrollP);
+        starField.rotation.y = Math.sin(t * 0.12) * 0.12 + ((curLX - 50) * 0.003);
+        starField.rotation.x = ((curLY - 50) * 0.002);
         renderer.render(scene, camera);
 
         drawWave(heroWave, 380, 54, t, 14);
