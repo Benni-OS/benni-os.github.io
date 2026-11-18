@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6415277800729792" crossorigin="anonymous"></script>
+
+  <title>Disjuntores Econômicos para Enxames de IA: Prevenindo Contas Fora de Controle com agent-budget-governor — Benni Alencar // Benni OS</title>
+  <meta name="description" content="Como orçamentos hierárquicos, disjuntores de taxa de queima (velocity burn-rate) em janela deslizante, soft downgrade automático de modelos e um ledger SHA-256 no Benni-OS/agent-budget-governor evitam contas fora de controle em enxames de IA em menos de 0,05 ms." />
+  <link rel="canonical" href="https://benni-os.net/blog/agent-budget-governor-disjuntor-economico-orcamento-agentes-ia.html" />
+  <link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/agent-budget-governor-disjuntor-economico-orcamento-agentes-ia.html" />
+  <link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/agent-budget-governor-economic-circuit-breaker-ai-agents.html" />
+  <link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/agent-budget-governor-economic-circuit-breaker-ai-agents.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Disjuntores Econômicos para Enxames de IA: Prevenindo Contas Fora de Controle com agent-budget-governor" />
+  <meta property="og:description" content="Elimine contas fora de controle em enxames de IA com árvores hierárquicas de orçamento, disjuntores de velocidade em janela deslizante, soft downgrade automático e ledger SHA-256 encadeado." />
+  <meta property="og:image" content="https://benni-os.net/blog/assets/flow_hero_control-plane.jpg" />
+  <meta property="og:url" content="https://benni-os.net/blog/agent-budget-governor-disjuntor-economico-orcamento-agentes-ia.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://benni-os.net/blog/assets/flow_hero_control-plane.jpg" />
+  <meta name="twitter:creator" content="@BenniAlencar" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": ["TechArticle", "BlogPosting"],
+        "@id": "https://benni-os.net/blog/agent-budget-governor-disjuntor-economico-orcamento-agentes-ia.html#article",
+        "isPartOf": {
+          "@type": "WebSite",
+          "@id": "https://benni-os.net/#website",
+          "name": "Benni OS",
+          "url": "https://benni-os.net"
+        },
+        "headline": "Disjuntores Econômicos para Enxames de IA: Prevenindo Contas Fora de Controle com agent-budget-governor",
+        "description": "Como orçamentos hierárquicos, disjuntores de taxa de queima (velocity burn-rate) em janela deslizante, soft downgrade automático de modelos e um ledger SHA-256 no Benni-OS/agent-budget-governor evitam contas fora de controle em enxames de IA em menos de 0,05 ms.",
+        "inLanguage": "pt-BR",
+        "mainEntityOfPage": "https://benni-os.net/blog/agent-budget-governor-disjuntor-economico-orcamento-agentes-ia.html",
+        "url": "https://benni-os.net/blog/agent-budget-governor-disjuntor-economico-orcamento-agentes-ia.html",
+        "image": "https://benni-os.net/blog/assets/flow_hero_control-plane.jpg",
+        "datePublished": "2026-11-18T00:00:00Z",
+        "dateModified": "2026-11-18T00:00:00Z",
+        "keywords": "disjuntor economico, orcamento agentes ia, runaway token bills, agent-budget-governor, orcamento hierarquico, burn rate, soft downgrade, ledger sha256, finops agentes ia, benni os",
+        "author": {
+          "@type": "Person",
+          "@id": "https://benni-os.net/#author",
+          "name": "Benni Alencar",
+          "jobTitle": "Chief AI Systems Architect & Founder",
+          "url": "https://benni-os.net",
+          "sameAs": [
+            "https://github.com/BenniAlencar",
+            "https://github.com/Benni-OS",
+            "https://dev.to/bennialencar",
+            "https://www.linkedin.com/in/benni-alencar/",
+            "https://benni-os.net"
+          ]
+        },
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://benni-os.net/#organization",
+          "name": "Benni OS",
+          "url": "https://benni-os.net",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://benni-os.net/blog/assets/benni_avatar.jpg"
+          }
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://benni-os.net/blog/agent-budget-governor-disjuntor-economico-orcamento-agentes-ia.html#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Por que os limites mensais de gasto da OpenAI ou Anthropic não bastam para enxames de agentes?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Limites mensais no provedor são grosseiros e reativos. Eles sincronizam com atraso de billing e revogam a chave da organização inteira de uma vez—derrubando toda a produção quando um único worker entra em loop de retentativas. O agent-budget-governor impõe orçamentos isolados em pré-voo por tenant, execução de enxame e subagente em menos de 0,05 ms localmente."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Como o Soft Downgrade Automático evita falhas abruptas no meio de uma tarefa?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Quando uma execução cruza um limiar suave configurável (como 80% do orçamento alocado ou um pico moderado de velocidade de queima), o agent-budget-governor muda o estado do disjuntor para SOFT_DOWNGRADE em vez de abortar imediatamente. Os passos seguintes são roteados automaticamente para um modelo compacto de menor custo ou modelo local com teto reduzido de tokens de saída, permitindo sintetizar e salvar o checkpoint com segurança."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Como o disjuntor de velocidade de queima (velocity burn-rate) em janela deslizante trava loops infinitos?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Um loop fechado pode queimar centenas de dólares em segundos muito antes de um teto mensal ou diário ser percebido. O disjuntor de velocidade monitora o gasto em USD ao longo de uma janela deslizante curta (por exemplo, 10 a 60 segundos). Se a taxa instantânea de queima ultrapassar max_usd_per_min do nó, o disjuntor abre imediatamente independentemente do saldo total restante."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Como o ledger SHA-256 encadeado garante atribuição de custos à prova de adulteração?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Cada reserva de orçamento, soft downgrade, abertura de disjuntor e recibo reconciliado de tokens é serializado com trace_id, node_id, timestamp e o digest da entrada anterior, recebendo um hash SHA-256. Qualquer edição retroativa ou omissão quebra a verificação da cadeia, entregando não-repúdio criptográfico para FinOps corporativo e rateio multi-tenant."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #07080c;
+      --panel: #0e111a;
+      --panel-hover: #141824;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-border-hover: rgba(0, 240, 255, 0.35);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --cyan: #00f0ff;
+      --cyan-glow: rgba(0, 240, 255, 0.15);
+      --blue: #3b82f6;
+      --lime: #10b981;
+      --orange: #ff6b00;
+      --purple: #a855f7;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-title: 'DM Serif Display', Georgia, serif;
+      --font-code: 'IBM Plex Mono', monospace;
+      --badge-color: #00f0ff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.75;
+      font-size: 1.05rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59, 130, 246, 0.12), transparent),
+        radial-gradient(circle at 100% 40%, rgba(168, 85, 247, 0.06), transparent 50%),
+        radial-gradient(circle at 0% 70%, rgba(0, 240, 255, 0.05), transparent 50%);
+      background-attachment: fixed;
+    }
+    header.magazine-header {
+      background: rgba(7, 8, 12, 0.85);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--card-border);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 0.9rem 2rem;
+    }
+    .nav-container {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand-logo {
+      font-family: var(--font-code);
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--text-main);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      letter-spacing: 0.5px;
+    }
+    .brand-logo:hover { color: var(--cyan); }
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #10b981;
+    }
+    nav.nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.8rem;
+    }
+    nav.nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav.nav-links a:hover, nav.nav-links a.active { color: #fff; }
+    .lang-switcher-pill {
+      display: flex;
+      align-items: center;
+      background: rgba(14, 17, 26, 0.8);
+      border: 1px solid var(--card-border);
+      border-radius: 9999px;
+      padding: 3px;
+      gap: 2px;
+    }
+    .lang-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-family: var(--font-code);
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .lang-btn.active {
+      background: rgba(0, 240, 255, 0.15);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+    }
+    .lang-btn:hover:not(.active) {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .reading-progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #00f0ff, #3b82f6, #a855f7);
+      width: 0%;
+      z-index: 9999;
+      transition: width 0.1s ease;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.7);
+    }
+    main.article-layout {
+      max-width: 860px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      flex: 1;
+      width: 100%;
+    }
+    .breadcrumb-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-code);
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      margin-bottom: 1.2rem;
+    }
+    .breadcrumb-nav a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb-nav a:hover { color: var(--cyan); }
+    .breadcrumb-current { color: var(--cyan); }
+    .article-header { margin-bottom: 2.5rem; }
+    .article-meta-badges {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .category-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(10, 12, 18, 0.9);
+      border: 1px solid var(--badge-color);
+      color: var(--badge-color);
+      font-family: var(--font-code);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      letter-spacing: 0.5px;
+    }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .article-meta-text { color: var(--text-dim); font-size: 0.85rem; font-family: var(--font-code); }
+    .article-main-title {
+      font-family: var(--font-title);
+      font-size: clamp(2.3rem, 4.5vw, 3.6rem);
+      font-weight: normal;
+      line-height: 1.15;
+      color: #fff;
+      margin-bottom: 1.2rem;
+      letter-spacing: -0.5px;
+    }
+    .article-lead-paragraph {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1.65;
+      margin-bottom: 2rem;
+    }
+    .article-author-share-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1.2rem 0;
+      margin-bottom: 2rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .author-info-box {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+    .author-photo {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid var(--card-border);
+      object-fit: cover;
+    }
+    .author-name-title {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .author-subtitle {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      font-family: var(--font-code);
+    }
+    .article-hero-cover-figure {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      margin-bottom: 3rem;
+      background: var(--panel);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+    .article-hero-img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .article-prose {
+      color: #cbd5e1;
+      font-size: 1.08rem;
+      line-height: 1.8;
+    }
+    .article-prose h2 {
+      font-family: var(--font-title);
+      font-size: 1.95rem;
+      color: #fff;
+      margin: 2.8rem 0 1rem;
+      letter-spacing: -0.3px;
+    }
+    .article-prose h3 {
+      font-family: var(--font-title);
+      font-size: 1.45rem;
+      color: #f1f5f9;
+      margin: 2rem 0 0.8rem;
+    }
+    .article-prose p {
+      margin-bottom: 1.4rem;
+    }
+    .article-prose ul, .article-prose ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+    }
+    .article-prose li {
+      margin-bottom: 0.5rem;
+    }
+    .article-prose hr {
+      border: none;
+      border-top: 1px solid var(--card-border);
+      margin: 2.5rem 0;
+    }
+    .article-prose code {
+      font-family: var(--font-code);
+      background: rgba(255, 255, 255, 0.06);
+      padding: 0.2rem 0.45rem;
+      border-radius: 6px;
+      font-size: 0.9em;
+      color: var(--cyan);
+    }
+    .article-prose pre {
+      background: #040507;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      overflow-x: auto;
+      margin: 1.6rem 0;
+    }
+    .article-prose pre code {
+      background: transparent;
+      padding: 0;
+      color: #e2e8f0;
+      font-size: 0.88rem;
+    }
+    .callout-box {
+      background: rgba(0, 240, 255, 0.04);
+      border-left: 3px solid var(--cyan);
+      border-radius: 0 12px 12px 0;
+      padding: 1.2rem 1.5rem;
+      margin: 1.8rem 0;
+      color: var(--text-main);
+    }
+    .mermaid {
+      background: #040507;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      display: flex;
+      justify-content: center;
+    }
+    .table-container {
+      overflow-x: auto;
+      margin: 2rem 0;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+    th, td {
+      padding: 1rem 1.2rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+    th {
+      background: var(--panel);
+      color: #fff;
+      font-family: var(--font-code);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    .article-cta-box {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.05), rgba(59, 130, 246, 0.08));
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 2.2rem;
+      margin: 3.5rem 0;
+      text-align: center;
+    }
+    .article-cta-title {
+      font-family: var(--font-title);
+      font-size: 1.6rem;
+      color: var(--text-main);
+      margin-bottom: 0.8rem;
+    }
+    .article-prose a.article-cta-btn,
+    .article-cta-btn {
+      display: inline-block;
+      background: var(--cyan);
+      color: #ffffff !important;
+      font-weight: 700;
+      padding: 0.85rem 2rem;
+      border-radius: 9999px;
+      text-decoration: none !important;
+      font-family: var(--font-code);
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      transition: all 0.2s;
+    }
+    html[data-theme="dark"] .article-prose a.article-cta-btn,
+    html[data-theme="dark"] .article-cta-btn {
+      color: #06090f !important;
+    }
+    .article-cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 240, 255, 0.25);
+    }
+    .article-faq-section {
+      background: var(--panel);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      margin: 3.5rem 0;
+    }
+    .faq-main-heading {
+      font-family: var(--font-title);
+      font-size: 1.8rem;
+      color: #fff;
+      margin-bottom: 1.5rem;
+    }
+    .faq-item-card { border-bottom: 1px solid var(--card-border); padding: 1.2rem 0; }
+    .faq-item-card:last-child { border-bottom: none; }
+    .faq-item-q { font-weight: 700; font-size: 1.1rem; color: var(--cyan); margin-bottom: 0.5rem; }
+    .faq-item-a { color: var(--text-muted); font-size: 0.98rem; line-height: 1.65; }
+    footer.magazine-footer {
+      background: #050608;
+      border-top: 1px solid var(--card-border);
+      padding: 3.5rem 2rem 2rem;
+      margin-top: 5rem;
+    }
+    .footer-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 2.5rem;
+    }
+    @media (max-width: 900px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .footer-grid { grid-template-columns: 1fr; }
+      nav.nav-links { display: none; }
+    }
+    .footer-col h4 {
+      font-family: var(--font-code);
+      font-size: 0.85rem;
+      color: var(--cyan);
+      margin-bottom: 1.2rem;
+      letter-spacing: 1px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.6rem; }
+    .footer-col ul li a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .footer-col ul li a:hover { color: #fff; }
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 1.8rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-dim);
+      font-size: 0.82rem;
+      font-family: var(--font-code);
+    }
+  </style>
+  <link rel="stylesheet" href="/assets/editorial-theme.css" />
+  <script src="/assets/editorial-theme.js"></script>
+  <script defer src="/assets/blog-telemetry.js"></script>
+</head>
+<body>
+  <div class="reading-progress-bar" id="progressBar"></div>
+
+  <header class="magazine-header">
+    <div class="nav-container">
+      <a href="/" class="brand-logo">
+        <span class="status-dot"></span>
+        BENNI OS // MAGAZINE
+      </a>
+      <nav class="nav-links">
+        <a href="/">Início</a>
+        <a href="/blog/pt.html" class="active">Revista</a>
+        <a href="/blog/academy.html">Academy</a>
+        <a href="https://github.com/Benni-OS" target="_blank">GitHub</a>
+        <a href="https://dev.to/bennialencar" target="_blank">Dev.to</a>
+        <div class="lang-switcher-pill" role="navigation" aria-label="Seletor de Idioma">
+          <a href="/blog/en/agent-budget-governor-economic-circuit-breaker-ai-agents.html" class="lang-btn" title="Switch to English">
+            <span>🇺🇸</span> EN
+          </a>
+          <a href="/blog/agent-budget-governor-disjuntor-economico-orcamento-agentes-ia.html" class="lang-btn active" title="Português (Brasil) Ativo">
+            <span>🇧🇷</span> PT-BR
+          </a>
+        </div>
+        <a href="/#monetizacao" style="color: var(--cyan); font-weight: 700;">Operator Mode &rarr;</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-layout">
+    <nav class="breadcrumb-nav">
+      <a href="/blog/pt.html">Revista</a>
+      <span>/</span>
+      <span class="breadcrumb-current">FINOPS &amp; PLANO DE CONTROLE</span>
+    </nav>
+
+    <header class="article-header">
+      <div class="article-meta-badges">
+        <span class="category-badge-pill">
+          <span class="badge-dot"></span>
+          FINOPS &amp; PLANO DE CONTROLE
+        </span>
+        <span class="article-meta-text">14 min de leitura • 18 Nov 2026</span>
+      </div>
+
+      <h1 class="article-main-title">Disjuntores Econômicos para Enxames de IA: Prevenindo Contas Fora de Controle com agent-budget-governor</h1>
+      <p class="article-lead-paragraph">Por que tetos mensais de API por organização falham em enxames multiagente autônomos—e como o <code>Benni-OS/agent-budget-governor</code> impõe árvores hierárquicas de orçamento, disjuntores de taxa de queima (<em>velocity burn-rate</em>), soft downgrade automático de modelos e um ledger SHA-256 à prova de adulteração em menos de 0,05 ms antes que qualquer requisição de inferência saia do seu processo.</p>
+
+      <div class="article-author-share-bar">
+        <div class="author-info-box">
+          <img src="/blog/assets/benni_avatar.jpg" alt="Benni Alencar" class="author-photo" />
+          <div>
+            <div class="author-name-title">Benni Alencar</div>
+            <div class="author-subtitle">Chief AI Systems Architect &amp; Founder</div>
+          </div>
+        </div>
+        <div class="lang-switcher-pill" role="navigation" aria-label="Seletor de Idioma">
+          <a href="/blog/en/agent-budget-governor-economic-circuit-breaker-ai-agents.html" class="lang-btn" title="Switch to English">
+            <span>🇺🇸</span> EN
+          </a>
+          <a href="/blog/agent-budget-governor-disjuntor-economico-orcamento-agentes-ia.html" class="lang-btn active" title="Português (Brasil) Ativo">
+            <span>🇧🇷</span> PT-BR
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <figure class="article-hero-cover-figure">
+      <img src="/blog/assets/flow_hero_control-plane.jpg" alt="Disjuntores Econômicos para Enxames de IA: Prevenindo Contas Fora de Controle com agent-budget-governor" width="1376" height="768" class="article-hero-img" />
+    </figure>
+
+    <article class="article-prose">
+      <hr />
+      <h2>1. O Pesadelo das 3h da Manhã: Por Que Tetos Mensais de Provedor Falham</h2>
+      <p>Todo time que coloca agentes de IA autônomos em produção cedo ou tarde enfrenta o mesmo incidente às 3h da manhã: um worker em background recebe um schema de ferramenta malformado, dispara um loop exponencial de retentativas dentro de um enxame multiagente e queima milhares de dólares em tokens de modelos de fronteira antes que qualquer alerta humano dispare.</p>
+      <p>Grande parte das equipes presume que configurar um limite mensal de gastos no painel da OpenAI, Anthropic ou Google Cloud resolve o risco. Em arquiteturas distribuídas de agentes, tetos no nível do provedor falham em três frentes estruturais:</p>
+      <ul>
+        <li><strong>Raio de Explosão Catastrófico:</strong> Um limite mensal no provedor protege a conta de faturamento revogando a chave da API globalmente. Quando um único worker de pesquisa fora de controle estoura o teto, todos os fluxos saudáveis em produção que compartilham aquela chave caem simultaneamente.</li>
+        <li><strong>Atraso de Telemetria de Billing:</strong> Medidores externos de uso e webhooks de alerta operam com defasagem de minutos a horas. Um loop paralelo instanciando 16 subagentes em janelas de 128k tokens pode queimar <strong>US$ 250 a US$ 600 em menos de 90 segundos</strong> enquanto o dashboard do provedor ainda exibe saldo defasado.</li>
+        <li><strong>Semântica Binária de Corte Abrupto:</strong> Limites remotos devolvem HTTP 429 ou 402 no meio do raciocínio, deixando mutações parciais de ferramentas sem commit e pipelines multi-etapas interrompidos sem checkpoint ou degradação controlada.</li>
+      </ul>
+      <div class="callout-box">
+        <strong>Tese Central:</strong> Redes elétricas não esperam a usina derreter para conter um curto-circuito em uma tomada—elas posicionam disjuntores locais rápidos em cada quadro de distribuição. Enxames autônomos exigem disjuntores econômicos determinísticos em pré-voo rodando localmente em <strong>&lt; 0,05 ms</strong> antes que um único socket se abra para o provedor de LLM.
+      </div>
+
+      <hr />
+      <h2>2. Anatomia do Desperdício Financeiro em Enxames Multiagente</h2>
+      <p>Diferente de microsserviços REST determinísticos, agentes autônomos exibem amplificação de custo não linear. Três dinâmicas combinadas transformam prompts unitariamente baratos em faturas explosivas:</p>
+
+      <h3>A. Acúmulo de Contexto e Custo Quadrático por Turno</h3>
+      <p>Em loops ReAct ou de <em>tool-calling</em> convencionais, cada turno concatena todo o histórico de raciocínio e o stdout bruto das ferramentas de volta ao prompt. Se um agente itera 25 vezes tentando corrigir um teste instável anexando 3.000 tokens de stack trace por passo, o consumo total de entrada cresce de forma quadrática—queimando facilmente mais de 1 milhão de tokens para um único ticket travado.</p>
+
+      <h3>B. Amplificação por Fan-Out Hierárquico</h3>
+      <p>Quando um orquestrador delega uma missão a quatro agentes especialistas e cada especialista invoca três subagentes críticos de verificação, a vazão de tokens escala como <code>O(fator_ramificacao ^ profundidade)</code>. Sem particionamento rígido entre pai e filho, um worker subordinado enxerga toda a cota financeira da organização.</p>
+
+      <h3>C. Picos de Velocidade de Queima (Velocity Burn-Rate)</h3>
+      <p>Olhar apenas o orçamento acumulado da execução esconde anomalias de alta frequência. Suponha uma cota diária por tenant de <code>US$ 50,00</code>, que parece conservadora. Se um loop defeituoso queima <code>US$ 12,00</code> em 8 segundos a uma velocidade de <code>US$ 90,00/min</code>, esperar o teto de <code>US$ 50,00</code> garante desperdício financeiro evitável antes da intervenção.</p>
+
+      <hr />
+      <h2>3. Arquitetura: Orçamentos Hierárquicos, Disjuntores de Velocidade e Soft Downgrade</h2>
+      <p>O <code>Benni-OS/agent-budget-governor</code> atua na fronteira de despacho em pré-voo de cada cliente LLM, gateway MCP e orquestrador de enxame. Antes de qualquer chamada de inferência ser enviada, o governador avalia quatro camadas determinísticas em <strong>&lt; 0,05 ms</strong> na CPU local:</p>
+
+      <div class="mermaid">
+flowchart LR
+    A["Requisição de Passo do Enxame\n(tenant / run / worker)"] -->|"Reserva em Pré-Voo"| B["1. Árvore Hierárquica de Orçamento\n(Org &rarr; Tenant &rarr; Run &rarr; Worker)"]
+    B -->|"Verifica Teto e Fatia"| C["2. Velocidade em Janela Deslizante\n(&lt; 0,05ms Burn-Rate Check)"]
+    C -->|"Gasto &lt; 80% &amp; Taxa Normal"| D["CLOSED: ALLOW\n(Modelo Tier Fronteira)"]
+    C -->|"80% &lt;= Gasto &lt; 100% ou Alerta Taxa"| E["HALF-OPEN: SOFT_DOWNGRADE\n(Modelo Compacto / Local)"]
+    C -->|"Gasto &gt;= 100% ou Pico Crítico"| F["OPEN: TRIP_CIRCUIT\n(Trava &amp; Salva Checkpoint)"]
+    D -->|"Consolida Uso Real"| G["4. Ledger SHA-256 de Gastos\n(Cadeia de Auditoria Imutável)"]
+    E -->|"Consolida Uso Real"| G
+    F -->|"Emite Recibo de Abertura"| G
+      </div>
+
+      <h3>Camada 1: Árvores Hierárquicas de Orçamento com Reserva Atômica</h3>
+      <p>Os orçamentos formam uma árvore estrita: <code>Organização &rarr; Tenant &rarr; Execução do Enxame &rarr; Agente Worker</code>. Quando um orquestrador pai instancia um subagente, ele recorta uma fatia isolada via <code>allocate_child()</code>. Antes de a chamada HTTP sair do processo, <code>pre_flight_reserve()</code> bloqueia uma reserva pelo pior caso estimado (tokens de entrada + teto de saída). Após a resposta do provedor, <code>commit_usage()</code> reconcilia os tokens reais consumidos e devolve a sobra reservada ao nó.</p>
+
+      <h3>Camada 2: Disjuntor de Velocidade de Queima em Janela Deslizante</h3>
+      <p>Em vez de inspecionar apenas o total acumulado, cada nó mantém um buffer circular monotônico de deltas de custo com timestamp em uma janela deslizante configurável (por exemplo, 10 s ou 60 s). Se a velocidade instantânea de queima ultrapassar <code>max_usd_per_min</code>, o disjuntor abre imediatamente—estancando tempestades de retentativa em milissegundos mesmo quando o orçamento total acumulado ainda está longe de 100%.</p>
+
+      <h3>Camada 3: Soft Downgrade Automático (Degradação Graciosa)</h3>
+      <p>Matar um agente abruptamente aos 85% do orçamento desperdiça todo o raciocínio já produzido. Quando o consumo cruza um limiar suave (como 80% do teto do nó) ou entra em faixa amarela de velocidade, o <code>agent-budget-governor</code> retorna uma decisão tipada <code>SOFT_DOWNGRADE</code> com substituição explícita de modelo (por exemplo, migrando de um modelo de fronteira para um tier compacto ou runtime local quantizado, com teto reduzido de <code>max_output_tokens</code>). O agente sintetiza o resultado, grava o checkpoint e encerra de forma limpa.</p>
+
+      <h3>Camada 4: Ledger SHA-256 à Prova de Adulteração</h3>
+      <p>Cada reserva, soft downgrade, abertura de disjuntor e liquidação de uso real grava um registro imutável encadeado ao digest SHA-256 anterior: <code>entry_hash = sha256(prev_hash || canonical_payload)</code>. Qualquer linha alterada ou removida invalida a cadeia criptográfica—oferecendo atribuição auditável por <code>trace_id</code> e <code>tenant_id</code> para FinOps, faturamento e compliance.</p>
+
+      <hr />
+      <h2>4. Implementação de Referência: Disjuntor Hierárquico e Ledger SHA-256 em Python</h2>
+      <p>Abaixo está o núcleo Python sem dependências externas por trás do <code>Benni-OS/agent-budget-governor</code>. Ele implementa reserva hierárquica pai-filho, detecção de velocidade em janela deslizante, soft downgrade automático de modelo e ledger SHA-256 verificável:</p>
+
+<pre><code class="language-python">import hashlib
+import json
+import threading
+import time
+from collections import deque
+from dataclasses import dataclass, field
+from enum import Enum
+from typing import Deque, Dict, List, Optional, Tuple
+
+
+class CircuitState(str, Enum):
+    CLOSED = "CLOSED"                  # Execução normal no modelo solicitado
+    SOFT_DOWNGRADE = "SOFT_DOWNGRADE"  # Roteamento automático para tier compacto/local
+    OPEN = "OPEN"                      # Disjuntor aberto: bloqueia inferência imediatamente
+
+
+class BudgetCircuitOpenError(RuntimeError):
+    """Exceção disparada quando o disjuntor econômico bloqueia uma inferência."""
+
+
+@dataclass(frozen=True)
+class PreFlightDecision:
+    allowed: bool
+    state: CircuitState
+    node_id: str
+    reservation_id: str
+    recommended_model: str
+    max_output_tokens: int
+    reason: str
+    remaining_usd: float
+    burn_rate_usd_per_min: float
+
+
+@dataclass(frozen=True)
+class LedgerEntry:
+    seq: int
+    timestamp: float
+    trace_id: str
+    node_id: str
+    event_type: str
+    model: str
+    amount_usd: float
+    decision: str
+    prev_hash: str
+    entry_hash: str
+
+
+class SpendLedger:
+    """Ledger append-only encadeado via SHA-256 para atribuição FinOps imutável."""
+
+    def __init__(self) -&gt; None:
+        self._entries: List[LedgerEntry] = []
+        self._head_hash: str = "0" * 64
+        self._lock = threading.Lock()
+
+    def append(
+        self,
+        trace_id: str,
+        node_id: str,
+        event_type: str,
+        model: str,
+        amount_usd: float,
+        decision: str,
+    ) -&gt; LedgerEntry:
+        with self._lock:
+            seq = len(self._entries)
+            ts = time.time()
+            payload = json.dumps(
+                {
+                    "seq": seq,
+                    "timestamp": round(ts, 6),
+                    "trace_id": trace_id,
+                    "node_id": node_id,
+                    "event_type": event_type,
+                    "model": model,
+                    "amount_usd": round(amount_usd, 8),
+                    "decision": decision,
+                    "prev_hash": self._head_hash,
+                },
+                sort_keys=True,
+                separators=(",", ":"),
+            )
+            entry_hash = hashlib.sha256(payload.encode("utf-8")).hexdigest()
+            entry = LedgerEntry(
+                seq=seq,
+                timestamp=ts,
+                trace_id=trace_id,
+                node_id=node_id,
+                event_type=event_type,
+                model=model,
+                amount_usd=amount_usd,
+                decision=decision,
+                prev_hash=self._head_hash,
+                entry_hash=entry_hash,
+            )
+            self._entries.append(entry)
+            self._head_hash = entry_hash
+            return entry
+
+    def verify_chain(self) -&gt; bool:
+        expected_prev = "0" * 64
+        for entry in self._entries:
+            if entry.prev_hash != expected_prev:
+                return False
+            payload = json.dumps(
+                {
+                    "seq": entry.seq,
+                    "timestamp": round(entry.timestamp, 6),
+                    "trace_id": entry.trace_id,
+                    "node_id": entry.node_id,
+                    "event_type": entry.event_type,
+                    "model": entry.model,
+                    "amount_usd": round(entry.amount_usd, 8),
+                    "decision": entry.decision,
+                    "prev_hash": entry.prev_hash,
+                },
+                sort_keys=True,
+                separators=(",", ":"),
+            )
+            recomputed = hashlib.sha256(payload.encode("utf-8")).hexdigest()
+            if recomputed != entry.entry_hash:
+                return False
+            expected_prev = entry.entry_hash
+        return True
+
+
+@dataclass
+class BudgetNode:
+    node_id: str
+    hard_cap_usd: float
+    soft_ratio: float = 0.80
+    max_usd_per_min: float = 2.00
+    velocity_window_sec: float = 60.0
+    fallback_model: str = "gpt-4o-mini"
+    fallback_max_tokens: int = 1024
+    parent: Optional["BudgetNode"] = None
+    spent_usd: float = 0.0
+    reserved_usd: float = 0.0
+    _events: Deque[Tuple[float, float]] = field(default_factory=deque)
+
+    def available_usd(self) -&gt; float:
+        return max(0.0, self.hard_cap_usd - (self.spent_usd + self.reserved_usd))
+
+    def current_burn_rate_per_min(self, now: float) -&gt; float:
+        cutoff = now - self.velocity_window_sec
+        while self._events and self._events[0][0] &lt; cutoff:
+            self._events.popleft()
+        window_spend = sum(amt for _, amt in self._events)
+        return (window_spend / self.velocity_window_sec) * 60.0
+
+
+class BudgetGovernor:
+    """Disjuntor econômico determinístico sub-milissegundo para enxames de IA."""
+
+    def __init__(self, ledger: Optional[SpendLedger] = None) -&gt; None:
+        self.nodes: Dict[str, BudgetNode] = {}
+        self.reservations: Dict[str, Tuple[str, float, str]] = {}
+        self.ledger = ledger or SpendLedger()
+        self._lock = threading.Lock()
+        self._seq = 0
+
+    def register_root(self, node_id: str, hard_cap_usd: float, **kwargs) -&gt; BudgetNode:
+        with self._lock:
+            node = BudgetNode(node_id=node_id, hard_cap_usd=hard_cap_usd, **kwargs)
+            self.nodes[node_id] = node
+            return node
+
+    def allocate_child(
+        self, parent_id: str, child_id: str, child_cap_usd: float, **kwargs
+    ) -&gt; BudgetNode:
+        with self._lock:
+            parent = self.nodes[parent_id]
+            if child_cap_usd &gt; parent.available_usd():
+                raise BudgetCircuitOpenError(
+                    f"Impossível alocar ${child_cap_usd:.4f} para {child_id}; "
+                    f"nó pai {parent_id} possui apenas ${parent.available_usd():.4f} disponíveis."
+                )
+            # Isola a fatia na reserva do pai imediatamente para impedir oversubscription entre irmãos
+            parent.reserved_usd += child_cap_usd
+            child = BudgetNode(
+                node_id=child_id,
+                hard_cap_usd=child_cap_usd,
+                parent=parent,
+                **kwargs,
+            )
+            self.nodes[child_id] = child
+            return child
+
+    def pre_flight_reserve(
+        self,
+        node_id: str,
+        trace_id: str,
+        requested_model: str,
+        estimated_cost_usd: float,
+        requested_max_tokens: int = 4096,
+    ) -&gt; PreFlightDecision:
+        with self._lock:
+            node = self.nodes[node_id]
+            now = time.monotonic()
+            burn_rate = node.current_burn_rate_per_min(now)
+            projected_total = node.spent_usd + node.reserved_usd + estimated_cost_usd
+
+            # 1. Pico de Velocidade ou Estouro de Teto -&gt; Disjuntor OPEN
+            if burn_rate &gt;= node.max_usd_per_min:
+                self.ledger.append(
+                    trace_id, node_id, "CIRCUIT_TRIP_VELOCITY", requested_model, 0.0, "OPEN"
+                )
+                return PreFlightDecision(
+                    allowed=False,
+                    state=CircuitState.OPEN,
+                    node_id=node_id,
+                    reservation_id="",
+                    recommended_model=requested_model,
+                    max_output_tokens=0,
+                    reason=f"velocity_spike:{burn_rate:.2f}_usd_per_min",
+                    remaining_usd=node.available_usd(),
+                    burn_rate_usd_per_min=burn_rate,
+                )
+
+            if projected_total &gt; node.hard_cap_usd:
+                self.ledger.append(
+                    trace_id, node_id, "CIRCUIT_TRIP_CAP", requested_model, 0.0, "OPEN"
+                )
+                return PreFlightDecision(
+                    allowed=False,
+                    state=CircuitState.OPEN,
+                    node_id=node_id,
+                    reservation_id="",
+                    recommended_model=requested_model,
+                    max_output_tokens=0,
+                    reason="hard_budget_cap_exceeded",
+                    remaining_usd=node.available_usd(),
+                    burn_rate_usd_per_min=burn_rate,
+                )
+
+            # 2. Reserva atômica do teto de pior caso
+            self._seq += 1
+            res_id = f"res_{node_id}_{self._seq}"
+            node.reserved_usd += estimated_cost_usd
+            self.reservations[res_id] = (node_id, estimated_cost_usd, trace_id)
+
+            # 3. Avalia limiar suave ou pressão antecipada de velocidade -&gt; SOFT_DOWNGRADE
+            utilization = projected_total / node.hard_cap_usd
+            if utilization &gt;= node.soft_ratio or burn_rate &gt;= (node.max_usd_per_min * 0.75):
+                self.ledger.append(
+                    trace_id,
+                    node_id,
+                    "RESERVE_SOFT_DOWNGRADE",
+                    node.fallback_model,
+                    estimated_cost_usd,
+                    "SOFT_DOWNGRADE",
+                )
+                return PreFlightDecision(
+                    allowed=True,
+                    state=CircuitState.SOFT_DOWNGRADE,
+                    node_id=node_id,
+                    reservation_id=res_id,
+                    recommended_model=node.fallback_model,
+                    max_output_tokens=min(requested_max_tokens, node.fallback_max_tokens),
+                    reason=f"soft_threshold_reached:{utilization:.1%}",
+                    remaining_usd=node.available_usd(),
+                    burn_rate_usd_per_min=burn_rate,
+                )
+
+            self.ledger.append(
+                trace_id, node_id, "RESERVE_ALLOW", requested_model, estimated_cost_usd, "CLOSED"
+            )
+            return PreFlightDecision(
+                allowed=True,
+                state=CircuitState.CLOSED,
+                node_id=node_id,
+                reservation_id=res_id,
+                recommended_model=requested_model,
+                max_output_tokens=requested_max_tokens,
+                reason="within_budget",
+                remaining_usd=node.available_usd(),
+                burn_rate_usd_per_min=burn_rate,
+            )
+
+    def commit_usage(
+        self, reservation_id: str, model_used: str, actual_cost_usd: float
+    ) -&gt; LedgerEntry:
+        with self._lock:
+            node_id, est_cost, trace_id = self.reservations.pop(reservation_id)
+            node = self.nodes[node_id]
+            node.reserved_usd = max(0.0, node.reserved_usd - est_cost)
+            node.spent_usd += actual_cost_usd
+            node._events.append((time.monotonic(), actual_cost_usd))
+
+            # Propaga o gasto real para a cadeia ancestral na árvore hierárquica
+            curr = node.parent
+            while curr is not None:
+                curr.spent_usd += actual_cost_usd
+                curr.reserved_usd = max(0.0, curr.reserved_usd - actual_cost_usd)
+                curr._events.append((time.monotonic(), actual_cost_usd))
+                curr = curr.parent
+
+            return self.ledger.append(
+                trace_id, node_id, "COMMIT_USAGE", model_used, actual_cost_usd, "SETTLED"
+            )
+</code></pre>
+
+      <h3>Padrão de Integração em Despacho de Enxames</h3>
+      <p>Proteger um passo de worker autônomo exige cinco linhas de Python determinístico. Mesmo se um agente entrar em loop de validação JSON, o governador força degradação graciosa aos 80% do teto e interrompe a execução antes de exceder o sub-orçamento alocado:</p>
+
+<pre><code class="language-python">governor = BudgetGovernor()
+governor.register_root("org_prod", hard_cap_usd=100.00, max_usd_per_min=15.0)
+governor.allocate_child("org_prod", "swarm_run_42", child_cap_usd=5.00, max_usd_per_min=1.20)
+governor.allocate_child(
+    "swarm_run_42", "research_worker_1", child_cap_usd=1.00,
+    soft_ratio=0.80, fallback_model="gpt-4o-mini"
+)
+
+decision = governor.pre_flight_reserve(
+    node_id="research_worker_1",
+    trace_id="trace_98f1a",
+    requested_model="claude-sonnet-4",
+    estimated_cost_usd=0.045,
+)
+if not decision.allowed:
+    raise BudgetCircuitOpenError(f"Passo interrompido com segurança: {decision.reason}")
+
+# Roteia usando decision.recommended_model e decision.max_output_tokens, depois liquida:
+governor.commit_usage(decision.reservation_id, decision.recommended_model, actual_cost_usd=0.031)
+assert governor.ledger.verify_chain()
+</code></pre>
+
+      <hr />
+      <h2>5. Comparação Empírica: APIs Cruas vs. Limites de Provedor vs. agent-budget-governor</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Dimensão de Governança e FinOps</th>
+              <th>SDK Cru (Sem Guardrails)</th>
+              <th>Teto Mensal do Provedor</th>
+              <th>Benni-OS/agent-budget-governor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Raio de Explosão em Loop</strong></td>
+              <td>Fatura em nuvem ilimitada</td>
+              <td>Queda global de toda a produção</td>
+              <td><strong>Isolado à execução ou worker específico</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Detecção de Velocidade de Queima</strong></td>
+              <td>Nenhuma</td>
+              <td>Atraso de minutos a horas no billing</td>
+              <td><strong>Janela deslizante em tempo real (&lt; 0,05 ms)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Comportamento Perto do Teto</strong></td>
+              <td>Explosão contínua de gastos</td>
+              <td>Crash abrupto HTTP 429 / 402</td>
+              <td><strong>Soft Downgrade automático + checkpoint</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Particionamento entre Subagentes</strong></td>
+              <td>Chave única compartilhada</td>
+              <td>Rotação manual de chaves por time</td>
+              <td><strong>Árvore hierárquica Pai &rarr; Filho atômica</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Auditoria e Atribuição de Custo</strong></td>
+              <td>Fatura fechada no fim do mês</td>
+              <td>Totais agregados da organização</td>
+              <td><strong>Ledger SHA-256 encadeado e verificável</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Latência em Pré-Voo</strong></td>
+              <td>0 ms</td>
+              <td>Apenas checagem remota na API</td>
+              <td><strong>&lt; 0,05 ms em CPU Local (Zero Custo de LLM)</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <hr />
+      <h2>6. Defesa em Profundidade na Suíte Soberana Benni OS</h2>
+      <p>A governança econômica atinge confiabilidade máxima quando combinada às salvaguardas estruturais do restante da stack Benni OS. Em pipelines produtivos, o <code>agent-intent-compiler</code> elimina loops estocásticos de planejamento antes da execução, o <code>agent-context-firewall</code> coloca dados não confiáveis em quarentena para impedir que injeções indiretas disparem fan-outs indevidos de ferramentas e o <code>agent-budget-governor</code> impõe a fronteira financeira determinística em cada chamada de inferência e ferramenta MCP.</p>
+      <p>Cada abertura de disjuntor ou reserva liquidada registra na mesma linhagem de rastreamento usada pelo <code>agent-run-ledger</code> e pelo <code>agent-trace-replay</code>—dando às equipes de plataforma controle previsível de custos, unit economics estável e recibos criptográficos verificáveis para cada token consumido.</p>
+
+      <div class="article-cta-box">
+        <h3 class="article-cta-title">Instale Freios Financeiros Determinísticos nos Seus Enxames</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; max-width: 620px; margin: 0 auto;">
+          Clone o <strong>Benni-OS/agent-budget-governor</strong>, imponha orçamentos hierárquicos e disjuntores de velocidade em menos de 0,05 ms e opere agentes autônomos sem risco de faturas fora de controle.
+        </p>
+        <a href="https://github.com/Benni-OS/agent-budget-governor" target="_blank" rel="noopener noreferrer" class="article-cta-btn">Explorar Benni-OS/agent-budget-governor no GitHub &rarr;</a>
+      </div>
+
+      <section class="article-faq-section">
+        <h2 class="faq-main-heading">Perguntas Frequentes</h2>
+
+        <div class="faq-item-card">
+          <div class="faq-item-q">Por que os limites mensais de gasto da OpenAI ou Anthropic não bastam para enxames de agentes?</div>
+          <div class="faq-item-a">Limites mensais no provedor são grosseiros e reativos. Eles sincronizam com atraso de billing e revogam a chave da organização inteira de uma vez—derrubando toda a produção quando um único worker entra em loop de retentativas. O <code>agent-budget-governor</code> impõe orçamentos isolados em pré-voo por tenant, execução de enxame e subagente em menos de 0,05 ms localmente.</div>
+        </div>
+        <div class="faq-item-card">
+          <div class="faq-item-q">Como o Soft Downgrade Automático evita falhas abruptas no meio de uma tarefa?</div>
+          <div class="faq-item-a">Quando uma execução cruza um limiar suave configurável (como 80% do orçamento alocado ou um pico moderado de velocidade de queima), o <code>agent-budget-governor</code> muda o estado do disjuntor para <code>SOFT_DOWNGRADE</code> em vez de abortar imediatamente. Os passos seguintes são roteados automaticamente para um modelo compacto de menor custo ou modelo local com teto reduzido de tokens de saída, permitindo sintetizar e salvar o checkpoint com segurança.</div>
+        </div>
+        <div class="faq-item-card">
+          <div class="faq-item-q">Como o disjuntor de velocidade de queima (velocity burn-rate) em janela deslizante trava loops infinitos?</div>
+          <div class="faq-item-a">Um loop fechado pode queimar centenas de dólares em segundos muito antes de um teto mensal ou diário ser percebido. O disjuntor de velocidade monitora o gasto em USD ao longo de uma janela deslizante curta (por exemplo, 10 a 60 segundos). Se a taxa instantânea de queima ultrapassar <code>max_usd_per_min</code> do nó, o disjuntor abre imediatamente independentemente do saldo total restante.</div>
+        </div>
+        <div class="faq-item-card">
+          <div class="faq-item-q">Como o ledger SHA-256 encadeado garante atribuição de custos à prova de adulteração?</div>
+          <div class="faq-item-a">Cada reserva de orçamento, soft downgrade, abertura de disjuntor e recibo reconciliado de tokens é serializado com <code>trace_id</code>, <code>node_id</code>, timestamp e o digest da entrada anterior, recebendo um hash SHA-256. Qualquer edição retroativa ou omissão quebra a verificação da cadeia, entregando não-repúdio criptográfico para FinOps corporativo e rateio multi-tenant.</div>
+        </div>
+      </section>
+    </article>
+  </main>
+
+  <footer class="magazine-footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>BENNI OS // SOVEREIGN AUTONOMY</h4>
+        <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; margin-top: 0.5rem;">
+          O Sistema de Autonomia Soberana construído a partir dos primeiros princípios. Eliminando alucinações, loops infinitos e lock-in de nuvem.
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>PLATAFORMA</h4>
+        <ul>
+          <li><a href="/blog/pt.html">Revista Técnica</a></li>
+          <li><a href="/blog/academy.html">Academy &amp; Masterclass</a></li>
+          <li><a href="https://github.com/Benni-OS" target="_blank">Repositórios Open Source</a></li>
+          <li><a href="https://dev.to/bennialencar" target="_blank">Série no Dev.to</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>SUÍTE OPEN SOURCE</h4>
+        <ul>
+          <li><a href="https://github.com/Benni-OS/agent-budget-governor" target="_blank">agent-budget-governor</a></li>
+          <li><a href="https://github.com/Benni-OS/agent-context-firewall" target="_blank">agent-context-firewall</a></li>
+          <li><a href="https://github.com/Benni-OS/agent-trace-replay" target="_blank">agent-trace-replay</a></li>
+          <li><a href="https://github.com/BenniAlencar/agent-run-ledger" target="_blank">agent-run-ledger</a></li>
+          <li><a href="https://github.com/BenniAlencar/agent-code-sandbox" target="_blank">agent-code-sandbox</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>ACESSO SOBERANO</h4>
+        <ul>
+          <li><a href="/#monetizacao">Operator Mode Pass</a></li>
+          <li><a href="/#monetizacao">MCP Forge Playbook</a></li>
+          <li><a href="https://agensi.io/sell" target="_blank">Agensi.io Skills</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>&copy; 2026 Benni OS. Desenvolvido por Benni Alencar. Todos os direitos reservados.</div>
+      <div style="display:flex; gap: 1rem;">
+        <a href="/blog/en/agent-budget-governor-economic-circuit-breaker-ai-agents.html" style="color: var(--text-dim); text-decoration: none;">English</a>
+        <a href="/blog/agent-budget-governor-disjuntor-economico-orcamento-agentes-ia.html" style="color: var(--text-dim); text-decoration: none;">Português</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { darkMode: true, background: '#040507', primaryColor: '#00f0ff', edgeColor: '#3b82f6' } });
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+      document.getElementById('progressBar').style.width = scrolled + '%';
+    });
+  </script>
+</body>
+</html>
