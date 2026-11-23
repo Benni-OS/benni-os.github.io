@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0D0D0D,50:1a1a2e,100:7000FF&height=200&section=header&text=Benni%20OS%20Portal%20%26%20Magazine&fontSize=52&fontColor=ffffff&fontAlignY=38&desc=Official%20Sovereign%20AI%20Engineering%20Portal%2C%20Blog%20%26%20Telemetry%20Hub&descAlignY=58&descSize=16&animation=fadeIn" width="100%"/>
+<img src="assets/banner_header.png" width="100%"/>
 
 <br/>
 
@@ -50,7 +50,7 @@ Need autonomous multi-agent swarm orchestration, private datacenter infrastructu
 
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:7000FF,50:1a1a2e,100:0D0D0D&height=120&section=footer" width="100%"/>
+<img src="assets/banner_footer.png" width="100%"/>
 
 **Benni OS Portal & Magazine** — *Official Sovereign AI Engineering Portal, Blog & Telemetry Hub* • [benni-os.net](https://benni-os.net) • `MIT License`
 
