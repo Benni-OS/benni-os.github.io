@@ -16,6 +16,9 @@ from pathlib import Path
 BLOG_EN_DIR = Path(r"C:\Users\T-GAMER\Documents\Projects\benni-os.github.io\blog\en")
 
 TARGETS: list[tuple[str, list[str]]] = [
+    ("claude-code-swarm-parallel-worktrees-file-leases-mcp-blackboard.html", ["claudecode", "anthropic", "ai", "opensource"]),
+    ("distributed-file-lock-arbiters-coding-agents-sqlite-wal-pretooluse.html", ["claudecode", "anthropic", "sqlite", "opensource"]),
+    ("anthropic-ecosystem-blueprint-hooks-mcp-kernels-deterministic-teams.html", ["claudecode", "anthropic", "mcp", "ai"]),
     ("claude-code-sovereign-hooks-firewall-finops-time-travel.html", ["claudecode", "ai", "opensource", "python"]),
     ("why-claude-code-loses-context-after-compact-bitemporal-memory.html", ["claudecode", "ai", "architecture", "python"]),
     ("zero-trust-pretooluse-governance-autonomous-coding-agents.html", ["claudecode", "security", "ai", "opensource"]),

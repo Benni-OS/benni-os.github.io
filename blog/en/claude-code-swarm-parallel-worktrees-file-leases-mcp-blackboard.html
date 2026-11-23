@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6415277800729792" crossorigin="anonymous"></script>
+
+  <title>Orchestrating Parallel Claude Code Swarms Without Merge Chaos: Git Worktrees, File Leases, and Shared MCP Blackboards — Benni Alencar // Benni OS</title>
+  <meta name="description" content="How Benni-OS/claude-code-swarm orchestrates parallel Claude Code workers without file overwrites, merge conflicts, duplicated work, or runaway token bills using isolated git worktrees, SQLite3 WAL file leases in PreToolUse hooks, a shared MCP blackboard, global USD caps, and pre-merge AST gates." />
+  <link rel="canonical" href="https://benni-os.net/blog/en/claude-code-swarm-parallel-worktrees-file-leases-mcp-blackboard.html" />
+  <link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/claude-code-swarm-parallel-worktrees-file-leases-mcp-blackboard.html" />
+  <link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/claude-code-swarm-worktrees-paralelos-leases-arquivos-blackboard-mcp.html" />
+  <link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/claude-code-swarm-parallel-worktrees-file-leases-mcp-blackboard.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Orchestrating Parallel Claude Code Swarms Without Merge Chaos: Git Worktrees, File Leases, and Shared MCP Blackboards" />
+  <meta property="og:description" content="Eliminate parallel agent race conditions, merge chaos, and multi-terminal token explosions with isolated git worktrees, SQLite3 WAL file leases, a shared MCP task blackboard, global swarm USD caps, and pre-merge AST gates." />
+  <meta property="og:image" content="https://benni-os.net/blog/assets/flow_hero_agent-armies.jpg" />
+  <meta property="og:url" content="https://benni-os.net/blog/en/claude-code-swarm-parallel-worktrees-file-leases-mcp-blackboard.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:creator" content="@BenniAlencar" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": ["TechArticle", "BlogPosting"],
+        "@id": "https://benni-os.net/blog/en/claude-code-swarm-parallel-worktrees-file-leases-mcp-blackboard.html#article",
+        "isPartOf": {
+          "@type": "WebSite",
+          "@id": "https://benni-os.net/#website",
+          "name": "Benni OS",
+          "url": "https://benni-os.net"
+        },
+        "headline": "Orchestrating Parallel Claude Code Swarms Without Merge Chaos: Git Worktrees, File Leases, and Shared MCP Blackboards",
+        "description": "How Benni-OS/claude-code-swarm orchestrates parallel Claude Code workers without file overwrites, merge conflicts, duplicated work, or runaway token bills using isolated git worktrees, SQLite3 WAL file leases in PreToolUse hooks, a shared MCP blackboard, global USD caps, and pre-merge AST gates.",
+        "inLanguage": "en-US",
+        "mainEntityOfPage": "https://benni-os.net/blog/en/claude-code-swarm-parallel-worktrees-file-leases-mcp-blackboard.html",
+        "url": "https://benni-os.net/blog/en/claude-code-swarm-parallel-worktrees-file-leases-mcp-blackboard.html",
+        "image": "https://benni-os.net/blog/assets/flow_hero_agent-armies.jpg",
+        "datePublished": "2026-11-23T00:00:00Z",
+        "dateModified": "2026-11-23T00:00:00Z",
+        "keywords": "claude code swarm, claude-code-swarm, git worktree, sqlite wal file lease, mcp blackboard, multi-agent orchestration, pretooluse hook, ast merge gate, benni os",
+        "author": {
+          "@type": "Person",
+          "@id": "https://benni-os.net/#author",
+          "name": "Benni Alencar",
+          "jobTitle": "Chief AI Systems Architect & Founder",
+          "url": "https://benni-os.net",
+          "sameAs": [
+            "https://github.com/BenniAlencar",
+            "https://github.com/Benni-OS",
+            "https://dev.to/bennialencar",
+            "https://www.linkedin.com/in/benni-alencar/",
+            "https://benni-os.net"
+          ]
+        },
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://benni-os.net/#organization",
+          "name": "Benni OS",
+          "url": "https://benni-os.net",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://benni-os.net/blog/assets/benni_avatar.jpg"
+          }
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://benni-os.net/blog/en/claude-code-swarm-parallel-worktrees-file-leases-mcp-blackboard.html#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Why do parallel Claude Code terminals overwrite each other's files?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "When multiple Claude Code instances share a single working tree, they operate against the same filesystem paths concurrently without mutual exclusion. Worker A can read a file, Worker B can rewrite it, and Worker A's subsequent Edit or Write call silently clobbers Worker B's changes or triggers git index lock collisions."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do SQLite3 WAL file leases in PreToolUse prevent edit collisions?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Even with isolated git worktrees, two workers editing the same logical file path across branches will produce nasty merge conflicts. claude-code-swarm stores path-level leases in a shared SQLite3 database running in Write-Ahead Logging (WAL) mode. Before any Edit or Write executes, the PreToolUse hook attempts an atomic lease acquisition; if another active worker holds the lease, it exits with code 2 and redirects the agent."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What role does the shared MCP task blackboard play?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The MCP blackboard gives every worker a single, atomic source of truth for task claims, dependency graphs, heartbeats, and completion artifacts. Instead of duplicating work across terminals, workers claim unclaimed tasks via MCP, publish interface contracts for downstream tasks, and release leases upon completion."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do global swarm USD caps and pre-merge AST gates protect production?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Every worker's token and USD spend rolls up into the shared SQLite3 WAL ledger; once the global swarm cap is reached, PreToolUse trips the circuit breaker across all terminals simultaneously. Before any worker's git worktree branch is merged back to main, an AST gate validates syntax, imports, and zero placeholder stubs deterministically."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #07080c;
+      --panel: #0e111a;
+      --panel-hover: #141824;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-border-hover: rgba(0, 240, 255, 0.35);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --cyan: #00f0ff;
+      --cyan-glow: rgba(0, 240, 255, 0.15);
+      --blue: #3b82f6;
+      --lime: #10b981;
+      --orange: #ff6b00;
+      --purple: #a855f7;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-title: 'DM Serif Display', Georgia, serif;
+      --font-code: 'IBM Plex Mono', monospace;
+      --badge-color: #00f0ff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.75;
+      font-size: 1.05rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59, 130, 246, 0.12), transparent),
+        radial-gradient(circle at 100% 40%, rgba(168, 85, 247, 0.06), transparent 50%),
+        radial-gradient(circle at 0% 70%, rgba(0, 240, 255, 0.05), transparent 50%);
+      background-attachment: fixed;
+    }
+    header.magazine-header {
+      background: rgba(7, 8, 12, 0.85);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--card-border);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 0.9rem 2rem;
+    }
+    .nav-container {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand-logo {
+      font-family: var(--font-code);
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--text-main);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      letter-spacing: 0.5px;
+    }
+    .brand-logo:hover { color: var(--cyan); }
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #10b981;
+    }
+    nav.nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.8rem;
+    }
+    nav.nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav.nav-links a:hover, nav.nav-links a.active { color: #fff; }
+    .lang-switcher-pill {
+      display: flex;
+      align-items: center;
+      background: rgba(14, 17, 26, 0.8);
+      border: 1px solid var(--card-border);
+      border-radius: 9999px;
+      padding: 3px;
+      gap: 2px;
+    }
+    .lang-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-family: var(--font-code);
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .lang-btn.active {
+      background: rgba(0, 240, 255, 0.15);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+    }
+    .lang-btn:hover:not(.active) {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .reading-progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #00f0ff, #3b82f6, #a855f7);
+      width: 0%;
+      z-index: 9999;
+      transition: width 0.1s ease;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.7);
+    }
+    main.article-layout {
+      max-width: 860px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      flex: 1;
+      width: 100%;
+    }
+    .breadcrumb-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-code);
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      margin-bottom: 1.2rem;
+    }
+    .breadcrumb-nav a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb-nav a:hover { color: var(--cyan); }
+    .breadcrumb-current { color: var(--cyan); }
+    .article-header { margin-bottom: 2.5rem; }
+    .article-meta-badges {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .category-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(10, 12, 18, 0.9);
+      border: 1px solid var(--badge-color);
+      color: var(--badge-color);
+      font-family: var(--font-code);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      letter-spacing: 0.5px;
+    }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .article-meta-text { color: var(--text-dim); font-size: 0.85rem; font-family: var(--font-code); }
+    .article-main-title {
+      font-family: var(--font-title);
+      font-size: clamp(2.3rem, 4.5vw, 3.6rem);
+      font-weight: normal;
+      line-height: 1.15;
+      color: #fff;
+      margin-bottom: 1.2rem;
+      letter-spacing: -0.5px;
+    }
+    .article-lead-paragraph {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1.65;
+      margin-bottom: 2rem;
+    }
+    .article-author-share-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1.2rem 0;
+      margin-bottom: 2rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .author-info-box {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+    .author-photo {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid var(--card-border);
+      object-fit: cover;
+    }
+    .author-name-title {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .author-subtitle {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      font-family: var(--font-code);
+    }
+    .article-hero-cover-figure {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      margin-bottom: 3rem;
+      background: var(--panel);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+    .article-hero-img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .article-prose {
+      color: #cbd5e1;
+      font-size: 1.08rem;
+      line-height: 1.8;
+    }
+    .article-prose h2 {
+      font-family: var(--font-title);
+      font-size: 1.95rem;
+      color: #fff;
+      margin: 2.8rem 0 1rem;
+      letter-spacing: -0.3px;
+    }
+    .article-prose h3 {
+      font-family: var(--font-title);
+      font-size: 1.45rem;
+      color: #f1f5f9;
+      margin: 2rem 0 0.8rem;
+    }
+    .article-prose p {
+      margin-bottom: 1.4rem;
+    }
+    .article-prose ul, .article-prose ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+    }
+    .article-prose li {
+      margin-bottom: 0.5rem;
+    }
+    .article-prose hr {
+      border: none;
+      border-top: 1px solid var(--card-border);
+      margin: 2.5rem 0;
+    }
+    .article-prose code {
+      font-family: var(--font-code);
+      background: rgba(255, 255, 255, 0.06);
+      padding: 0.2rem 0.45rem;
+      border-radius: 6px;
+      font-size: 0.9em;
+      color: var(--cyan);
+    }
+    .article-prose pre {
+      background: #040507;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      overflow-x: auto;
+      margin: 1.6rem 0;
+    }
+    .article-prose pre code {
+      background: transparent;
+      padding: 0;
+      color: #e2e8f0;
+      font-size: 0.88rem;
+    }
+    .callout-box {
+      background: rgba(0, 240, 255, 0.04);
+      border-left: 3px solid var(--cyan);
+      border-radius: 0 12px 12px 0;
+      padding: 1.2rem 1.5rem;
+      margin: 1.8rem 0;
+      color: var(--text-main);
+    }
+    .mermaid {
+      background: #040507;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      display: flex;
+      justify-content: center;
+    }
+    .table-container {
+      overflow-x: auto;
+      margin: 2rem 0;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+    th, td {
+      padding: 1rem 1.2rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+    th {
+      background: var(--panel);
+      color: #fff;
+      font-family: var(--font-code);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    .article-cta-box {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.05), rgba(59, 130, 246, 0.08));
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      border-radius: 16px;
+      padding: 2.2rem;
+      margin: 3.5rem 0;
+      text-align: center;
+    }
+    .article-cta-title {
+      font-family: var(--font-title);
+      font-size: 1.6rem;
+      color: #fff;
+      margin-bottom: 0.8rem;
+    }
+    .article-cta-btn {
+      display: inline-block;
+      background: var(--cyan);
+      color: #000;
+      font-weight: 700;
+      padding: 0.85rem 2rem;
+      border-radius: 9999px;
+      text-decoration: none;
+      font-family: var(--font-code);
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      transition: all 0.2s;
+    }
+    .article-cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 240, 255, 0.4);
+    }
+    .article-faq-section {
+      background: var(--panel);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      margin: 3.5rem 0;
+    }
+    .faq-main-heading {
+      font-family: var(--font-title);
+      font-size: 1.8rem;
+      color: #fff;
+      margin-bottom: 1.5rem;
+    }
+    .faq-item-card { border-bottom: 1px solid var(--card-border); padding: 1.2rem 0; }
+    .faq-item-card:last-child { border-bottom: none; }
+    .faq-item-q { font-weight: 700; font-size: 1.1rem; color: var(--cyan); margin-bottom: 0.5rem; }
+    .faq-item-a { color: var(--text-muted); font-size: 0.98rem; line-height: 1.65; }
+    footer.magazine-footer {
+      background: #050608;
+      border-top: 1px solid var(--card-border);
+      padding: 3.5rem 2rem 2rem;
+      margin-top: 5rem;
+    }
+    .footer-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 2.5rem;
+    }
+    @media (max-width: 900px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .footer-grid { grid-template-columns: 1fr; }
+      nav.nav-links { display: none; }
+    }
+    .footer-col h4 {
+      font-family: var(--font-code);
+      font-size: 0.85rem;
+      color: var(--cyan);
+      margin-bottom: 1.2rem;
+      letter-spacing: 1px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.6rem; }
+    .footer-col ul li a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .footer-col ul li a:hover { color: #fff; }
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 1.8rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-dim);
+      font-size: 0.82rem;
+      font-family: var(--font-code);
+    }
+  </style>
+  <link rel="stylesheet" href="/assets/editorial-theme.css" />
+  <script src="/assets/editorial-theme.js"></script>
+  <script defer src="/assets/blog-telemetry.js"></script>
+</head>
+<body>
+  <div class="reading-progress-bar" id="progressBar"></div>
+
+  <header class="magazine-header">
+    <div class="nav-container">
+      <a href="/" class="brand-logo">
+        <span class="status-dot"></span>
+        BENNI OS // MAGAZINE
+      </a>
+      <nav class="nav-links">
+        <a href="/">Home</a>
+        <a href="/blog/index.html" class="active">Magazine</a>
+        <a href="/blog/academy.html">Academy</a>
+        <a href="https://github.com/Benni-OS" target="_blank">GitHub</a>
+        <a href="https://dev.to/bennialencar" target="_blank">Dev.to</a>
+        <div class="lang-switcher-pill" role="navigation" aria-label="Language Selector">
+          <a href="/blog/en/claude-code-swarm-parallel-worktrees-file-leases-mcp-blackboard.html" class="lang-btn active" title="English (Active)">
+            <span>🇺🇸</span> EN
+          </a>
+          <a href="/blog/claude-code-swarm-worktrees-paralelos-leases-arquivos-blackboard-mcp.html" class="lang-btn" title="Mudar para Português (Brasil)">
+            <span>🇧🇷</span> PT-BR
+          </a>
+        </div>
+        <a href="/#monetizacao" style="color: var(--cyan); font-weight: 700;">Operator Mode &rarr;</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-layout">
+    <nav class="breadcrumb-nav">
+      <a href="/blog/index.html">Magazine</a>
+      <span>/</span>
+      <span class="breadcrumb-current">MULTI-AGENT SWARMS &amp; ORCHESTRATION</span>
+    </nav>
+
+    <header class="article-header">
+      <div class="article-meta-badges">
+        <span class="category-badge-pill">
+          <span class="badge-dot"></span>
+          MULTI-AGENT SWARMS &amp; ORCHESTRATION
+        </span>
+        <span class="article-meta-text">14 min read • Nov 23, 2026</span>
+      </div>
+
+      <h1 class="article-main-title">Orchestrating Parallel Claude Code Swarms Without Merge Chaos: Git Worktrees, File Leases, and Shared MCP Blackboards</h1>
+      <p class="article-lead-paragraph">Why opening four parallel Claude Code terminals turns into silent file overwrites, merge conflicts, duplicated work, and runaway token bills—and how <code>Benni-OS/claude-code-swarm</code> coordinates parallel workers with isolated <code>git worktree</code> sandboxes, SQLite3 WAL file leases in <code>PreToolUse</code>, a shared MCP task blackboard, global USD caps, and pre-merge AST gates.</p>
+
+      <div class="article-author-share-bar">
+        <div class="author-info-box">
+          <img src="/blog/assets/benni_avatar.jpg" alt="Benni Alencar" class="author-photo" />
+          <div>
+            <div class="author-name-title">Benni Alencar</div>
+            <div class="author-subtitle">Chief AI Systems Architect &amp; Founder</div>
+          </div>
+        </div>
+        <div class="lang-switcher-pill" role="navigation" aria-label="Language Selector">
+          <a href="/blog/en/claude-code-swarm-parallel-worktrees-file-leases-mcp-blackboard.html" class="lang-btn active" title="English (Active)">
+            <span>🇺🇸</span> EN
+          </a>
+          <a href="/blog/claude-code-swarm-worktrees-paralelos-leases-arquivos-blackboard-mcp.html" class="lang-btn" title="Mudar para Português (Brasil)">
+            <span>🇧🇷</span> PT-BR
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <figure class="article-hero-cover-figure">
+      <img src="/blog/assets/flow_hero_agent-armies.jpg" alt="Orchestrating Parallel Claude Code Swarms Without Merge Chaos: Git Worktrees, File Leases, and Shared MCP Blackboards" width="1376" height="768" class="article-hero-img" />
+    </figure>
+
+    <article class="article-prose">
+      <hr />
+      <h2>1. The Multi-Terminal Illusion: Why Naive Parallelism Fails</h2>
+      <p>Every power user eventually hits the same scaling wall: one Claude Code session is fast, so opening four terminal tabs in the same repository ought to be four times faster. In practice, uncoordinated parallel coding agents behave like four developers editing the same working directory with zero locks, zero communication, and zero shared budget.</p>
+      <p>Within minutes, naive parallelism collapses into four predictable failure modes:</p>
+      <ul>
+        <li><strong>Silent File Overwrites:</strong> Worker A reads <code>src/auth.py</code>, Worker B rewrites it, and Worker A's next <code>Edit</code> or <code>Write</code> call clobbers Worker B's patch without warning.</li>
+        <li><strong>Merge Chaos &amp; Index Lock Collisions:</strong> Even if you manually create branches, two workers touching the same core modules generate tangled three-way merge conflicts and <code>.git/index.lock</code> contention.</li>
+        <li><strong>Duplicated Work &amp; Spec Drift:</strong> Without a shared task state, multiple terminals independently refactor the same helper or implement incompatible API signatures.</li>
+        <li><strong>Runaway Multi-Terminal Token Bills:</strong> Four agents stuck in competing test-fix loops multiply API burn by 4&times;—with no global USD circuit breaker across terminals.</li>
+      </ul>
+      <div class="callout-box">
+        <strong>Core Architectural Principle:</strong> Parallelism without mutual exclusion is just distributed race conditions. <strong><a href="https://github.com/Benni-OS/claude-code-swarm" target="_blank" rel="noopener noreferrer" style="color: var(--cyan);">Benni-OS/claude-code-swarm</a></strong> turns independent Claude Code processes into a deterministic swarm using isolated <code>git worktree</code> sandboxes, SQLite3 WAL file leases enforced in <code>PreToolUse</code>, a shared MCP blackboard, global USD caps, and pre-merge AST gates.
+      </div>
+
+      <hr />
+      <h2>2. Swarm Architecture: Worktrees, WAL Leases &amp; MCP Blackboard</h2>
+      <p>Instead of letting agents race inside one directory or coordinate via fragile markdown files, <code>claude-code-swarm</code> separates <strong>filesystem isolation</strong>, <strong>concurrency control</strong>, and <strong>task coordination</strong> into three deterministic layers:</p>
+
+      <div class="mermaid">
+flowchart TD
+    M["Shared MCP Task Blackboard&lt;br/&gt;(Claims, Dependencies, Contracts)"] --&gt;|"Assign Task"| W1["Worker 1 (git worktree: swarm/w1)"]
+    M --&gt;|"Assign Task"| W2["Worker 2 (git worktree: swarm/w2)"]
+    W1 --&gt;|"PreToolUse (&lt; 1ms)"| L["SQLite3 WAL Coordinator&lt;br/&gt;File Leases + Global USD Ledger"]
+    W2 --&gt;|"PreToolUse (&lt; 1ms)"| L
+    L --&gt;|"Lease Held by Peer / Cap Hit"| X["Exit 2: Blocked Deterministically"]
+    L --&gt;|"Lease Granted + Budget OK"| E["Isolated Edit &amp; Test in Worktree"]
+    E --&gt;|"Done"| G["Pre-Merge AST &amp; Lint Gate"]
+    G --&gt;|"Syntax / Stub Defect"| E
+    G --&gt;|"Verified Clean"| R["Atomic Fast-Forward / Rebase to main"]
+      </div>
+
+      <p>Each worker gets its own physical directory via <code>git worktree</code>, its own branch, and its own build/test state—while sharing a single local SQLite3 database in Write-Ahead Logging (<code>WAL</code>) mode and a unified MCP blackboard server.</p>
+
+      <hr />
+      <h2>3. The Five Deterministic Primitives of <code>claude-code-swarm</code></h2>
+
+      <h3>1. Isolated <code>git worktree</code> Workers</h3>
+      <p>When you spawn a swarm of <em>N</em> workers, <code>claude-code-swarm</code> provisions <em>N</em> dedicated <code>git worktree</code> checkouts under <code>.swarm/worktrees/&lt;worker_id&gt;</code>, each bound to a clean feature branch. Workers never share a working tree, never contend on <code>.git/index.lock</code>, and can run isolated test suites concurrently.</p>
+
+      <h3>2. SQLite3 WAL File Leases in <code>PreToolUse</code> Hooks</h3>
+      <p>Worktrees isolate directories, but if Worker 1 and Worker 2 both rewrite <code>src/router.py</code> on separate branches, you still face a painful merge conflict. Before any <code>Edit</code>, <code>Write</code>, or mutating <code>Bash</code> tool executes, the <code>PreToolUse</code> hook queries the shared SQLite3 WAL lease table with <code>BEGIN IMMEDIATE</code>:</p>
+      <ul>
+        <li>If the target path is unleased (or leased by the requesting <code>worker_id</code>), the lease is atomically acquired or renewed with a TTL.</li>
+        <li>If another active worker holds the lease, the hook returns exit code <code>2</code> with the holder's ID and active task—forcing the blocked worker to pick another task on the MCP blackboard instead of creating a merge conflict.</li>
+      </ul>
+
+      <h3>3. Shared MCP Task Blackboard</h3>
+      <p>Every worker connects to the swarm's MCP server (<code>claude mcp add swarm-blackboard</code>). The blackboard exposes deterministic tools to list unclaimed tasks, atomically claim a task ID, post interface contracts (such as new TypeScript types or REST payloads) for downstream workers, and mark tasks ready for merge.</p>
+
+      <h3>4. Global Swarm USD Caps</h3>
+      <p>Per-terminal budgets are useless if four terminals each burn $5 on a stuck retry loop. Every worker's <code>PostToolUse</code> hook records token deltas into the same SQLite3 WAL ledger. Before any worker executes its next tool call, <code>PreToolUse</code> checks <code>SUM(cost_usd)</code> across the entire swarm. The moment global spend hits <code>max_swarm_usd</code>, every worker trips the circuit breaker simultaneously.</p>
+
+      <h3>5. Pre-Merge AST Gates</h3>
+      <p>Passing a worker's own unit tests is not enough to land on <code>main</code>. Before the coordinator merges any <code>git worktree</code> branch, a deterministic AST gate parses all modified files to reject syntax errors, unresolved merge markers, banned <code>TODO</code>/<code>NotImplementedError</code> stubs, and broken imports—guaranteeing that <code>main</code> never receives half-finished agent output.</p>
+
+      <hr />
+      <h2>4. Wiring the Swarm in <code>.claude/settings.json</code></h2>
+      <p>Setting up a coordinated swarm requires registering the shared MCP blackboard and binding the deterministic lease and budget hooks in <code>.claude/settings.json</code>:</p>
+
+<pre><code class="language-bash"># Install and bootstrap a 3-worker isolated git worktree swarm
+pip install claude-code-swarm
+claude-swarm init --workers 3 --max-swarm-usd 6.00 --lease-ttl 300
+
+# Register the shared MCP Task Blackboard
+claude mcp add swarm-blackboard -- claude-swarm mcp-serve
+</code></pre>
+
+<pre><code class="language-json">{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit|Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "claude-swarm hook pre-tool-use",
+            "timeout": 2000
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "claude-swarm hook post-tool-use",
+            "timeout": 2000
+          }
+        ]
+      }
+    ]
+  }
+}
+</code></pre>
+
+      <hr />
+      <h2>5. Inside the SQLite3 WAL Lease &amp; Global Cap Hook</h2>
+      <p>Below is the core atomic lease and budget enforcement logic executed in under a millisecond inside <code>PreToolUse</code>. Because SQLite3 runs in <code>WAL</code> mode with <code>BEGIN IMMEDIATE</code>, concurrent workers never corrupt state or race past each other:</p>
+
+<pre><code class="language-python">import json
+import sqlite3
+import sys
+import time
+from pathlib import Path
+
+DB_PATH = Path(".swarm/coordinator.db")
+
+
+def enforce_lease_and_budget(
+    worker_id: str,
+    target_path: str | None,
+    max_swarm_usd: float = 6.00,
+    ttl_sec: int = 300,
+) -> tuple[int, str]:
+    now = time.time()
+    conn = sqlite3.connect(DB_PATH, timeout=5.0, isolation_level=None)
+    conn.execute("PRAGMA journal_mode=WAL;")
+    try:
+        conn.execute("BEGIN IMMEDIATE;")
+
+        # 1. Global Swarm FinOps Circuit Breaker
+        row = conn.execute("SELECT COALESCE(SUM(cost_usd), 0.0) FROM spend_ledger").fetchone()
+        total_usd = float(row[0])
+        if total_usd &gt;= max_swarm_usd:
+            conn.execute("ROLLBACK;")
+            return 2, f"SWARM_BUDGET_CAP: Global spend ${total_usd:.4f} &gt;= cap ${max_swarm_usd:.2f}."
+
+        # 2. Atomic File Lease Check (if tool mutates a path)
+        if target_path:
+            conn.execute("DELETE FROM file_leases WHERE expires_at &lt; ?", (now,))
+            holder = conn.execute(
+                "SELECT worker_id FROM file_leases WHERE file_path = ?",
+                (target_path,),
+            ).fetchone()
+
+            if holder and holder[0] != worker_id:
+                conn.execute("ROLLBACK;")
+                return 2, (
+                    f"FILE_LEASE_CONFLICT: '{target_path}' is leased by '{holder[0]}'. "
+                    "Claim another task on the MCP blackboard."
+                )
+
+            conn.execute(
+                """
+                INSERT INTO file_leases (file_path, worker_id, expires_at)
+                VALUES (?, ?, ?)
+                ON CONFLICT(file_path) DO UPDATE SET
+                    worker_id = excluded.worker_id,
+                    expires_at = excluded.expires_at
+                """,
+                (target_path, worker_id, now + ttl_sec),
+            )
+
+        conn.execute("COMMIT;")
+        return 0, json.dumps({"decision": "allow", "worker_id": worker_id, "global_usd": total_usd})
+    finally:
+        conn.close()
+
+
+if __name__ == "__main__":
+    payload = json.load(sys.stdin)
+    worker = payload.get("worker_id", "worker-1")
+    file_path = payload.get("tool_input", {}).get("file_path")
+    code, msg = enforce_lease_and_budget(worker, file_path)
+    if code != 0:
+        sys.stderr.write(msg + "\n")
+    sys.exit(code)
+</code></pre>
+
+      <hr />
+      <h2>6. Comparison: Uncoordinated Terminals vs. <code>claude-code-swarm</code></h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Orchestration Dimension</th>
+              <th>Uncoordinated Parallel Terminals</th>
+              <th><code>Benni-OS/claude-code-swarm</code></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Filesystem Isolation</strong></td>
+              <td>Shared working tree (silent overwrites &amp; index locks)</td>
+              <td><strong>Dedicated <code>git worktree</code> &amp; branch per worker</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Concurrent File Edits</strong></td>
+              <td>Race conditions &amp; three-way merge chaos</td>
+              <td><strong>Atomic SQLite3 WAL File Leases in <code>PreToolUse</code></strong></td>
+            </tr>
+            <tr>
+              <td><strong>Task &amp; Contract Sharing</strong></td>
+              <td>Manual copy-paste or duplicated work</td>
+              <td><strong>Shared MCP Task Blackboard with atomic claims</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Multi-Terminal Spend Control</strong></td>
+              <td>No global visibility; <em>N</em>&times; runaway loops</td>
+              <td><strong>Global Swarm USD Cap across all workers</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Merge Quality Gate</strong></td>
+              <td>Manual conflict resolution &amp; broken stubs</td>
+              <td><strong>Deterministic Pre-Merge AST &amp; Lint Gate</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="article-cta-box">
+        <h3 class="article-cta-title">Scale Claude Code Without Merge Chaos</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; max-width: 620px; margin: 0 auto;">
+          Deploy <strong>Benni-OS/claude-code-swarm</strong> to isolate parallel workers in <code>git worktree</code> sandboxes, enforce SQLite3 WAL file leases in <code>PreToolUse</code>, coordinate via MCP, and cap global swarm spend.
+        </p>
+        <a href="https://github.com/Benni-OS/claude-code-swarm" target="_blank" rel="noopener noreferrer" class="article-cta-btn">Explore Benni-OS/claude-code-swarm on GitHub &rarr;</a>
+      </div>
+
+      <section class="article-faq-section">
+        <h2 class="faq-main-heading">Frequently Asked Questions</h2>
+
+        <div class="faq-item-card">
+          <div class="faq-item-q">Why do parallel Claude Code terminals overwrite each other's files?</div>
+          <div class="faq-item-a">When multiple Claude Code instances share a single working tree, they operate against the same filesystem paths concurrently without mutual exclusion. Worker A can read a file, Worker B can rewrite it, and Worker A's subsequent <code>Edit</code> or <code>Write</code> call silently clobbers Worker B's changes or triggers git index lock collisions.</div>
+        </div>
+        <div class="faq-item-card">
+          <div class="faq-item-q">How do SQLite3 WAL file leases in PreToolUse prevent edit collisions?</div>
+          <div class="faq-item-a">Even with isolated <code>git worktree</code> checkouts, two workers editing the same logical file path across branches will produce nasty merge conflicts. <code>claude-code-swarm</code> stores path-level leases in a shared SQLite3 database running in WAL mode. Before any <code>Edit</code> or <code>Write</code> executes, the <code>PreToolUse</code> hook attempts an atomic lease acquisition; if another active worker holds the lease, it exits with code <code>2</code> and redirects the agent.</div>
+        </div>
+        <div class="faq-item-card">
+          <div class="faq-item-q">What role does the shared MCP task blackboard play?</div>
+          <div class="faq-item-a">The MCP blackboard gives every worker a single, atomic source of truth for task claims, dependency graphs, heartbeats, and completion artifacts. Instead of duplicating work across terminals, workers claim unclaimed tasks via MCP, publish interface contracts for downstream tasks, and release leases upon completion.</div>
+        </div>
+        <div class="faq-item-card">
+          <div class="faq-item-q">How do global swarm USD caps and pre-merge AST gates protect production?</div>
+          <div class="faq-item-a">Every worker's token and USD spend rolls up into the shared SQLite3 WAL ledger; once the global swarm cap is reached, <code>PreToolUse</code> trips the circuit breaker across all terminals simultaneously. Before any worker's <code>git worktree</code> branch is merged back to <code>main</code>, an AST gate validates syntax, imports, and zero placeholder stubs deterministically.</div>
+        </div>
+      </section>
+    </article>
+  </main>
+
+  <footer class="magazine-footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>BENNI OS // SOVEREIGN AUTONOMY</h4>
+        <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; margin-top: 0.5rem;">
+          The Sovereign Autonomy System built from first principles. Eliminating agent hallucinations, loop explosions, and cloud vendor lock-in.
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>PLATFORM</h4>
+        <ul>
+          <li><a href="/blog/index.html">Technical Magazine</a></li>
+          <li><a href="/blog/academy.html">Academy &amp; Masterclass</a></li>
+          <li><a href="https://github.com/Benni-OS" target="_blank">Open Source Repos</a></li>
+          <li><a href="https://dev.to/bennialencar" target="_blank">Dev.to Series</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>OPEN SOURCE SUITE</h4>
+        <ul>
+          <li><a href="https://github.com/Benni-OS/claude-code-swarm" target="_blank">claude-code-swarm</a></li>
+          <li><a href="https://github.com/Benni-OS/claude-code-sovereign" target="_blank">claude-code-sovereign</a></li>
+          <li><a href="https://github.com/Benni-OS/agent-trace-replay" target="_blank">agent-trace-replay</a></li>
+          <li><a href="https://github.com/BenniAlencar/agent-cyber-sentinel" target="_blank">agent-cyber-sentinel</a></li>
+          <li><a href="https://github.com/BenniAlencar/agent-run-ledger" target="_blank">agent-run-ledger</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>SOVEREIGN ACCESS</h4>
+        <ul>
+          <li><a href="/#monetizacao">Operator Mode Pass</a></li>
+          <li><a href="/#monetizacao">MCP Forge Playbook</a></li>
+          <li><a href="https://agensi.io/sell" target="_blank">Agensi.io Skills</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>&copy; 2026 Benni OS. Engineered by Benni Alencar. All rights reserved.</div>
+      <div style="display:flex; gap: 1rem;">
+        <a href="/blog/en/claude-code-swarm-parallel-worktrees-file-leases-mcp-blackboard.html" style="color: var(--text-dim); text-decoration: none;">English</a>
+        <a href="/blog/claude-code-swarm-worktrees-paralelos-leases-arquivos-blackboard-mcp.html" style="color: var(--text-dim); text-decoration: none;">Português</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { darkMode: true, background: '#040507', primaryColor: '#00f0ff', edgeColor: '#3b82f6' } });
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+      document.getElementById('progressBar').style.width = scrolled + '%';
+    });
+  </script>
+</body>
+</html>

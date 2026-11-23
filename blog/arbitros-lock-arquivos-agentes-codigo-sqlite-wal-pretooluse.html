@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6415277800729792" crossorigin="anonymous"></script>
+
+  <title>Árbitros Distribuídos de Lock de Arquivos para Agentes de Código: Prevenindo Sobrescritas com SQLite WAL e Hooks PreToolUse — Benni Alencar // Benni OS</title>
+  <meta name="description" content="Como o Benni-OS/claude-code-swarm elimina condições de corrida e sobrescritas silenciosas entre agentes de código paralelos usando leases pessimistas com TTL, transações atômicas em SQLite3 WAL e hooks PreToolUse sub-milissegundo." />
+  <link rel="canonical" href="https://benni-os.net/blog/arbitros-lock-arquivos-agentes-codigo-sqlite-wal-pretooluse.html" />
+  <link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/arbitros-lock-arquivos-agentes-codigo-sqlite-wal-pretooluse.html" />
+  <link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/distributed-file-lock-arbiters-coding-agents-sqlite-wal-pretooluse.html" />
+  <link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/distributed-file-lock-arbiters-coding-agents-sqlite-wal-pretooluse.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Árbitros Distribuídos de Lock de Arquivos para Agentes de Código: Prevenindo Sobrescritas com SQLite WAL e Hooks PreToolUse" />
+  <meta property="og:description" content="Elimine lost updates e condições de corrida em enxames paralelos de agentes de IA usando leases pessimistas com TTL, SQLite WAL atômico e interceptação determinística em PreToolUse." />
+  <meta property="og:image" content="https://benni-os.net/blog/assets/flow_hero_agent-armies.jpg" />
+  <meta property="og:url" content="https://benni-os.net/blog/arbitros-lock-arquivos-agentes-codigo-sqlite-wal-pretooluse.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:creator" content="@BenniAlencar" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": ["TechArticle", "BlogPosting"],
+        "@id": "https://benni-os.net/blog/arbitros-lock-arquivos-agentes-codigo-sqlite-wal-pretooluse.html#article",
+        "isPartOf": {
+          "@type": "WebSite",
+          "@id": "https://benni-os.net/#website",
+          "name": "Benni OS",
+          "url": "https://benni-os.net"
+        },
+        "headline": "Árbitros Distribuídos de Lock de Arquivos para Agentes de Código: Prevenindo Sobrescritas com SQLite WAL e Hooks PreToolUse",
+        "description": "Como o Benni-OS/claude-code-swarm elimina condições de corrida e sobrescritas silenciosas entre agentes de código paralelos usando leases pessimistas com TTL, transações atômicas em SQLite3 WAL e hooks PreToolUse sub-milissegundo.",
+        "inLanguage": "pt-BR",
+        "mainEntityOfPage": "https://benni-os.net/blog/arbitros-lock-arquivos-agentes-codigo-sqlite-wal-pretooluse.html",
+        "url": "https://benni-os.net/blog/arbitros-lock-arquivos-agentes-codigo-sqlite-wal-pretooluse.html",
+        "image": "https://benni-os.net/blog/assets/flow_hero_agent-armies.jpg",
+        "datePublished": "2026-11-23T00:00:00Z",
+        "dateModified": "2026-11-23T00:00:00Z",
+        "keywords": "lock de arquivos distribuído, sqlite wal, hook pretooluse, claude-code-swarm, múltiplos agentes, lease pessimista, ttl lock, condição de corrida, benni os",
+        "author": {
+          "@type": "Person",
+          "@id": "https://benni-os.net/#author",
+          "name": "Benni Alencar",
+          "jobTitle": "Chief AI Systems Architect & Founder",
+          "url": "https://benni-os.net",
+          "sameAs": [
+            "https://github.com/BenniAlencar",
+            "https://github.com/Benni-OS",
+            "https://dev.to/bennialencar",
+            "https://www.linkedin.com/in/benni-alencar/",
+            "https://benni-os.net"
+          ]
+        },
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://benni-os.net/#organization",
+          "name": "Benni OS",
+          "url": "https://benni-os.net",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://benni-os.net/blog/assets/benni_avatar.jpg"
+          }
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://benni-os.net/blog/arbitros-lock-arquivos-agentes-codigo-sqlite-wal-pretooluse.html#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Por que agentes de código paralelos sobrescrevem silenciosamente os arquivos uns dos outros?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Quando múltiplos agentes compartilham um workspace, seus ciclos Read-Think-Write se sobrepõem. O Agente A lê um arquivo em t=0, o Agente B grava um patch em t=2, e o Agente A emite um Write completo ou Edit obsoleto em t=3 baseado no estado antigo — apagando silenciosamente as alterações do Agente B sem gerar nenhum erro no sistema operacional."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Por que usar leases pessimistas com TTL em vez de controle de concorrência otimista para agentes de código?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "O controle otimista detecta conflitos apenas depois que o agente já queimou tokens de LLM e tempo de inferência gerando o patch. Leases pessimistas falham rápido no hook PreToolUse antes da execução, enquanto um Time-To-Live (TTL) limitado garante que um agente encerrado com SIGKILL nunca deixe o arquivo em deadlock permanente."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Como o SQLite3 WAL garante aquisição atômica de locks entre processos de hook concorrentes?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Ao ativar PRAGMA journal_mode=WAL e iniciar transações com BEGIN IMMEDIATE, o SQLite serializa todas as transações de escrita entre processos independentes do SO em nível de biblioteca C. Leases expirados são removidos e novos leases são inseridos dentro de uma única transação atômica, eliminando condições de corrida TOCTOU."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Como o Benni-OS/claude-code-swarm aplica locks de arquivos no Claude Code?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "O claude-code-swarm registra um hook PreToolUse que intercepta chamadas Write, Edit e MultiEdit, normaliza o caminho alvo via realpath e consulta o árbitro SQLite WAL. Se outro agente ativo detiver um lease válido, o hook encerra com código de saída 2 e retorna uma mensagem estruturada em stderr para que o agente bloqueado recue ou aguarde."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #07080c;
+      --panel: #0e111a;
+      --panel-hover: #141824;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-border-hover: rgba(0, 240, 255, 0.35);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --cyan: #00f0ff;
+      --cyan-glow: rgba(0, 240, 255, 0.15);
+      --blue: #3b82f6;
+      --lime: #10b981;
+      --orange: #ff6b00;
+      --purple: #a855f7;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-title: 'DM Serif Display', Georgia, serif;
+      --font-code: 'IBM Plex Mono', monospace;
+      --badge-color: #00f0ff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.75;
+      font-size: 1.05rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59, 130, 246, 0.12), transparent),
+        radial-gradient(circle at 100% 40%, rgba(168, 85, 247, 0.06), transparent 50%),
+        radial-gradient(circle at 0% 70%, rgba(0, 240, 255, 0.05), transparent 50%);
+      background-attachment: fixed;
+    }
+    header.magazine-header {
+      background: rgba(7, 8, 12, 0.85);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--card-border);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 0.9rem 2rem;
+    }
+    .nav-container {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand-logo {
+      font-family: var(--font-code);
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--text-main);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      letter-spacing: 0.5px;
+    }
+    .brand-logo:hover { color: var(--cyan); }
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #10b981;
+    }
+    nav.nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.8rem;
+    }
+    nav.nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav.nav-links a:hover, nav.nav-links a.active { color: #fff; }
+    .lang-switcher-pill {
+      display: flex;
+      align-items: center;
+      background: rgba(14, 17, 26, 0.8);
+      border: 1px solid var(--card-border);
+      border-radius: 9999px;
+      padding: 3px;
+      gap: 2px;
+    }
+    .lang-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-family: var(--font-code);
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .lang-btn.active {
+      background: rgba(0, 240, 255, 0.15);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+    }
+    .lang-btn:hover:not(.active) {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .reading-progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #00f0ff, #3b82f6, #a855f7);
+      width: 0%;
+      z-index: 9999;
+      transition: width 0.1s ease;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.7);
+    }
+    main.article-layout {
+      max-width: 860px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      flex: 1;
+      width: 100%;
+    }
+    .breadcrumb-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-code);
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      margin-bottom: 1.2rem;
+    }
+    .breadcrumb-nav a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb-nav a:hover { color: var(--cyan); }
+    .breadcrumb-current { color: var(--cyan); }
+    .article-header { margin-bottom: 2.5rem; }
+    .article-meta-badges {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .category-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(10, 12, 18, 0.9);
+      border: 1px solid var(--badge-color);
+      color: var(--badge-color);
+      font-family: var(--font-code);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      letter-spacing: 0.5px;
+    }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .article-meta-text { color: var(--text-dim); font-size: 0.85rem; font-family: var(--font-code); }
+    .article-main-title {
+      font-family: var(--font-title);
+      font-size: clamp(2.3rem, 4.5vw, 3.6rem);
+      font-weight: normal;
+      line-height: 1.15;
+      color: #fff;
+      margin-bottom: 1.2rem;
+      letter-spacing: -0.5px;
+    }
+    .article-lead-paragraph {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1.65;
+      margin-bottom: 2rem;
+    }
+    .article-author-share-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1.2rem 0;
+      margin-bottom: 2rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .author-info-box {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+    .author-photo {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid var(--card-border);
+      object-fit: cover;
+    }
+    .author-name-title {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .author-subtitle {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      font-family: var(--font-code);
+    }
+    .article-hero-cover-figure {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      margin-bottom: 3rem;
+      background: var(--panel);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+    .article-hero-img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .article-prose {
+      color: #cbd5e1;
+      font-size: 1.08rem;
+      line-height: 1.8;
+    }
+    .article-prose h2 {
+      font-family: var(--font-title);
+      font-size: 1.95rem;
+      color: #fff;
+      margin: 2.8rem 0 1rem;
+      letter-spacing: -0.3px;
+    }
+    .article-prose h3 {
+      font-family: var(--font-title);
+      font-size: 1.45rem;
+      color: #f1f5f9;
+      margin: 2rem 0 0.8rem;
+    }
+    .article-prose p {
+      margin-bottom: 1.4rem;
+    }
+    .article-prose ul, .article-prose ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+    }
+    .article-prose li {
+      margin-bottom: 0.5rem;
+    }
+    .article-prose hr {
+      border: none;
+      border-top: 1px solid var(--card-border);
+      margin: 2.5rem 0;
+    }
+    .article-prose code {
+      font-family: var(--font-code);
+      background: rgba(255, 255, 255, 0.06);
+      padding: 0.2rem 0.45rem;
+      border-radius: 6px;
+      font-size: 0.9em;
+      color: var(--cyan);
+    }
+    .article-prose pre {
+      background: #040507;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      overflow-x: auto;
+      margin: 1.6rem 0;
+    }
+    .article-prose pre code {
+      background: transparent;
+      padding: 0;
+      color: #e2e8f0;
+      font-size: 0.88rem;
+    }
+    .callout-box {
+      background: rgba(0, 240, 255, 0.04);
+      border-left: 3px solid var(--cyan);
+      border-radius: 0 12px 12px 0;
+      padding: 1.2rem 1.5rem;
+      margin: 1.8rem 0;
+      color: var(--text-main);
+    }
+    .mermaid {
+      background: #040507;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      display: flex;
+      justify-content: center;
+    }
+    .table-container {
+      overflow-x: auto;
+      margin: 2rem 0;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+    th, td {
+      padding: 1rem 1.2rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+    th {
+      background: var(--panel);
+      color: #fff;
+      font-family: var(--font-code);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    .article-cta-box {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.05), rgba(59, 130, 246, 0.08));
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      border-radius: 16px;
+      padding: 2.2rem;
+      margin: 3.5rem 0;
+      text-align: center;
+    }
+    .article-cta-title {
+      font-family: var(--font-title);
+      font-size: 1.6rem;
+      color: #fff;
+      margin-bottom: 0.8rem;
+    }
+    .article-cta-btn {
+      display: inline-block;
+      background: var(--cyan);
+      color: #000;
+      font-weight: 700;
+      padding: 0.85rem 2rem;
+      border-radius: 9999px;
+      text-decoration: none;
+      font-family: var(--font-code);
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      transition: all 0.2s;
+    }
+    .article-cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 240, 255, 0.4);
+    }
+    .article-faq-section {
+      background: var(--panel);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      margin: 3.5rem 0;
+    }
+    .faq-main-heading {
+      font-family: var(--font-title);
+      font-size: 1.8rem;
+      color: #fff;
+      margin-bottom: 1.5rem;
+    }
+    .faq-item-card { border-bottom: 1px solid var(--card-border); padding: 1.2rem 0; }
+    .faq-item-card:last-child { border-bottom: none; }
+    .faq-item-q { font-weight: 700; font-size: 1.1rem; color: var(--cyan); margin-bottom: 0.5rem; }
+    .faq-item-a { color: var(--text-muted); font-size: 0.98rem; line-height: 1.65; }
+    footer.magazine-footer {
+      background: #050608;
+      border-top: 1px solid var(--card-border);
+      padding: 3.5rem 2rem 2rem;
+      margin-top: 5rem;
+    }
+    .footer-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 2.5rem;
+    }
+    @media (max-width: 900px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .footer-grid { grid-template-columns: 1fr; }
+      nav.nav-links { display: none; }
+    }
+    .footer-col h4 {
+      font-family: var(--font-code);
+      font-size: 0.85rem;
+      color: var(--cyan);
+      margin-bottom: 1.2rem;
+      letter-spacing: 1px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.6rem; }
+    .footer-col ul li a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .footer-col ul li a:hover { color: #fff; }
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 1.8rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-dim);
+      font-size: 0.82rem;
+      font-family: var(--font-code);
+    }
+  </style>
+  <link rel="stylesheet" href="/assets/editorial-theme.css" />
+  <script src="/assets/editorial-theme.js"></script>
+  <script defer src="/assets/blog-telemetry.js"></script>
+</head>
+<body>
+  <div class="reading-progress-bar" id="progressBar"></div>
+
+  <header class="magazine-header">
+    <div class="nav-container">
+      <a href="/" class="brand-logo">
+        <span class="status-dot"></span>
+        BENNI OS // MAGAZINE
+      </a>
+      <nav class="nav-links">
+        <a href="/">Home</a>
+        <a href="/blog/index.html" class="active">Magazine</a>
+        <a href="/blog/academy.html">Academy</a>
+        <a href="https://github.com/Benni-OS" target="_blank">GitHub</a>
+        <a href="https://dev.to/bennialencar" target="_blank">Dev.to</a>
+        <div class="lang-switcher-pill" role="navigation" aria-label="Language Selector">
+          <a href="/blog/en/distributed-file-lock-arbiters-coding-agents-sqlite-wal-pretooluse.html" class="lang-btn" title="Switch to English">
+            <span>🇺🇸</span> EN
+          </a>
+          <a href="/blog/arbitros-lock-arquivos-agentes-codigo-sqlite-wal-pretooluse.html" class="lang-btn active" title="Português (Ativo)">
+            <span>🇧🇷</span> PT-BR
+          </a>
+        </div>
+        <a href="/#monetizacao" style="color: var(--cyan); font-weight: 700;">Operator Mode &rarr;</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-layout">
+    <nav class="breadcrumb-nav">
+      <a href="/blog/index.html">Magazine</a>
+      <span>/</span>
+      <span class="breadcrumb-current">SISTEMAS DISTRIBUÍDOS &amp; ARBITRAGEM DE ENXAMES</span>
+    </nav>
+
+    <header class="article-header">
+      <div class="article-meta-badges">
+        <span class="category-badge-pill">
+          <span class="badge-dot"></span>
+          SISTEMAS DISTRIBUÍDOS &amp; ARBITRAGEM DE ENXAMES
+        </span>
+        <span class="article-meta-text">14 min de leitura • 23 Nov 2026</span>
+      </div>
+
+      <h1 class="article-main-title">Árbitros Distribuídos de Lock de Arquivos para Agentes de Código: Prevenindo Sobrescritas com SQLite WAL e Hooks <code>PreToolUse</code></h1>
+      <p class="article-lead-paragraph">Por que agentes de código paralelos sobrescrevem silenciosamente os patches uns dos outros em repositórios compartilhados, e como o <code>Benni-OS/claude-code-swarm</code> impõe leases pessimistas com TTL em menos de 1ms usando transações atômicas em SQLite3 WAL e o hook nativo <code>PreToolUse</code> do Claude Code.</p>
+
+      <div class="article-author-share-bar">
+        <div class="author-info-box">
+          <img src="/blog/assets/benni_avatar.jpg" alt="Benni Alencar" class="author-photo" />
+          <div>
+            <div class="author-name-title">Benni Alencar</div>
+            <div class="author-subtitle">Chief AI Systems Architect &amp; Founder</div>
+          </div>
+        </div>
+        <div class="lang-switcher-pill" role="navigation" aria-label="Language Selector">
+          <a href="/blog/en/distributed-file-lock-arbiters-coding-agents-sqlite-wal-pretooluse.html" class="lang-btn" title="Switch to English">
+            <span>🇺🇸</span> EN
+          </a>
+          <a href="/blog/arbitros-lock-arquivos-agentes-codigo-sqlite-wal-pretooluse.html" class="lang-btn active" title="Português (Ativo)">
+            <span>🇧🇷</span> PT-BR
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <figure class="article-hero-cover-figure">
+      <img src="/blog/assets/flow_hero_agent-armies.jpg" alt="Árbitros Distribuídos de Lock de Arquivos para Agentes de Código: Prevenindo Sobrescritas com SQLite WAL e Hooks PreToolUse" width="1376" height="768" class="article-hero-img" />
+    </figure>
+
+    <article class="article-prose">
+      <hr />
+      <h2>1. O Problema da Sobrescrita Silenciosa em Enxames de Agentes</h2>
+      <p>Executar um único agente de código é rápido; executar quatro ou oito subagentes especializados em paralelo em um monorepo é transformador — até o momento em que dois agentes editam o mesmo arquivo. Em uma árvore de trabalho compartilhada, cada agente raciocina sobre um snapshot independente e potencialmente defasado do disco dentro de sua janela de contexto.</p>
+      <p>Considere a clássica <strong>condição de corrida de atualização perdida (lost-update)</strong>:</p>
+      <ol>
+        <li>Em <code>t = 0s</code>, o <strong>Agente A</strong> (Refatoração de API) lê <code>src/router.py</code> e inicia o raciocínio para aplicar um patch de 25 linhas.</li>
+        <li>Em <code>t = 1.8s</code>, o <strong>Agente B</strong> (Middleware de Auth) lê <code>src/router.py</code>, conclui sua inferência antes e invoca <code>Write</code> ou <code>Edit</code> para inserir uma verificação de autenticação.</li>
+        <li>Em <code>t = 3.1s</code>, o <strong>Agente A</strong> emite seu payload de <code>Write</code> calculado sobre o estado de <code>t = 0s</code>. O sistema de arquivos do SO sobrescreve o inode sem reclamar, apagando silenciosamente o middleware do Agente B com zero mensagens de erro.</li>
+      </ol>
+      <p>Pedir aos agentes que se coordenem via linguagem natural ("edite apenas os arquivos designados no prompt") é probabilístico e colapsa imediatamente em arquivos barrel compartilhados, lockfiles, schemas de banco de dados ou imports transitivos. Não se resolve um risco de concorrência com engenharia de prompt; resolve-se com um árbitro determinístico de exclusão mútua na fronteira de execução da ferramenta.</p>
+
+      <div class="callout-box">
+        <strong>Invariante Arquitetural:</strong> Toda chamada mutadora do sistema de arquivos (<code>Write</code>, <code>Edit</code>, <code>MultiEdit</code>) deve adquirir um lock atômico baseado em lease <em>antes</em> que a ferramenta execute. O <strong><a href="https://github.com/Benni-OS/claude-code-swarm" target="_blank" rel="noopener noreferrer" style="color: var(--cyan);">Benni-OS/claude-code-swarm</a></strong> impõe essa garantia em menos de 1 milissegundo usando um árbitro local em SQLite3 WAL conectado ao evento nativo <code>PreToolUse</code> do Claude Code.
+      </div>
+
+      <hr />
+      <h2>2. Leases Pessimistas vs. Otimistas e Expiração por TTL</h2>
+      <p>Ao projetar controle de concorrência para agentes autônomos de código, a primeira decisão estrutural é escolher entre travamento <strong>otimista</strong> e <strong>pessimista</strong>.</p>
+      <ul>
+        <li><strong>Controle de Concorrência Otimista (OCC):</strong> Os agentes leem e geram edições livremente e comparam o hash SHA-256 ou mtime do arquivo apenas no momento da gravação. Se houver conflito, o agente perdedor descarta o patch e tenta novamente. Em sistemas baseados em LLM, o OCC é proibitivamente caro: um patch rejeitado desperdiça de 5 a 30 segundos de latência e milhares de tokens de saída.</li>
+        <li><strong>Leases Pessimistas com TTL Limitado:</strong> Um agente precisa adquirir um lease exclusivo sobre o caminho canônico do arquivo antes de modificá-lo. Se outra sessão ativa detiver o lease, o hook <code>PreToolUse</code> falha rápido (<code>&lt; 1ms</code>) e retorna um erro determinístico de conflito antes que o agente corrompa o estado ou queime mais turnos.</li>
+      </ul>
+
+      <h3>Por que Todo Lease Exige um TTL (Time-To-Live)</h3>
+      <p>Em sistemas distribuídos, um lock sem prazo de expiração é um deadlock esperando para acontecer. Agentes de código são processos efêmeros: um subagente pode atingir timeout, ser encerrado por <code>Ctrl+C</code>, sofrer OOM ou disparar um circuit breaker FinOps no meio da tarefa. Se esse agente nunca alcançar <code>PostToolUse</code> ou <code>SubagentStop</code> para liberar o lock, o arquivo ficaria travado para sempre.</p>
+      <p>Por isso, todo lock no <code>claude-code-swarm</code> é um <strong>lease com tempo limitado</strong> (padrão <code>ttl_seconds = 120</code>). Cada registro armazena <code>owner_session_id</code>, <code>fencing_token</code> (um inteiro monotonicamente crescente), <code>acquired_at</code> e <code>expires_at</code>. Qualquer transação <code>BEGIN IMMEDIATE</code> subsequente remove atomicamente linhas expiradas (<code>WHERE expires_at &lt;= now</code>) antes de avaliar a posse — entregando recuperação automática contra falhas sem daemons coletores em segundo plano.</p>
+
+      <hr />
+      <h2>3. Fluxo de Sequência: Interceptando <code>Write</code>/<code>Edit</code> no <code>PreToolUse</code></h2>
+      <p>O Claude Code invoca o <code>PreToolUse</code> de forma síncrona via JSON no <code>stdin</code> antes de executar qualquer ferramenta. Quando dois agentes paralelos miram o mesmo caminho canônico, o árbitro SQLite WAL serializa as requisições de lock de forma determinística:</p>
+
+      <div class="mermaid">
+sequenceDiagram
+    autonumber
+    participant A as Agente A (Sessão 101)
+    participant H as Hook PreToolUse
+    participant DB as Árbitro SQLite3 WAL
+    participant B as Agente B (Sessão 204)
+
+    A-&gt;&gt;H: Propõe Edit(src/router.py)
+    H-&gt;&gt;DB: BEGIN IMMEDIATE; limpa expirados; UPSERT lease(src/router.py, owner=101, TTL=120s)
+    DB--&gt;&gt;H: OK (fencing_token=42)
+    H--&gt;&gt;A: Exit 0 (Permite Write/Edit)
+
+    B-&gt;&gt;H: Propõe Write(src/router.py)
+    H-&gt;&gt;DB: BEGIN IMMEDIATE; verifica dono de src/router.py
+    DB--&gt;&gt;H: CONFLITO (retido por 101, expires_at &gt; now)
+    H--&gt;&gt;B: Exit 2 + stderr("LOCK_CONFLICT: retido pela sessão 101, tente em 15s")
+
+    A-&gt;&gt;H: PostToolUse / SubagentStop (libera lease 101)
+    H-&gt;&gt;DB: DELETE FROM file_leases WHERE path='...' AND owner='101'
+    DB--&gt;&gt;H: Liberado
+      </div>
+
+      <p>Observe duas propriedades críticas desse fluxo:</p>
+      <ol>
+        <li><strong>Reentrância Idempotente:</strong> Se o Agente A já detém o lease de <code>src/router.py</code> e emite um segundo <code>Edit</code> no mesmo arquivo dentro da janela de TTL, o árbitro renova <code>expires_at</code> e permite a execução imediatamente.</li>
+        <li><strong>Backoff com Zero Tokens Extras:</strong> O Agente B recebe uma mensagem objetiva em stderr via código de saída <code>2</code>, permitindo que ele pivote para um módulo livre ou aguarde a liberação no <code>SubagentStop</code> do Agente A.</li>
+      </ol>
+
+      <hr />
+      <h2>4. Schema SQLite3 WAL Atômico e Implementação do Árbitro em Python</h2>
+      <p>Arquivos <code>.lock</code> ingênuos no sistema de arquivos sofrem com condições de corrida TOCTOU (<em>Time-of-Check to Time-of-Use</em>) e bugs de limpeza entre plataformas. O SQLite3 em modo <strong>Write-Ahead Logging (WAL)</strong> oferece transações ACID, implantação em arquivo único sem daemon e contenção sub-milissegundo via <code>busy_timeout</code>.</p>
+
+      <h3>Schema SQLite3 WAL</h3>
+<pre><code class="language-sql">PRAGMA journal_mode = WAL;
+PRAGMA synchronous = NORMAL;
+PRAGMA busy_timeout = 5000;
+
+CREATE TABLE IF NOT EXISTS file_leases (
+    canonical_path  TEXT PRIMARY KEY,
+    owner_id        TEXT NOT NULL,
+    fencing_token   INTEGER NOT NULL,
+    acquired_at     REAL NOT NULL,
+    expires_at      REAL NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS lease_sequence (
+    id              INTEGER PRIMARY KEY CHECK (id = 1),
+    next_token      INTEGER NOT NULL DEFAULT 1
+);
+
+INSERT OR IGNORE INTO lease_sequence (id, next_token) VALUES (1, 1);
+CREATE INDEX IF NOT EXISTS idx_leases_expires ON file_leases (expires_at);
+</code></pre>
+
+      <h3>Hook <code>PreToolUse</code> em Python e Árbitro Atômico de Leases</h3>
+      <p>Abaixo está o árbitro atômico central usado pelo <code>claude-code-swarm</code>. Todo caminho é normalizado via <code>os.path.realpath</code> para que symlinks e caminhos relativos (<code>./src/../src/router.py</code>) apontem para exatamente a mesma chave de lock:</p>
+
+<pre><code class="language-python">import json
+import os
+import sqlite3
+import sys
+import time
+from pathlib import Path
+
+DB_PATH = Path(".swarm/file_leases.db")
+MUTATING_TOOLS = {"Write", "Edit", "MultiEdit"}
+DEFAULT_TTL_SECONDS = 120.0
+
+
+def init_db(conn: sqlite3.Connection) -&gt; None:
+    conn.execute("PRAGMA journal_mode = WAL;")
+    conn.execute("PRAGMA synchronous = NORMAL;")
+    conn.execute("PRAGMA busy_timeout = 5000;")
+    conn.executescript(
+        """
+        CREATE TABLE IF NOT EXISTS file_leases (
+            canonical_path TEXT PRIMARY KEY,
+            owner_id TEXT NOT NULL,
+            fencing_token INTEGER NOT NULL,
+            acquired_at REAL NOT NULL,
+            expires_at REAL NOT NULL
+        );
+        CREATE TABLE IF NOT EXISTS lease_sequence (
+            id INTEGER PRIMARY KEY CHECK (id = 1),
+            next_token INTEGER NOT NULL DEFAULT 1
+        );
+        INSERT OR IGNORE INTO lease_sequence (id, next_token) VALUES (1, 1);
+        """
+    )
+
+
+def acquire_lease(
+    db_path: Path, target_path: str, owner_id: str, ttl: float = DEFAULT_TTL_SECONDS
+) -&gt; tuple[bool, int, str]:
+    canonical = os.path.realpath(target_path)
+    now = time.time()
+    expires_at = now + ttl
+    db_path.parent.mkdir(parents=True, exist_ok=True)
+
+    conn = sqlite3.connect(str(db_path), isolation_level=None, timeout=5.0)
+    try:
+        init_db(conn)
+        conn.execute("BEGIN IMMEDIATE;")
+
+        # 1. Remove leases expirados atomicamente (auto-recuperação pós-crash)
+        conn.execute("DELETE FROM file_leases WHERE expires_at &lt;= ?;", (now,))
+
+        # 2. Verifica o detentor atual do lease ativo
+        row = conn.execute(
+            "SELECT owner_id, fencing_token, expires_at FROM file_leases WHERE canonical_path = ?;",
+            (canonical,),
+        ).fetchone()
+
+        if row is not None and row[0] != owner_id:
+            remaining = max(0.0, row[2] - now)
+            conn.execute("ROLLBACK;")
+            return (
+                False,
+                row[1],
+                f"LOCK_CONFLICT: '{canonical}' is leased by session '{row[0]}' "
+                f"(token={row[1]}, expires in {remaining:.1f}s).",
+            )
+
+        # 3. Emite fencing token monotônico e faz upsert do lease
+        token = conn.execute(
+            "UPDATE lease_sequence SET next_token = next_token + 1 WHERE id = 1 RETURNING next_token - 1;"
+        ).fetchone()[0]
+
+        conn.execute(
+            """
+            INSERT INTO file_leases (canonical_path, owner_id, fencing_token, acquired_at, expires_at)
+            VALUES (?, ?, ?, ?, ?)
+            ON CONFLICT(canonical_path) DO UPDATE SET
+                owner_id = excluded.owner_id,
+                fencing_token = excluded.fencing_token,
+                acquired_at = excluded.acquired_at,
+                expires_at = excluded.expires_at;
+            """,
+            (canonical, owner_id, token, now, expires_at),
+        )
+        conn.execute("COMMIT;")
+        return True, token, f"LOCK_ACQUIRED: '{canonical}' (token={token})."
+    except Exception:
+        conn.execute("ROLLBACK;")
+        raise
+    finally:
+        conn.close()
+
+
+def main() -&gt; None:
+    payload = json.load(sys.stdin)
+    tool_name = payload.get("tool_name", "")
+    if tool_name not in MUTATING_TOOLS:
+        sys.exit(0)
+
+    tool_input = payload.get("tool_input", {})
+    file_path = tool_input.get("file_path") or tool_input.get("path")
+    if not file_path:
+        sys.exit(0)
+
+    owner_id = payload.get("session_id", "default-agent")
+    acquired, _, message = acquire_lease(DB_PATH, file_path, owner_id)
+    if not acquired:
+        sys.stderr.write(message + "\n")
+        sys.exit(2)
+
+    sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+
+      <hr />
+      <h2>5. Comparativo de Latência e Arquitetura de Concorrência</h2>
+      <p>Por que escolher SQLite3 WAL + <code>PreToolUse</code> em vez de Git worktrees, Redis ou arquivos <code>.lock</code> tradicionais? Veja como as abordagens se comportam sob carga de enxames paralelos:</p>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Estratégia de Arbitragem</th>
+              <th>Latência de Aquisição</th>
+              <th>Recuperação pós-Crash (TTL)</th>
+              <th>Infra Externa</th>
+              <th>Segurança contra Race Conditions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Coordenação via Prompt</strong> (<code>CLAUDE.md</code>)</td>
+              <td>0 ms (probabilística)</td>
+              <td>N/A</td>
+              <td>Nenhuma</td>
+              <td>Insegura (sobrescritas silenciosas em arquivos comuns)</td>
+            </tr>
+            <tr>
+              <td><strong>Arquivos <code>.lock</code> Ingênuos</strong> (<code>open(..., 'x')</code>)</td>
+              <td>0.2 – 1.5 ms</td>
+              <td>Manual / mtime frágil</td>
+              <td>Nenhuma</td>
+              <td>Parcial (TOCTOU na limpeza e sem fencing token)</td>
+            </tr>
+            <tr>
+              <td><strong>Git Worktrees por Agente</strong></td>
+              <td>150 – 800 ms (checkout)</td>
+              <td>Vinculada ao processo</td>
+              <td>Git CLI</td>
+              <td>Alta (árvores isoladas, mas adia conflitos para o merge)</td>
+            </tr>
+            <tr>
+              <td><strong>Lock Distribuído Redis</strong> (Redlock)</td>
+              <td>1.5 – 5.0 ms (TCP/localhost)</td>
+              <td>TTL nativo via <code>PX</code></td>
+              <td>Daemon Redis</td>
+              <td>Alta (exige subir e monitorar servidor Redis)</td>
+            </tr>
+            <tr>
+              <td><strong><code>claude-code-swarm</code> SQLite3 WAL</strong></td>
+              <td><strong>0.3 – 0.9 ms (in-process)</strong></td>
+              <td><strong>Remoção atômica via TTL em <code>BEGIN IMMEDIATE</code></strong></td>
+              <td><strong>Zero (stdlib <code>sqlite3</code>)</strong></td>
+              <td><strong>Serialização ACID + Fencing Tokens Monotônicos</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Na prática, o SQLite3 WAL atinge o ponto ótimo de engenharia para enxames locais de agentes de código: aquisição de lock sub-milissegundo, zero daemons externos, serialização ACID entre processos independentes do sistema operacional e recuperação determinística contra quedas via TTL.</p>
+
+      <div class="article-cta-box">
+        <h3 class="article-cta-title">Elimine Condições de Corrida Multi-Agente Hoje</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; max-width: 620px; margin: 0 auto;">
+          Implante o <strong>Benni-OS/claude-code-swarm</strong> para adicionar arbitragem atômica de locks em SQLite WAL, recuperação por TTL e coordenação determinística em <code>PreToolUse</code> aos seus fluxos paralelos no Claude Code.
+        </p>
+        <a href="https://github.com/Benni-OS/claude-code-swarm" target="_blank" rel="noopener noreferrer" class="article-cta-btn">Explorar Benni-OS/claude-code-swarm no GitHub &rarr;</a>
+      </div>
+
+      <section class="article-faq-section">
+        <h2 class="faq-main-heading">Perguntas Frequentes</h2>
+
+        <div class="faq-item-card">
+          <div class="faq-item-q">Por que agentes de código paralelos sobrescrevem silenciosamente os arquivos uns dos outros?</div>
+          <div class="faq-item-a">Quando múltiplos agentes compartilham um workspace, seus ciclos Read-Think-Write se sobrepõem. O Agente A lê um arquivo em <code>t=0</code>, o Agente B grava um patch em <code>t=2</code>, e o Agente A emite um <code>Write</code> completo ou <code>Edit</code> obsoleto em <code>t=3</code> baseado no estado antigo — apagando silenciosamente as alterações do Agente B sem gerar nenhum erro no sistema operacional.</div>
+        </div>
+        <div class="faq-item-card">
+          <div class="faq-item-q">Por que usar leases pessimistas com TTL em vez de controle de concorrência otimista para agentes de código?</div>
+          <div class="faq-item-a">O controle otimista detecta conflitos apenas depois que o agente já queimou tokens de LLM e tempo de inferência gerando o patch. Leases pessimistas falham rápido no hook <code>PreToolUse</code> antes da execução, enquanto um Time-To-Live (TTL) limitado garante que um agente encerrado com <code>SIGKILL</code> nunca deixe o arquivo em deadlock permanente.</div>
+        </div>
+        <div class="faq-item-card">
+          <div class="faq-item-q">Como o SQLite3 WAL garante aquisição atômica de locks entre processos de hook concorrentes?</div>
+          <div class="faq-item-a">Ao ativar <code>PRAGMA journal_mode=WAL</code> e iniciar transações com <code>BEGIN IMMEDIATE</code>, o SQLite serializa todas as transações de escrita entre processos independentes do SO em nível de biblioteca C. Leases expirados são removidos e novos leases são inseridos dentro de uma única transação atômica, eliminando condições de corrida TOCTOU.</div>
+        </div>
+        <div class="faq-item-card">
+          <div class="faq-item-q">Como o Benni-OS/claude-code-swarm aplica locks de arquivos no Claude Code?</div>
+          <div class="faq-item-a">O <code>claude-code-swarm</code> registra um hook <code>PreToolUse</code> que intercepta chamadas <code>Write</code>, <code>Edit</code> e <code>MultiEdit</code>, normaliza o caminho alvo via <code>realpath</code> e consulta o árbitro SQLite WAL. Se outro agente ativo detiver um lease válido, o hook encerra com código de saída <code>2</code> e retorna uma mensagem estruturada em stderr para que o agente bloqueado recue ou aguarde.</div>
+        </div>
+      </section>
+    </article>
+  </main>
+
+  <footer class="magazine-footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>BENNI OS // SOVEREIGN AUTONOMY</h4>
+        <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; margin-top: 0.5rem;">
+          The Sovereign Autonomy System built from first principles. Eliminating agent hallucinations, loop explosions, and cloud vendor lock-in.
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>PLATFORM</h4>
+        <ul>
+          <li><a href="/blog/index.html">Technical Magazine</a></li>
+          <li><a href="/blog/academy.html">Academy &amp; Masterclass</a></li>
+          <li><a href="https://github.com/Benni-OS" target="_blank">Open Source Repos</a></li>
+          <li><a href="https://dev.to/bennialencar" target="_blank">Dev.to Series</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>OPEN SOURCE SUITE</h4>
+        <ul>
+          <li><a href="https://github.com/Benni-OS/claude-code-sovereign" target="_blank">claude-code-sovereign</a></li>
+          <li><a href="https://github.com/Benni-OS/claude-code-swarm" target="_blank">claude-code-swarm</a></li>
+          <li><a href="https://github.com/Benni-OS/agent-trace-replay" target="_blank">agent-trace-replay</a></li>
+          <li><a href="https://github.com/BenniAlencar/agent-cyber-sentinel" target="_blank">agent-cyber-sentinel</a></li>
+          <li><a href="https://github.com/BenniAlencar/agent-run-ledger" target="_blank">agent-run-ledger</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>SOVEREIGN ACCESS</h4>
+        <ul>
+          <li><a href="/#monetizacao">Operator Mode Pass</a></li>
+          <li><a href="/#monetizacao">MCP Forge Playbook</a></li>
+          <li><a href="https://agensi.io/sell" target="_blank">Agensi.io Skills</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>&copy; 2026 Benni OS. Engineered by Benni Alencar. All rights reserved.</div>
+      <div style="display:flex; gap: 1rem;">
+        <a href="/blog/en/distributed-file-lock-arbiters-coding-agents-sqlite-wal-pretooluse.html" style="color: var(--text-dim); text-decoration: none;">English</a>
+        <a href="/blog/arbitros-lock-arquivos-agentes-codigo-sqlite-wal-pretooluse.html" style="color: var(--text-dim); text-decoration: none;">Português</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { darkMode: true, background: '#040507', primaryColor: '#00f0ff', edgeColor: '#3b82f6' } });
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+      document.getElementById('progressBar').style.width = scrolled + '%';
+    });
+  </script>
+</body>
+</html>
