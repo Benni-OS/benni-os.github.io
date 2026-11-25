@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6415277800729792" crossorigin="anonymous"></script>
+
+  <title>Recibos Criptográficos de Avaliação: Provando a Qualidade de Agentes de Código Sem Pagar Imposto de LLM-as-a-Judge — Benni Alencar // Benni OS</title>
+  <meta name="description" content="Por que avaliar agentes de codificação com LLMs na nuvem introduz viés circular, não determinismo e custo 2x em tokens — e como o Benni-OS/claude-code-eval vincula digests de entrada, hashes de ruleset, checagens AST e digests de resultado em recibos SHA-256 reproduzíveis a $0,00 por execução de CI." />
+  <link rel="canonical" href="https://benni-os.net/blog/recibos-criptograficos-avaliacao-agentes-zero-custo-llm-judge.html" />
+  <link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/recibos-criptograficos-avaliacao-agentes-zero-custo-llm-judge.html" />
+  <link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/cryptographic-evaluation-receipts-zero-llm-judge-tax.html" />
+  <link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/cryptographic-evaluation-receipts-zero-llm-judge-tax.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Recibos Criptográficos de Avaliação: Provando a Qualidade de Agentes de Código Sem Pagar Imposto de LLM-as-a-Judge" />
+  <meta property="og:description" content="Elimine viés circular de LLM-judge, portões de CI instáveis e faturas dobradas de tokens. Vincule digests de entrada, hashes de ruleset, checagens AST e digests de resultado em recibos SHA-256 reproduzíveis a $0,00 por execução." />
+  <meta property="og:image" content="https://benni-os.net/blog/assets/flow_hero_agent-eval-harness.jpg" />
+  <meta property="og:url" content="https://benni-os.net/blog/recibos-criptograficos-avaliacao-agentes-zero-custo-llm-judge.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:creator" content="@BenniAlencar" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": ["TechArticle", "BlogPosting"],
+        "@id": "https://benni-os.net/blog/recibos-criptograficos-avaliacao-agentes-zero-custo-llm-judge.html#article",
+        "isPartOf": {
+          "@type": "WebSite",
+          "@id": "https://benni-os.net/#website",
+          "name": "Benni OS",
+          "url": "https://benni-os.net"
+        },
+        "headline": "Recibos Criptográficos de Avaliação: Provando a Qualidade de Agentes de Código Sem Pagar Imposto de LLM-as-a-Judge",
+        "description": "Por que avaliar agentes de codificação com LLMs na nuvem introduz viés circular, não determinismo e custo 2x em tokens — e como o Benni-OS/claude-code-eval vincula digests de entrada, hashes de ruleset, checagens AST e digests de resultado em recibos SHA-256 reproduzíveis a $0,00 por execução de CI.",
+        "inLanguage": "pt-BR",
+        "mainEntityOfPage": "https://benni-os.net/blog/recibos-criptograficos-avaliacao-agentes-zero-custo-llm-judge.html",
+        "url": "https://benni-os.net/blog/recibos-criptograficos-avaliacao-agentes-zero-custo-llm-judge.html",
+        "image": "https://benni-os.net/blog/assets/flow_hero_agent-eval-harness.jpg",
+        "datePublished": "2026-11-25T00:00:00Z",
+        "dateModified": "2026-11-25T00:00:00Z",
+        "keywords": "recibos criptográficos de avaliação, claude-code-eval, llm-as-a-judge, sha-256, avaliação determinística de agentes, verificação ast, portão ci/cd, benni os",
+        "author": {
+          "@type": "Person",
+          "@id": "https://benni-os.net/#author",
+          "name": "Benni Alencar",
+          "jobTitle": "Chief AI Systems Architect & Founder",
+          "url": "https://benni-os.net",
+          "sameAs": [
+            "https://github.com/BenniAlencar",
+            "https://github.com/Benni-OS",
+            "https://dev.to/bennialencar",
+            "https://www.linkedin.com/in/benni-alencar/",
+            "https://benni-os.net"
+          ]
+        },
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://benni-os.net/#organization",
+          "name": "Benni OS",
+          "url": "https://benni-os.net",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://benni-os.net/blog/assets/benni_avatar.jpg"
+          }
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://benni-os.net/blog/recibos-criptograficos-avaliacao-agentes-zero-custo-llm-judge.html#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Por que usar LLM-as-a-Judge falha ao avaliar agentes de codificação?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Usar um LLM na nuvem para avaliar outro agente de código introduz viés circular de autopreferência, vereditos não determinísticos para entradas idênticas, latência extra de 5 a 15 segundos e um imposto de 2x em tokens. Pior: uma nota em prosa gerada por LLM não oferece nenhuma prova criptográfica de que testes rodaram ou regras foram aplicadas."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "O que um recibo criptográfico de avaliação SHA-256 vincula?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "O Benni-OS/claude-code-eval vincula quatro componentes imutáveis em um payload JSON canônico selado com SHA-256: o input_digest (especificação da tarefa e commit base), o ruleset_hash (regras exatas de AST e políticas), os resultados determinísticos das checagens (sintaxe AST, detecção de stubs, testes unitários) e o outcome_digest (hash do diff ou árvore resultante)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Como a avaliação pode custar $0,00 por execução de CI?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Porque toda a verificação — parsing de AST, varredura contra stubs proibidos, execução de testes e selagem canônica em SHA-256 — roda localmente e de forma determinística no seu runner de CI, sem nenhuma chamada de saída para APIs de LLM."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Como times enterprise verificam um recibo meses após o merge?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Um auditor ou portão de CI executa claude-eval verify receipt.json offline. O verificador recalcula o digest SHA-256 canônico sobre o payload e o compara em tempo constante com receipt_sha256, além de validar o ruleset_hash — detectando qualquer adulteração ou drift de política imediatamente."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #07080c;
+      --panel: #0e111a;
+      --panel-hover: #141824;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-border-hover: rgba(0, 240, 255, 0.35);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --cyan: #00f0ff;
+      --cyan-glow: rgba(0, 240, 255, 0.15);
+      --blue: #3b82f6;
+      --lime: #10b981;
+      --orange: #ff6b00;
+      --purple: #a855f7;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-title: 'DM Serif Display', Georgia, serif;
+      --font-code: 'IBM Plex Mono', monospace;
+      --badge-color: #00f0ff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.75;
+      font-size: 1.05rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59, 130, 246, 0.12), transparent),
+        radial-gradient(circle at 100% 40%, rgba(168, 85, 247, 0.06), transparent 50%),
+        radial-gradient(circle at 0% 70%, rgba(0, 240, 255, 0.05), transparent 50%);
+      background-attachment: fixed;
+    }
+    header.magazine-header {
+      background: rgba(7, 8, 12, 0.85);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--card-border);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 0.9rem 2rem;
+    }
+    .nav-container {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand-logo {
+      font-family: var(--font-code);
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--text-main);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      letter-spacing: 0.5px;
+    }
+    .brand-logo:hover { color: var(--cyan); }
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #10b981;
+    }
+    nav.nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.8rem;
+    }
+    nav.nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav.nav-links a:hover, nav.nav-links a.active { color: #fff; }
+    .lang-switcher-pill {
+      display: flex;
+      align-items: center;
+      background: rgba(14, 17, 26, 0.8);
+      border: 1px solid var(--card-border);
+      border-radius: 9999px;
+      padding: 3px;
+      gap: 2px;
+    }
+    .lang-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-family: var(--font-code);
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .lang-btn.active {
+      background: rgba(0, 240, 255, 0.15);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+    }
+    .lang-btn:hover:not(.active) {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .reading-progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #00f0ff, #3b82f6, #a855f7);
+      width: 0%;
+      z-index: 9999;
+      transition: width 0.1s ease;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.7);
+    }
+    main.article-layout {
+      max-width: 860px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      flex: 1;
+      width: 100%;
+    }
+    .breadcrumb-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-code);
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      margin-bottom: 1.2rem;
+    }
+    .breadcrumb-nav a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb-nav a:hover { color: var(--cyan); }
+    .breadcrumb-current { color: var(--cyan); }
+    .article-header { margin-bottom: 2.5rem; }
+    .article-meta-badges {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .category-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(10, 12, 18, 0.9);
+      border: 1px solid var(--badge-color);
+      color: var(--badge-color);
+      font-family: var(--font-code);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      letter-spacing: 0.5px;
+    }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .article-meta-text { color: var(--text-dim); font-size: 0.85rem; font-family: var(--font-code); }
+    .article-main-title {
+      font-family: var(--font-title);
+      font-size: clamp(2.3rem, 4.5vw, 3.6rem);
+      font-weight: normal;
+      line-height: 1.15;
+      color: #fff;
+      margin-bottom: 1.2rem;
+      letter-spacing: -0.5px;
+    }
+    .article-lead-paragraph {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1.65;
+      margin-bottom: 2rem;
+    }
+    .article-author-share-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1.2rem 0;
+      margin-bottom: 2rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .author-info-box {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+    .author-photo {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid var(--card-border);
+      object-fit: cover;
+    }
+    .author-name-title {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .author-subtitle {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      font-family: var(--font-code);
+    }
+    .article-hero-cover-figure {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      margin-bottom: 3rem;
+      background: var(--panel);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+    .article-hero-img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .article-prose {
+      color: #cbd5e1;
+      font-size: 1.08rem;
+      line-height: 1.8;
+    }
+    .article-prose h2 {
+      font-family: var(--font-title);
+      font-size: 1.95rem;
+      color: #fff;
+      margin: 2.8rem 0 1rem;
+      letter-spacing: -0.3px;
+    }
+    .article-prose h3 {
+      font-family: var(--font-title);
+      font-size: 1.45rem;
+      color: #f1f5f9;
+      margin: 2rem 0 0.8rem;
+    }
+    .article-prose p {
+      margin-bottom: 1.4rem;
+    }
+    .article-prose ul, .article-prose ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+    }
+    .article-prose li {
+      margin-bottom: 0.5rem;
+    }
+    .article-prose hr {
+      border: none;
+      border-top: 1px solid var(--card-border);
+      margin: 2.5rem 0;
+    }
+    .article-prose code {
+      font-family: var(--font-code);
+      background: rgba(255, 255, 255, 0.06);
+      padding: 0.2rem 0.45rem;
+      border-radius: 6px;
+      font-size: 0.9em;
+      color: var(--cyan);
+    }
+    .article-prose pre {
+      background: #040507;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      overflow-x: auto;
+      margin: 1.6rem 0;
+    }
+    .article-prose pre code {
+      background: transparent;
+      padding: 0;
+      color: #e2e8f0;
+      font-size: 0.88rem;
+    }
+    .callout-box {
+      background: rgba(0, 240, 255, 0.04);
+      border-left: 3px solid var(--cyan);
+      border-radius: 0 12px 12px 0;
+      padding: 1.2rem 1.5rem;
+      margin: 1.8rem 0;
+      color: var(--text-main);
+    }
+    .mermaid {
+      background: #040507;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      display: flex;
+      justify-content: center;
+    }
+    .table-container {
+      overflow-x: auto;
+      margin: 2rem 0;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+    th, td {
+      padding: 1rem 1.2rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+    th {
+      background: var(--panel);
+      color: #fff;
+      font-family: var(--font-code);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    .article-cta-box {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.05), rgba(59, 130, 246, 0.08));
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      border-radius: 16px;
+      padding: 2.2rem;
+      margin: 3.5rem 0;
+      text-align: center;
+    }
+    .article-cta-title {
+      font-family: var(--font-title);
+      font-size: 1.6rem;
+      color: #fff;
+      margin-bottom: 0.8rem;
+    }
+    .article-cta-btn {
+      display: inline-block;
+      background: var(--cyan);
+      color: #000;
+      font-weight: 700;
+      padding: 0.85rem 2rem;
+      border-radius: 9999px;
+      text-decoration: none;
+      font-family: var(--font-code);
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      transition: all 0.2s;
+    }
+    .article-cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 240, 255, 0.4);
+    }
+    .article-faq-section {
+      background: var(--panel);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      margin: 3.5rem 0;
+    }
+    .faq-main-heading {
+      font-family: var(--font-title);
+      font-size: 1.8rem;
+      color: #fff;
+      margin-bottom: 1.5rem;
+    }
+    .faq-item-card { border-bottom: 1px solid var(--card-border); padding: 1.2rem 0; }
+    .faq-item-card:last-child { border-bottom: none; }
+    .faq-item-q { font-weight: 700; font-size: 1.1rem; color: var(--cyan); margin-bottom: 0.5rem; }
+    .faq-item-a { color: var(--text-muted); font-size: 0.98rem; line-height: 1.65; }
+    footer.magazine-footer {
+      background: #050608;
+      border-top: 1px solid var(--card-border);
+      padding: 3.5rem 2rem 2rem;
+      margin-top: 5rem;
+    }
+    .footer-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 2.5rem;
+    }
+    @media (max-width: 900px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .footer-grid { grid-template-columns: 1fr; }
+      nav.nav-links { display: none; }
+    }
+    .footer-col h4 {
+      font-family: var(--font-code);
+      font-size: 0.85rem;
+      color: var(--cyan);
+      margin-bottom: 1.2rem;
+      letter-spacing: 1px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.6rem; }
+    .footer-col ul li a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .footer-col ul li a:hover { color: #fff; }
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 1.8rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-dim);
+      font-size: 0.82rem;
+      font-family: var(--font-code);
+    }
+  </style>
+  <link rel="stylesheet" href="/assets/editorial-theme.css" />
+  <script src="/assets/editorial-theme.js"></script>
+  <script defer src="/assets/blog-telemetry.js"></script>
+</head>
+<body>
+  <div class="reading-progress-bar" id="progressBar"></div>
+
+  <header class="magazine-header">
+    <div class="nav-container">
+      <a href="/" class="brand-logo">
+        <span class="status-dot"></span>
+        BENNI OS // MAGAZINE
+      </a>
+      <nav class="nav-links">
+        <a href="/">Home</a>
+        <a href="/blog/index.html" class="active">Magazine</a>
+        <a href="/blog/academy.html">Academy</a>
+        <a href="https://github.com/Benni-OS" target="_blank">GitHub</a>
+        <a href="https://dev.to/bennialencar" target="_blank">Dev.to</a>
+        <div class="lang-switcher-pill" role="navigation" aria-label="Language Selector">
+          <a href="/blog/en/cryptographic-evaluation-receipts-zero-llm-judge-tax.html" class="lang-btn" title="Switch to English">
+            <span>🇺🇸</span> EN
+          </a>
+          <a href="/blog/recibos-criptograficos-avaliacao-agentes-zero-custo-llm-judge.html" class="lang-btn active" title="Português (Brasil) (Ativo)">
+            <span>🇧🇷</span> PT-BR
+          </a>
+        </div>
+        <a href="/#monetizacao" style="color: var(--cyan); font-weight: 700;">Operator Mode &rarr;</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-layout">
+    <nav class="breadcrumb-nav">
+      <a href="/blog/index.html">Magazine</a>
+      <span>/</span>
+      <span class="breadcrumb-current">AVALIAÇÃO DETERMINÍSTICA &amp; AUDITORIA</span>
+    </nav>
+
+    <header class="article-header">
+      <div class="article-meta-badges">
+        <span class="category-badge-pill">
+          <span class="badge-dot"></span>
+          AVALIAÇÃO DETERMINÍSTICA &amp; AUDITORIA
+        </span>
+        <span class="article-meta-text">13 min de leitura • 25 Nov, 2026</span>
+      </div>
+
+      <h1 class="article-main-title">Recibos Criptográficos de Avaliação: Provando a Qualidade de Agentes de Código Sem Pagar Imposto de LLM-as-a-Judge</h1>
+      <p class="article-lead-paragraph">Por que avaliar agentes de codificação com LLMs caros na nuvem introduz viés circular, não determinismo e faturas dobradas de tokens — e como o <code>Benni-OS/claude-code-eval</code> vincula digests de entrada, hashes de ruleset, checagens AST e digests de resultado em recibos SHA-256 reproduzíveis a <code>$0,00</code> por execução de CI.</p>
+
+      <div class="article-author-share-bar">
+        <div class="author-info-box">
+          <img src="/blog/assets/benni_avatar.jpg" alt="Benni Alencar" class="author-photo" />
+          <div>
+            <div class="author-name-title">Benni Alencar</div>
+            <div class="author-subtitle">Chief AI Systems Architect &amp; Founder</div>
+          </div>
+        </div>
+        <div class="lang-switcher-pill" role="navigation" aria-label="Language Selector">
+          <a href="/blog/en/cryptographic-evaluation-receipts-zero-llm-judge-tax.html" class="lang-btn" title="Switch to English">
+            <span>🇺🇸</span> EN
+          </a>
+          <a href="/blog/recibos-criptograficos-avaliacao-agentes-zero-custo-llm-judge.html" class="lang-btn active" title="Português (Brasil) (Ativo)">
+            <span>🇧🇷</span> PT-BR
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <figure class="article-hero-cover-figure">
+      <img src="/blog/assets/flow_hero_agent-eval-harness.jpg" alt="Recibos Criptográficos de Avaliação: Provando a Qualidade de Agentes de Código Sem Pagar Imposto de LLM-as-a-Judge" width="1376" height="768" class="article-hero-img" />
+    </figure>
+
+    <article class="article-prose">
+      <hr />
+      <h2>1. O Imposto do LLM-as-a-Judge: Viés Circular, Não Determinismo e Custo 2&times; em Tokens</h2>
+      <p>À medida que times de engenharia colocam agentes de codificação em pipelines automatizados de CI/CD, surge um gargalo paradoxal de verificação: como provar que o patch de um agente é seguro para produção antes do merge? A resposta padrão da indústria — <strong>LLM-as-a-Judge</strong> — envia o diff para um segundo modelo na nuvem emitir uma nota de qualidade.</p>
+      <p>Sob a ótica de engenharia de sistemas, avaliar geração probabilística de código com outra API probabilística viola quatro invariantes fundamentais:</p>
+      <ul>
+        <li><strong>Viés Circular e Cegueira de Estilo:</strong> Modelos frontier exibem autopreferência mensurável. Um modelo juiz recompensa docstrings verbosos, boilerplate familiar e explicações confiantes da própria família de modelos enquanto deixa passar defeitos sutis de AST, recursos não fechados ou caminhos com stubs <code>NotImplementedError</code>.</li>
+        <li><strong>Portões de CI Não Determinísticos:</strong> Mesmo com <code>temperature=0</code>, roteamento Mixture-of-Experts, batching de ponto flutuante e atualizações silenciosas de pesos no provedor fazem o mesmo patch tirar <code>8,5/10</code> na segunda-feira e <code>6,0/10</code> na terça.</li>
+        <li><strong>O Imposto de 2&times; em Tokens:</strong> Você já pagou pela janela de contexto do agente, chamadas de ferramentas e retentativas de teste. Enviar o diff completo, o contexto do repositório e os logs para um LLM juiz dobra o consumo de tokens e adiciona 5 a 15 segundos de latência de rede por PR.</li>
+        <li><strong>Proveniência Criptográfica Zero:</strong> Uma nota em prosa salva em um log de dashboard não pode ser reverificada de forma independente por um auditor de segurança ou compliance seis meses depois. Não há vínculo matemático entre o prompt, as regras aplicadas e a árvore Git resultante.</li>
+      </ul>
+      <div class="callout-box">
+        <strong>Princípio Arquitetural Central:</strong> Qualidade de código não é crítica literária — é um conjunto de invariantes estruturais e comportamentais verificáveis. O <strong><a href="https://github.com/Benni-OS/claude-code-eval" target="_blank" rel="noopener noreferrer" style="color: var(--cyan);">Benni-OS/claude-code-eval</a></strong> substitui juízes LLM caros por avaliadores determinísticos de AST, lint e testes selados em recibos criptográficos SHA-256 reproduzíveis a <strong>$0,00 por execução de CI</strong>.
+      </div>
+
+      <hr />
+      <h2>2. Arquitetura de um Recibo Criptográfico de Avaliação</h2>
+      <p>Em vez de perguntar a um modelo remoto "isso parece bom?", o <code>claude-code-eval</code> separa <strong>fixação de entradas</strong>, <strong>execução determinística</strong> e <strong>selagem criptográfica</strong> em um pipeline offline que roda em milissegundos em qualquer máquina local ou runner de CI:</p>
+
+      <div class="mermaid">
+flowchart TD
+    I["Spec da Tarefa + Árvore Git Base"] --&gt;|"SHA-256"| ID["input_digest"]
+    R["Política Fixada (rules.json)"] --&gt;|"SHA-256"| RH["ruleset_hash"]
+    P["Patch do Agente / Worktree"] --&gt;|"Execução Local ($0.00)"| EV["Avaliadores Determinísticos&lt;br/&gt;Parse AST + Zero-Stub + Pytest"]
+    P --&gt;|"SHA-256 do Diff / Árvore"| OD["outcome_digest"]
+    ID --&gt; C["Payload JSON Canônico&lt;br/&gt;(sort_keys=True, compacto)"]
+    RH --&gt; C
+    EV --&gt; C
+    OD --&gt; C
+    C --&gt;|"Selo SHA-256"| S["receipt.json + receipt_sha256"]
+    S --&gt;|"Verificador Offline (&lt; 5ms)"| V{"claude-eval verify"}
+    V --&gt;|"Digest Confere"| PASS["Exit 0: Prova Auditável"]
+    V --&gt;|"Adulteração / Drift de Política"| FAIL["Exit 2: Rejeitado"]
+      </div>
+
+      <p>Cada execução de CI emite um artefato portátil <code>receipt.json</code>. Como o recibo calcula o hash tanto das <em>entradas</em> quanto do <em>ruleset exato</em> junto às <em>saídas determinísticas das checagens</em>, nenhum membro do time ou agente consegue afrouxar uma regra silenciosamente, trocar um arquivo de teste ou forjar uma aprovação.</p>
+
+      <hr />
+      <h2>3. As Quatro Camadas de Vínculo do <code>claude-code-eval</code></h2>
+
+      <h3>1. <code>input_digest</code> — Fixação da Tarefa e Árvore Base</h3>
+      <p>Antes do início da avaliação, o <code>claude-code-eval</code> calcula o hash da especificação canônica da tarefa (prompt ou contrato da issue) concatenada ao hash da árvore base do repositório (<code>git rev-parse HEAD^{tree}</code>). Isso garante que a avaliação esteja ancorada em um estado inicial específico e impede mudanças retrospectivas de escopo.</p>
+
+      <h3>2. <code>ruleset_hash</code> — Versionamento Imutável de Políticas</h3>
+      <p>Um selo de aprovação não vale nada se as regras do avaliador foram flexibilizadas silenciosamente. Ao calcular um digest SHA-256 sobre a configuração serializada do avaliador — regras AST, padrões proibidos de stub (<code>TODO</code>, corpos apenas com <code>pass</code>, <code>NotImplementedError</code>), códigos de saída exigidos e limiares de cobertura — cada recibo prova <em>qual política exata</em> foi aplicada.</p>
+
+      <h3>3. Checagens Determinísticas de AST e Runtime (<code>$0,00</code>)</h3>
+      <p>Todas as checagens executam localmente sem nenhuma chamada de rede:</p>
+      <ul>
+        <li><strong>Portão Estrutural AST:</strong> Faz o parse de cada arquivo-fonte modificado para uma Árvore Sintática Abstrata, rejeitando erros de sintaxe, imports quebrados, blocos <code>except:</code> genéricos e stubs de placeholder.</li>
+        <li><strong>Portão de Testes e Exit-Code:</strong> Executa o comando de teste fixado em subprocesso isolado, capturando código de saída exato, contagem de testes aprovados/reprovados e duração.</li>
+        <li><strong>Higiene de Segurança e Diff:</strong> Varre segredos hardcoded, mutações de caminho fora do escopo da tarefa e marcadores de conflito de merge não resolvidos.</li>
+      </ul>
+
+      <h3>4. <code>outcome_digest</code> e <code>receipt_sha256</code> — Selagem Contra Adulteração</h3>
+      <p>Assim que o patch passa ou falha, o avaliador calcula o hash do diff Git (ou árvore de saída) em <code>outcome_digest</code>. Todas as quatro camadas são serializadas em JSON canônico (chaves ordenadas lexicograficamente, sem espaços extras) e seladas em <code>receipt_sha256</code>. Qualquer alteração de um único bit em um status, timestamp ou diff invalida o selo imediatamente.</p>
+
+      <hr />
+      <h2>4. Schema Canônico do Recibo SHA-256</h2>
+      <p>Abaixo está um <code>receipt.json</code> de produção emitido pelo <code>Benni-OS/claude-code-eval</code>. Observe que <code>llm_judge_cost_usd</code> é explicitamente <code>0.0</code>, e cada asserção é respaldada por digests reproduzíveis:</p>
+
+<pre><code class="language-json">{
+  "schema_version": "1.0.0",
+  "tool": "Benni-OS/claude-code-eval",
+  "evaluated_at": "2026-11-25T18:42:10Z",
+  "input_digest": "sha256:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+  "ruleset_hash": "sha256:4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
+  "outcome_digest": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "llm_judge_cost_usd": 0.0,
+  "checks": [
+    {
+      "name": "ast_syntax_and_zero_stubs",
+      "passed": true,
+      "files_scanned": 6,
+      "defects": 0
+    },
+    {
+      "name": "pytest_suite",
+      "passed": true,
+      "exit_code": 0,
+      "tests_passed": 42,
+      "tests_failed": 0
+    },
+    {
+      "name": "scope_and_secret_guard",
+      "passed": true,
+      "violations": 0
+    }
+  ],
+  "verdict": "PASS",
+  "receipt_sha256": "sha256:7d865e959b2466918c9863afca942d0fb89d7c9ac0c99bafc3749504ded97730"
+}
+</code></pre>
+
+      <hr />
+      <h2>5. Geração Reproduzível e Verificação Offline em Python</h2>
+      <p>Todo o motor de selagem e verificação exige zero dependências externas — apenas os módulos padrão <code>ast</code>, <code>hashlib</code>, <code>hmac</code> e <code>json</code> do Python. Você pode conectá-lo diretamente no GitHub Actions ou em um hook <code>Stop</code> do Claude Code:</p>
+
+<pre><code class="language-bash"># Instalar e gerar um recibo criptográfico no CI ($0.00)
+pip install claude-code-eval
+claude-eval run --task spec.md --rules eval-rules.json --out receipt.json
+
+# Verificar offline em qualquer portão de merge ou auditoria de compliance
+claude-eval verify --receipt receipt.json --rules eval-rules.json
+</code></pre>
+
+<pre><code class="language-python">import ast
+import hashlib
+import hmac
+import json
+from pathlib import Path
+from typing import Any
+
+
+def canonical_sha256(payload: dict[str, Any]) -&gt; str:
+    """Serializa o dicionário de forma determinística e retorna o digest SHA-256."""
+    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return "sha256:" + hashlib.sha256(encoded).hexdigest()
+
+
+def ast_check_zero_stubs(py_files: list[Path]) -&gt; dict[str, Any]:
+    """Checagem AST determinística que rejeita erros de sintaxe e stubs NotImplementedError."""
+    defects: list[str] = []
+    for path in py_files:
+        source = path.read_text(encoding="utf-8")
+        try:
+            tree = ast.parse(source, filename=str(path))
+        except SyntaxError as exc:
+            defects.append(f"{path}:{exc.lineno}: SyntaxError: {exc.msg}")
+            continue
+
+        for node in ast.walk(tree):
+            if isinstance(node, ast.Raise) and isinstance(node.exc, ast.Call):
+                if getattr(node.exc.func, "id", "") == "NotImplementedError":
+                    defects.append(f"{path}:{node.lineno}: Stub NotImplementedError proibido")
+
+    return {
+        "name": "ast_syntax_and_zero_stubs",
+        "passed": len(defects) == 0,
+        "files_scanned": len(py_files),
+        "defects": len(defects),
+    }
+
+
+def seal_receipt(
+    input_bytes: bytes,
+    ruleset: dict[str, Any],
+    outcome_bytes: bytes,
+    checks: list[dict[str, Any]],
+) -&gt; dict[str, Any]:
+    """Vincula entradas, ruleset, checagens e resultado em um recibo SHA-256 à prova de adulteração."""
+    body = {
+        "schema_version": "1.0.0",
+        "tool": "Benni-OS/claude-code-eval",
+        "input_digest": "sha256:" + hashlib.sha256(input_bytes).hexdigest(),
+        "ruleset_hash": canonical_sha256(ruleset),
+        "outcome_digest": "sha256:" + hashlib.sha256(outcome_bytes).hexdigest(),
+        "llm_judge_cost_usd": 0.0,
+        "checks": checks,
+        "verdict": "PASS" if all(c["passed"] for c in checks) else "FAIL",
+    }
+    body["receipt_sha256"] = canonical_sha256(body)
+    return body
+
+
+def verify_receipt(receipt: dict[str, Any], expected_ruleset: dict[str, Any]) -&gt; bool:
+    """Verificação offline em tempo constante da integridade do recibo e vínculo de ruleset."""
+    claimed_seal = receipt.get("receipt_sha256", "")
+    payload = {k: v for k, v in receipt.items() if k != "receipt_sha256"}
+    recomputed_seal = canonical_sha256(payload)
+
+    if not hmac.compare_digest(claimed_seal, recomputed_seal):
+        return False
+
+    expected_rules_hash = canonical_sha256(expected_ruleset)
+    return hmac.compare_digest(receipt.get("ruleset_hash", ""), expected_rules_hash)
+</code></pre>
+
+      <hr />
+      <h2>6. Comparativo: LLM-as-a-Judge vs. Recibos Criptográficos de Avaliação</h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Dimensão de Avaliação</th>
+              <th>LLM-as-a-Judge na Nuvem</th>
+              <th><code>Benni-OS/claude-code-eval</code></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Custo por Execução de CI</strong></td>
+              <td>~$0,08–$0,60+ por PR (imposto 2&times; em tokens)</td>
+              <td><strong><code>$0,00</code> (100% local e offline)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Determinismo</strong></td>
+              <td>Probabilístico; oscila entre execuções e updates de modelo</td>
+              <td><strong>100% reproduzível bit a bit</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Viés de Avaliação</strong></td>
+              <td>Autopreferência circular e viés de verbosidade</td>
+              <td><strong>Viés zero; invariantes de AST, exit-code e política</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Latência no CI</strong></td>
+              <td>5–15+ segundos em chamadas remotas de API</td>
+              <td><strong>Milissegundos para AST + selagem SHA-256</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Auditoria e Proveniência</strong></td>
+              <td>Nota em prosa inverificável em logs de dashboard</td>
+              <td><strong><code>receipt_sha256</code> à prova de adulteração vinculado a entradas e regras</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="article-cta-box">
+        <h3 class="article-cta-title">Pare de Pagar em Dobro Para Avaliar Seus Agentes</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; max-width: 620px; margin: 0 auto;">
+          Implante o <strong>Benni-OS/claude-code-eval</strong> para vincular entradas de tarefa, hashes de ruleset, checagens AST e digests de resultado em recibos de avaliação SHA-256 reproduzíveis a <code>$0,00</code> por execução de CI.
+        </p>
+        <a href="https://github.com/Benni-OS/claude-code-eval" target="_blank" rel="noopener noreferrer" class="article-cta-btn">Explorar Benni-OS/claude-code-eval no GitHub &rarr;</a>
+      </div>
+
+      <section class="article-faq-section">
+        <h2 class="faq-main-heading">Perguntas Frequentes</h2>
+
+        <div class="faq-item-card">
+          <div class="faq-item-q">Por que usar LLM-as-a-Judge falha ao avaliar agentes de codificação?</div>
+          <div class="faq-item-a">Usar um LLM na nuvem para avaliar outro agente de código introduz viés circular de autopreferência, vereditos não determinísticos para entradas idênticas, latência extra de 5 a 15 segundos e um imposto de 2&times; em tokens. Pior: uma nota em prosa gerada por LLM não oferece nenhuma prova criptográfica de que testes rodaram ou regras foram aplicadas.</div>
+        </div>
+        <div class="faq-item-card">
+          <div class="faq-item-q">O que um recibo criptográfico de avaliação SHA-256 vincula?</div>
+          <div class="faq-item-a">O <code>Benni-OS/claude-code-eval</code> vincula quatro componentes imutáveis em um payload JSON canônico selado com SHA-256: o <code>input_digest</code> (especificação da tarefa e commit base), o <code>ruleset_hash</code> (regras exatas de AST e políticas), os resultados determinísticos das checagens (sintaxe AST, detecção de stubs, testes unitários) e o <code>outcome_digest</code> (hash do diff ou árvore resultante).</div>
+        </div>
+        <div class="faq-item-card">
+          <div class="faq-item-q">Como a avaliação pode custar $0,00 por execução de CI?</div>
+          <div class="faq-item-a">Porque toda a verificação — parsing de AST, varredura contra stubs proibidos, execução de testes e selagem canônica em SHA-256 — roda localmente e de forma determinística no seu runner de CI, sem nenhuma chamada de saída para APIs de LLM.</div>
+        </div>
+        <div class="faq-item-card">
+          <div class="faq-item-q">Como times enterprise verificam um recibo meses após o merge?</div>
+          <div class="faq-item-a">Um auditor ou portão de CI executa <code>claude-eval verify receipt.json</code> offline. O verificador recalcula o digest SHA-256 canônico sobre o payload e o compara em tempo constante com <code>receipt_sha256</code>, além de validar o <code>ruleset_hash</code> — detectando qualquer adulteração ou drift de política imediatamente.</div>
+        </div>
+      </section>
+    </article>
+  </main>
+
+  <footer class="magazine-footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>BENNI OS // SOVEREIGN AUTONOMY</h4>
+        <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; margin-top: 0.5rem;">
+          The Sovereign Autonomy System built from first principles. Eliminating agent hallucinations, loop explosions, and cloud vendor lock-in.
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>PLATFORM</h4>
+        <ul>
+          <li><a href="/blog/index.html">Technical Magazine</a></li>
+          <li><a href="/blog/academy.html">Academy &amp; Masterclass</a></li>
+          <li><a href="https://github.com/Benni-OS" target="_blank">Open Source Repos</a></li>
+          <li><a href="https://dev.to/bennialencar" target="_blank">Dev.to Series</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>OPEN SOURCE SUITE</h4>
+        <ul>
+          <li><a href="https://github.com/Benni-OS/claude-code-eval" target="_blank">claude-code-eval</a></li>
+          <li><a href="https://github.com/Benni-OS/claude-code-swarm" target="_blank">claude-code-swarm</a></li>
+          <li><a href="https://github.com/Benni-OS/claude-code-sovereign" target="_blank">claude-code-sovereign</a></li>
+          <li><a href="https://github.com/Benni-OS/agent-trace-replay" target="_blank">agent-trace-replay</a></li>
+          <li><a href="https://github.com/BenniAlencar/agent-run-ledger" target="_blank">agent-run-ledger</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>SOVEREIGN ACCESS</h4>
+        <ul>
+          <li><a href="/#monetizacao">Operator Mode Pass</a></li>
+          <li><a href="/#monetizacao">MCP Forge Playbook</a></li>
+          <li><a href="https://agensi.io/sell" target="_blank">Agensi.io Skills</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>&copy; 2026 Benni OS. Engineered by Benni Alencar. All rights reserved.</div>
+      <div style="display:flex; gap: 1rem;">
+        <a href="/blog/en/cryptographic-evaluation-receipts-zero-llm-judge-tax.html" style="color: var(--text-dim); text-decoration: none;">English</a>
+        <a href="/blog/recibos-criptograficos-avaliacao-agentes-zero-custo-llm-judge.html" style="color: var(--text-dim); text-decoration: none;">Português</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { darkMode: true, background: '#040507', primaryColor: '#00f0ff', edgeColor: '#3b82f6' } });
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+      document.getElementById('progressBar').style.width = scrolled + '%';
+    });
+  </script>
+</body>
+</html>
