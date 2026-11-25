@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6415277800729792" crossorigin="anonymous"></script>
+
+  <title>Evals de CI/CD para Claude Code: Benchmarks de CLAUDE.md, Ferramentas MCP e Regressões de Subagentes Antes do Merge — Benni Alencar // Benni OS</title>
+  <meta name="description" content="Por que editar CLAUDE.md, .claude/commands/ ou schemas de ferramentas MCP sem evals determinísticas em CI/CD degrada silenciosamente a confiabilidade do agente — e como o Benni-OS/claude-code-eval roda evals de trajetória offline a $0.00, mede pass@k e eficiência de tokens, aplica portões --min-pass-rate no GitHub Actions e emite recibos SHA-256." />
+  <link rel="canonical" href="https://benni-os.net/blog/claude-code-eval-benchmarks-cicd-claudemd-regressoes-mcp.html" />
+  <link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/claude-code-eval-benchmarks-cicd-claudemd-regressoes-mcp.html" />
+  <link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/claude-code-eval-cicd-benchmarks-claudemd-mcp-regressions.html" />
+  <link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/claude-code-eval-cicd-benchmarks-claudemd-mcp-regressions.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Evals de CI/CD para Claude Code: Benchmarks de CLAUDE.md, Ferramentas MCP e Regressões de Subagentes Antes do Merge" />
+  <meta property="og:description" content="Execute evals de trajetória offline a $0.00 para o Claude Code, meça pass@k e eficiência de tokens, aplique portões --min-pass-rate no GitHub Actions e emita recibos SHA-256 antes do merge." />
+  <meta property="og:image" content="https://benni-os.net/blog/assets/flow_hero_agent-eval-harness.jpg" />
+  <meta property="og:url" content="https://benni-os.net/blog/claude-code-eval-benchmarks-cicd-claudemd-regressoes-mcp.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:creator" content="@BenniAlencar" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": ["TechArticle", "BlogPosting"],
+        "@id": "https://benni-os.net/blog/claude-code-eval-benchmarks-cicd-claudemd-regressoes-mcp.html#article",
+        "isPartOf": {
+          "@type": "WebSite",
+          "@id": "https://benni-os.net/#website",
+          "name": "Benni OS",
+          "url": "https://benni-os.net"
+        },
+        "headline": "Evals de CI/CD para Claude Code: Benchmarks de CLAUDE.md, Ferramentas MCP e Regressões de Subagentes Antes do Merge",
+        "description": "Por que editar CLAUDE.md, .claude/commands/ ou schemas de ferramentas MCP sem evals determinísticas em CI/CD degrada silenciosamente a confiabilidade do agente — e como o Benni-OS/claude-code-eval roda evals de trajetória offline a $0.00, mede pass@k e eficiência de tokens, aplica portões --min-pass-rate no GitHub Actions e emite recibos SHA-256.",
+        "inLanguage": "pt-BR",
+        "mainEntityOfPage": "https://benni-os.net/blog/claude-code-eval-benchmarks-cicd-claudemd-regressoes-mcp.html",
+        "url": "https://benni-os.net/blog/claude-code-eval-benchmarks-cicd-claudemd-regressoes-mcp.html",
+        "image": "https://benni-os.net/blog/assets/flow_hero_agent-eval-harness.jpg",
+        "datePublished": "2026-11-25T00:00:00Z",
+        "dateModified": "2026-11-25T00:00:00Z",
+        "keywords": "claude code eval, claude-code-eval, benchmark CLAUDE.md, regressão MCP, pass@k, evals CI/CD, portão GitHub Actions, recibo SHA-256, benni os",
+        "author": {
+          "@type": "Person",
+          "@id": "https://benni-os.net/#author",
+          "name": "Benni Alencar",
+          "jobTitle": "Chief AI Systems Architect & Founder",
+          "url": "https://benni-os.net",
+          "sameAs": [
+            "https://github.com/BenniAlencar",
+            "https://github.com/Benni-OS",
+            "https://dev.to/bennialencar",
+            "https://www.linkedin.com/in/benni-alencar/",
+            "https://benni-os.net"
+          ]
+        },
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://benni-os.net/#organization",
+          "name": "Benni OS",
+          "url": "https://benni-os.net",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://benni-os.net/blog/assets/benni_avatar.jpg"
+          }
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://benni-os.net/blog/claude-code-eval-benchmarks-cicd-claudemd-regressoes-mcp.html#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Por que edições em CLAUDE.md ou schemas MCP quebram o Claude Code silenciosamente?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Regras do CLAUDE.md, workflows em .claude/commands/ e schemas JSON de ferramentas MCP funcionam como código executável do plano de controle do seu agente. Testes unitários e linters tradicionais não analisam instruções de prompt nem descrições de ferramentas, fazendo com que conflitos sutis de redação ou parâmetros renomeados causem desvio de escolha de ferramenta, pulos de portões de segurança ou inflação de 2x nos tokens em produção."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Como o claude-code-eval executa avaliações de trajetória offline a $0.00?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "O claude-code-eval grava e reproduz fixtures determinísticas de trajetória em JSONL — capturando estado de prompt, sequências de chamadas de ferramentas, payloads MCP e diffs esperados no repositório — usando um runtime simulado local. No CI, ele valida conformidade de regras, ordenação de chamadas, invariantes de schema e eficiência de tokens sem realizar chamadas reais à API de LLM, mantendo o custo por PR em $0.00."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "O que pass@k e --min-pass-rate medem no CI/CD?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "pass@k mede a probabilidade de que pelo menos uma de k trajetórias amostradas do agente satisfaça todas as asserções determinísticas (testes passando, sequência esperada de ferramentas e teto de orçamento). Configurar --min-pass-rate 0.95 no GitHub Actions bloqueia qualquer pull request que reduza a confiabilidade do agente abaixo de 95%."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Por que o claude-code-eval emite um recibo de avaliação SHA-256?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Cada execução de CI gera um recibo JSON canônico contendo o SHA do commit Git, hashes das entradas CLAUDE.md e schemas MCP, métricas de pass@k, delta de eficiência de tokens e um digest SHA-256 determinístico. As equipes podem arquivar ou verificar recibos para comprovar que uma alteração de prompt ou MCP mesclada passou exatamente pelo portão de avaliação."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #07080c;
+      --panel: #0e111a;
+      --panel-hover: #141824;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-border-hover: rgba(0, 240, 255, 0.35);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --cyan: #00f0ff;
+      --cyan-glow: rgba(0, 240, 255, 0.15);
+      --blue: #3b82f6;
+      --lime: #10b981;
+      --orange: #ff6b00;
+      --purple: #a855f7;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-title: 'DM Serif Display', Georgia, serif;
+      --font-code: 'IBM Plex Mono', monospace;
+      --badge-color: #00f0ff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.75;
+      font-size: 1.05rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59, 130, 246, 0.12), transparent),
+        radial-gradient(circle at 100% 40%, rgba(168, 85, 247, 0.06), transparent 50%),
+        radial-gradient(circle at 0% 70%, rgba(0, 240, 255, 0.05), transparent 50%);
+      background-attachment: fixed;
+    }
+    header.magazine-header {
+      background: rgba(7, 8, 12, 0.85);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--card-border);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 0.9rem 2rem;
+    }
+    .nav-container {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand-logo {
+      font-family: var(--font-code);
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--text-main);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      letter-spacing: 0.5px;
+    }
+    .brand-logo:hover { color: var(--cyan); }
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #10b981;
+    }
+    nav.nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.8rem;
+    }
+    nav.nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav.nav-links a:hover, nav.nav-links a.active { color: #fff; }
+    .lang-switcher-pill {
+      display: flex;
+      align-items: center;
+      background: rgba(14, 17, 26, 0.8);
+      border: 1px solid var(--card-border);
+      border-radius: 9999px;
+      padding: 3px;
+      gap: 2px;
+    }
+    .lang-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-family: var(--font-code);
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .lang-btn.active {
+      background: rgba(0, 240, 255, 0.15);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+    }
+    .lang-btn:hover:not(.active) {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .reading-progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #00f0ff, #3b82f6, #a855f7);
+      width: 0%;
+      z-index: 9999;
+      transition: width 0.1s ease;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.7);
+    }
+    main.article-layout {
+      max-width: 860px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      flex: 1;
+      width: 100%;
+    }
+    .breadcrumb-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-code);
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      margin-bottom: 1.2rem;
+    }
+    .breadcrumb-nav a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb-nav a:hover { color: var(--cyan); }
+    .breadcrumb-current { color: var(--cyan); }
+    .article-header { margin-bottom: 2.5rem; }
+    .article-meta-badges {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .category-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(10, 12, 18, 0.9);
+      border: 1px solid var(--badge-color);
+      color: var(--badge-color);
+      font-family: var(--font-code);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      letter-spacing: 0.5px;
+    }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .article-meta-text { color: var(--text-dim); font-size: 0.85rem; font-family: var(--font-code); }
+    .article-main-title {
+      font-family: var(--font-title);
+      font-size: clamp(2.3rem, 4.5vw, 3.6rem);
+      font-weight: normal;
+      line-height: 1.15;
+      color: #fff;
+      margin-bottom: 1.2rem;
+      letter-spacing: -0.5px;
+    }
+    .article-lead-paragraph {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1.65;
+      margin-bottom: 2rem;
+    }
+    .article-author-share-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1.2rem 0;
+      margin-bottom: 2rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .author-info-box {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+    .author-photo {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid var(--card-border);
+      object-fit: cover;
+    }
+    .author-name-title {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .author-subtitle {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      font-family: var(--font-code);
+    }
+    .article-hero-cover-figure {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      margin-bottom: 3rem;
+      background: var(--panel);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+    .article-hero-img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .article-prose {
+      color: #cbd5e1;
+      font-size: 1.08rem;
+      line-height: 1.8;
+    }
+    .article-prose h2 {
+      font-family: var(--font-title);
+      font-size: 1.95rem;
+      color: #fff;
+      margin: 2.8rem 0 1rem;
+      letter-spacing: -0.3px;
+    }
+    .article-prose h3 {
+      font-family: var(--font-title);
+      font-size: 1.45rem;
+      color: #f1f5f9;
+      margin: 2rem 0 0.8rem;
+    }
+    .article-prose p {
+      margin-bottom: 1.4rem;
+    }
+    .article-prose ul, .article-prose ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+    }
+    .article-prose li {
+      margin-bottom: 0.5rem;
+    }
+    .article-prose hr {
+      border: none;
+      border-top: 1px solid var(--card-border);
+      margin: 2.5rem 0;
+    }
+    .article-prose code {
+      font-family: var(--font-code);
+      background: rgba(255, 255, 255, 0.06);
+      padding: 0.2rem 0.45rem;
+      border-radius: 6px;
+      font-size: 0.9em;
+      color: var(--cyan);
+    }
+    .article-prose pre {
+      background: #040507;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      overflow-x: auto;
+      margin: 1.6rem 0;
+    }
+    .article-prose pre code {
+      background: transparent;
+      padding: 0;
+      color: #e2e8f0;
+      font-size: 0.88rem;
+    }
+    .callout-box {
+      background: rgba(0, 240, 255, 0.04);
+      border-left: 3px solid var(--cyan);
+      border-radius: 0 12px 12px 0;
+      padding: 1.2rem 1.5rem;
+      margin: 1.8rem 0;
+      color: var(--text-main);
+    }
+    .mermaid {
+      background: #040507;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      display: flex;
+      justify-content: center;
+    }
+    .table-container {
+      overflow-x: auto;
+      margin: 2rem 0;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+    th, td {
+      padding: 1rem 1.2rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+    th {
+      background: var(--panel);
+      color: #fff;
+      font-family: var(--font-code);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    .article-cta-box {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.05), rgba(59, 130, 246, 0.08));
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      border-radius: 16px;
+      padding: 2.2rem;
+      margin: 3.5rem 0;
+      text-align: center;
+    }
+    .article-cta-title {
+      font-family: var(--font-title);
+      font-size: 1.6rem;
+      color: #fff;
+      margin-bottom: 0.8rem;
+    }
+    .article-cta-btn {
+      display: inline-block;
+      background: var(--cyan);
+      color: #000;
+      font-weight: 700;
+      padding: 0.85rem 2rem;
+      border-radius: 9999px;
+      text-decoration: none;
+      font-family: var(--font-code);
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      transition: all 0.2s;
+    }
+    .article-cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 240, 255, 0.4);
+    }
+    .article-faq-section {
+      background: var(--panel);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      margin: 3.5rem 0;
+    }
+    .faq-main-heading {
+      font-family: var(--font-title);
+      font-size: 1.8rem;
+      color: #fff;
+      margin-bottom: 1.5rem;
+    }
+    .faq-item-card { border-bottom: 1px solid var(--card-border); padding: 1.2rem 0; }
+    .faq-item-card:last-child { border-bottom: none; }
+    .faq-item-q { font-weight: 700; font-size: 1.1rem; color: var(--cyan); margin-bottom: 0.5rem; }
+    .faq-item-a { color: var(--text-muted); font-size: 0.98rem; line-height: 1.65; }
+    footer.magazine-footer {
+      background: #050608;
+      border-top: 1px solid var(--card-border);
+      padding: 3.5rem 2rem 2rem;
+      margin-top: 5rem;
+    }
+    .footer-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 2.5rem;
+    }
+    @media (max-width: 900px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .footer-grid { grid-template-columns: 1fr; }
+      nav.nav-links { display: none; }
+    }
+    .footer-col h4 {
+      font-family: var(--font-code);
+      font-size: 0.85rem;
+      color: var(--cyan);
+      margin-bottom: 1.2rem;
+      letter-spacing: 1px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.6rem; }
+    .footer-col ul li a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .footer-col ul li a:hover { color: #fff; }
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 1.8rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-dim);
+      font-size: 0.82rem;
+      font-family: var(--font-code);
+    }
+  </style>
+  <link rel="stylesheet" href="/assets/editorial-theme.css" />
+  <script src="/assets/editorial-theme.js"></script>
+  <script defer src="/assets/blog-telemetry.js"></script>
+  <script async type="module" crossorigin src="/assets/blog-claude-code-eval-benchmarks-cicd-claudemd-regressoes-mcp-6F3hq9O7.js"></script>
+  <script type="module">import.meta.url;import("_").catch(()=>1);(async function*(){})().next();if(location.protocol!="file:"){window.__vite_is_modern_browser=true}</script>
+  <script type="module">!function(){if(window.__vite_is_modern_browser)return;console.warn("vite: loading legacy chunks, syntax error above and the same error below should be ignored");var e=document.getElementById("vite-legacy-polyfill"),n=document.createElement("script");n.src=e.src,n.onload=function(){System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))},document.body.appendChild(n)}();</script>
+<link rel="manifest" href="/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/registerSW.js"></script></head>
+<body>
+  <div class="reading-progress-bar" id="progressBar"></div>
+
+  <header class="magazine-header">
+    <div class="nav-container">
+      <a href="/" class="brand-logo">
+        <span class="status-dot"></span>
+        BENNI OS // MAGAZINE
+      </a>
+      <nav class="nav-links">
+        <a href="/">Home</a>
+        <a href="/blog/index.html" class="active">Magazine</a>
+        <a href="/blog/academy.html">Academy</a>
+        <a href="https://github.com/Benni-OS" target="_blank">GitHub</a>
+        <a href="https://dev.to/bennialencar" target="_blank">Dev.to</a>
+        <div class="lang-switcher-pill" role="navigation" aria-label="Language Selector">
+          <a href="/blog/en/claude-code-eval-cicd-benchmarks-claudemd-mcp-regressions.html" class="lang-btn" title="Switch to English">
+            <span>🇺🇸</span> EN
+          </a>
+          <a href="/blog/claude-code-eval-benchmarks-cicd-claudemd-regressoes-mcp.html" class="lang-btn active" title="Português (Brasil) (Ativo)">
+            <span>🇧🇷</span> PT-BR
+          </a>
+        </div>
+        <a href="/#monetizacao" style="color: var(--cyan); font-weight: 700;">Operator Mode &rarr;</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-layout">
+    <nav class="breadcrumb-nav">
+      <a href="/blog/index.html">Magazine</a>
+      <span>/</span>
+      <span class="breadcrumb-current">EVALS DE CI/CD &amp; CONFIABILIDADE DE AGENTES</span>
+    </nav>
+
+    <header class="article-header">
+      <div class="article-meta-badges">
+        <span class="category-badge-pill">
+          <span class="badge-dot"></span>
+          EVALS DE CI/CD &amp; CONFIABILIDADE DE AGENTES
+        </span>
+        <span class="article-meta-text">12 min de leitura • 25 Nov, 2026</span>
+      </div>
+
+      <h1 class="article-main-title">Evals de CI/CD para Claude Code: Benchmarks de CLAUDE.md, Ferramentas MCP e Regressões de Subagentes Antes do Merge</h1>
+      <p class="article-lead-paragraph">Por que editar <code>CLAUDE.md</code>, <code>.claude/commands/</code> ou schemas de ferramentas MCP sem evals determinísticas em CI/CD degrada silenciosamente a confiabilidade do agente — e como o <code>Benni-OS/claude-code-eval</code> executa evals de trajetória offline a <code>$0.00</code>, mede <code>pass@k</code> e eficiência de tokens, aplica portões <code>--min-pass-rate</code> no GitHub Actions e emite recibos SHA-256.</p>
+
+      <div class="article-author-share-bar">
+        <div class="author-info-box">
+          <img src="/blog/assets/benni_avatar.jpg" alt="Benni Alencar" class="author-photo" />
+          <div>
+            <div class="author-name-title">Benni Alencar</div>
+            <div class="author-subtitle">Chief AI Systems Architect &amp; Founder</div>
+          </div>
+        </div>
+        <div class="lang-switcher-pill" role="navigation" aria-label="Language Selector">
+          <a href="/blog/en/claude-code-eval-cicd-benchmarks-claudemd-mcp-regressions.html" class="lang-btn" title="Switch to English">
+            <span>🇺🇸</span> EN
+          </a>
+          <a href="/blog/claude-code-eval-benchmarks-cicd-claudemd-regressoes-mcp.html" class="lang-btn active" title="Português (Brasil) (Ativo)">
+            <span>🇧🇷</span> PT-BR
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <figure class="article-hero-cover-figure">
+      <img src="/blog/assets/flow_hero_agent-eval-harness.jpg" alt="Evals de CI/CD para Claude Code: Benchmarks de CLAUDE.md, Ferramentas MCP e Regressões de Subagentes Antes do Merge" width="1376" height="768" class="article-hero-img" />
+    </figure>
+
+    <article class="article-prose">
+      <hr />
+      <h2>1. O Problema da Regressão Silenciosa: Prompts São Código de Produção</h2>
+      <p>Equipes de engenharia tratam módulos Python e TypeScript com rigor absoluto — testes unitários, checagem estática de tipos e status checks obrigatórios no CI antes de qualquer merge. Ainda assim, os arquivos que realmente governam como o Claude Code raciocina, escolhe ferramentas e delega para subagentes — <code>CLAUDE.md</code>, <code>.claude/commands/</code> e schemas JSON de servidores MCP — chegam à <code>main</code> sem nenhuma verificação automatizada.</p>
+      <p>Quando você ajusta uma regra no <code>CLAUDE.md</code> ou renomeia um parâmetro na descrição de uma ferramenta MCP, o CI tradicional passa 100% verde enquanto a confiabilidade do agente colapsa silenciosamente em quatro modos de falha:</p>
+      <ul>
+        <li><strong>Sobrescrita de Instruções e Drift de Política:</strong> Adicionar uma diretiva de "seja conciso" ou uma nova convenção de repositório acaba sobrescrevendo uma restrição de segurança anterior, fazendo o agente pular a verificação de testes ou ignorar hooks de pré-commit.</li>
+        <li><strong>Confusão na Seleção de Ferramentas MCP:</strong> Renomear um campo MCP ou expandir uma docstring faz o Claude Code desviar chamadas para o <code>Bash</code> em vez do servidor MCP estruturado, contornando guardrails determinísticos.</li>
+        <li><strong>Quebra de Handoff entre Subagentes:</strong> Atualizar um slash command em <code>.claude/commands/</code> altera o brief estruturado enviado aos subagentes, descartando contexto obrigatório ou schemas de saída.</li>
+        <li><strong>Inflação de Tokens e Queda de Eficiência:</strong> Um acréscimo inocente de 400 tokens no <code>CLAUDE.md</code> ou um schema MCP verboso infla o prompt cache de cada turno e dispara loops desnecessários de ferramentas — dobrando o gasto de API sem alterar uma única linha do código da aplicação.</li>
+      </ul>
+      <div class="callout-box">
+        <strong>Princípio de Engenharia Central:</strong> Se algo governa o comportamento do agente, precisa passar por benchmark em cada pull request. O <strong><a href="https://github.com/Benni-OS/claude-code-eval" target="_blank" rel="noopener noreferrer" style="color: var(--cyan);">Benni-OS/claude-code-eval</a></strong> traz testes determinísticos de regressão em CI/CD para <code>CLAUDE.md</code>, slash commands, schemas de ferramentas MCP e trajetórias de subagentes — a <code>$0.00</code> por execução de PR.
+      </div>
+
+      <hr />
+      <h2>2. Arquitetura: Evals de Trajetória Offline a $0.00 e Portões de CI</h2>
+      <p>Executar chamadas reais de LLM em todo pull request é lento, não determinístico e caro. O <code>claude-code-eval</code> separa a <strong>verificação determinística de trajetórias offline</strong> da amostragem opcional em modelo vivo, usando fixtures gravadas em JSONL e um harness local de simulação de MCP/ferramentas para validar cada PR em segundos:</p>
+
+      <div class="mermaid">
+flowchart TD
+    PR["PR Altera CLAUDE.md / .claude/commands / Schema MCP"] --&gt;|"Gatilho GitHub Actions"| E["Runner claude-code-eval"]
+    E --&gt;|"Carregar Fixtures JSONL"| R["Replay Offline de Trajetória $0.00&lt;br/&gt;(Ordem de Tools, Schema, Diffs)"]
+    R --&gt;|"Calcular Métricas"| M["pass@k + Delta de Eficiência de Tokens"]
+    M --&gt;|"pass@1 &lt; --min-pass-rate"| F["Exit 1: Bloquear Merge no CI"]
+    M --&gt;|"pass@1 &gt;= --min-pass-rate"| S["Gerar Recibo Canônico SHA-256"]
+    S --&gt;|"Arquivar Artefato"| G["PR Liberado para Merge na main"]
+      </div>
+
+      <p>Em vez de adivinhar se uma edição de prompt melhorou ou quebrou seu fluxo, o runner de CI avalia cada fixture de trajetória contra invariantes rígidos: sequência esperada de chamadas de ferramentas, schemas válidos de argumentos MCP, padrões de comando proibidos e tetos de orçamento de tokens.</p>
+
+      <hr />
+      <h2>3. Os Quatro Primitivos Centrais do <code>claude-code-eval</code></h2>
+
+      <h3>1. Replay Offline de Trajetórias a <code>$0.00</code></h3>
+      <p>Cada suíte de benchmark vive como fixtures versionadas de trajetória em JSONL sob <code>evals/suites/</code>. Durante o replay offline, o <code>claude-code-eval</code> injeta seu <code>CLAUDE.md</code> atualizado, slash commands e definições de ferramentas MCP em um harness local determinístico. Ele valida bindings de schema, precedência de regras, padrões proibidos e asserções de replay sem nenhuma chamada de rede externa — custando literalmente <code>$0.00</code> por execução no CI.</p>
+
+      <h3>2. Pontuação <code>pass@k</code> e Eficiência de Tokens</h3>
+      <p>Anedotas de uma única execução escondem instabilidade. Ao rodar suítes estocásticas ou multi-seed, o <code>claude-code-eval</code> calcula <code>pass@1</code> e <code>pass@k</code> ao longo de <em>N</em> tentativas junto com uma <strong>Razão de Eficiência de Tokens</strong> (comparando deltas de tokens de entrada/saída contra a baseline da <code>main</code>). Um PR que mantém a acurácia mas queima 35% mais tokens é sinalizado imediatamente antes do merge.</p>
+
+      <h3>3. Portões de CI com <code>--min-pass-rate</code></h3>
+      <p>No GitHub Actions, o <code>claude-code-eval</code> atua como um status check rígido. Passar <code>--min-pass-rate 0.95</code> e <code>--max-token-regression 1.15</code> garante que nenhuma alteração em prompt, schema MCP ou subagente seja mesclada se a confiabilidade cair abaixo de 95% ou a sobrecarga de tokens passar de 15%.</p>
+
+      <h3>4. Recibos Criptográficos de Avaliação SHA-256</h3>
+      <p>Passar no CI deve deixar uma trilha imutável de auditoria. Toda execução aprovada grava um recibo JSON canônico (<code>eval-receipt.json</code>) contendo o SHA do commit, hashes SHA-256 do <code>CLAUDE.md</code> e dos schemas MCP, pontuações <code>pass@k</code> por suíte, métricas de eficiência de tokens e um digest principal <code>receipt_sha256</code>.</p>
+
+      <hr />
+      <h2>4. Configurando o <code>claude-code-eval</code> no GitHub Actions</h2>
+      <p>Adicione um workflow dedicado em <code>.github/workflows/claude-eval.yml</code> para que todo PR que toque arquivos de configuração do agente execute automaticamente o portão offline de benchmark:</p>
+
+<pre><code class="language-yaml">name: Claude Code Eval Gate
+
+on:
+  pull_request:
+    paths:
+      - "CLAUDE.md"
+      - ".claude/**"
+      - "mcp/**"
+      - "evals/**"
+
+jobs:
+  offline-trajectory-eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar claude-code-eval
+        run: pip install claude-code-eval
+
+      - name: Rodar Suíte Offline $0.00 e Aplicar Portão
+        run: |
+          claude-code-eval run \
+            --suite evals/suites/core-workflows.jsonl \
+            --mode offline \
+            --k 3 \
+            --min-pass-rate 0.95 \
+            --max-token-regression 1.15 \
+            --receipt-out artifacts/eval-receipt.json
+
+      - name: Enviar Recibo de Avaliação SHA-256
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: claude-eval-receipt
+          path: artifacts/eval-receipt.json
+</code></pre>
+
+      <hr />
+      <h2>5. Por Dentro do Avaliador: <code>pass@k</code>, Eficiência de Tokens e Recibos SHA-256</h2>
+      <p>Abaixo está a lógica determinística central de pontuação e emissão de recibos em Python. A partir dos resultados das trajetórias, ela calcula o estimador não viesado de <code>pass@k</code>, valida o limiar <code>--min-pass-rate</code>, verifica a eficiência de tokens frente à baseline e sela o resultado com um digest SHA-256 canônico:</p>
+
+<pre><code class="language-python">import hashlib
+import json
+import math
+import sys
+from pathlib import Path
+
+
+def compute_pass_at_k(n: int, c: int, k: int) -&gt; float:
+    """Estimador não viesado para pass@k dados n experimentos e c aprovações."""
+    if n - c &lt; k:
+        return 1.0
+    return 1.0 - math.comb(n - c, k) / math.comb(n, k)
+
+
+def evaluate_suite_and_emit_receipt(
+    results: list[dict],
+    config_paths: list[Path],
+    k: int = 3,
+    min_pass_rate: float = 0.95,
+    receipt_path: Path = Path("artifacts/eval-receipt.json"),
+) -&gt; int:
+    total_cases = len(results)
+    passed_cases = sum(1 for r in results if r["passed"])
+    pass_rate = passed_cases / total_cases if total_cases else 0.0
+
+    pass_at_k_scores = [
+        compute_pass_at_k(r["n_trials"], r["n_passed"], k) for r in results
+    ]
+    mean_pass_at_k = sum(pass_at_k_scores) / len(pass_at_k_scores) if pass_at_k_scores else 0.0
+
+    total_tokens = sum(r["tokens_used"] for r in results)
+    baseline_tokens = sum(r["baseline_tokens"] for r in results)
+    token_ratio = total_tokens / baseline_tokens if baseline_tokens else 1.0
+
+    input_hashes = {
+        str(p): hashlib.sha256(p.read_bytes()).hexdigest()
+        for p in sorted(config_paths)
+        if p.exists()
+    }
+
+    payload = {
+        "mode": "offline",
+        "cost_usd": 0.00,
+        "total_cases": total_cases,
+        "passed_cases": passed_cases,
+        "pass_rate": round(pass_rate, 4),
+        f"pass@{k}": round(mean_pass_at_k, 4),
+        "token_efficiency_ratio": round(token_ratio, 4),
+        "input_hashes": input_hashes,
+        "gate_passed": pass_rate &gt;= min_pass_rate,
+    }
+
+    canonical = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    payload["receipt_sha256"] = hashlib.sha256(canonical).hexdigest()
+
+    receipt_path.parent.mkdir(parents=True, exist_ok=True)
+    receipt_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+
+    return 0 if payload["gate_passed"] else 1
+
+
+if __name__ == "__main__":
+    sample_results = [
+        {"id": "mcp-schema-route", "n_trials": 3, "n_passed": 3, "passed": True, "tokens_used": 1420, "baseline_tokens": 1500},
+        {"id": "subagent-brief-gate", "n_trials": 3, "n_passed": 3, "passed": True, "tokens_used": 1890, "baseline_tokens": 1950},
+    ]
+    exit_code = evaluate_suite_and_emit_receipt(
+        sample_results,
+        [Path("CLAUDE.md")],
+    )
+    sys.exit(exit_code)
+</code></pre>
+
+      <hr />
+      <h2>6. Comparativo: Edições Sem Verificação vs. <code>claude-code-eval</code></h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Dimensão de Avaliação</th>
+              <th>Edições Sem Verificação em <code>CLAUDE.md</code> &amp; MCP</th>
+              <th><code>Benni-OS/claude-code-eval</code></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Custo de Verificação no PR</strong></td>
+              <td>Testes manuais pontuais ou execuções ad-hoc caras</td>
+              <td><strong>Replay determinístico offline de trajetórias a <code>$0.00</code></strong></td>
+            </tr>
+            <tr>
+              <td><strong>Métrica de Confiabilidade</strong></td>
+              <td>Impressão subjetiva ("parece bom") em um prompt</td>
+              <td><strong><code>pass@1</code> e <code>pass@k</code> quantificados entre suítes</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Drift de Tokens e Custo</strong></td>
+              <td>Descoberto semanas depois na fatura da API</td>
+              <td><strong>Razão de Eficiência de Tokens checada em todo PR</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Enforcement no Merge</strong></td>
+              <td>Regras quebradas e schemas MCP entram na <code>main</code></td>
+              <td><strong>Portão rígido <code>--min-pass-rate</code> no GitHub Actions</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Auditabilidade</strong></td>
+              <td>Nenhuma prova de qual versão do prompt passou</td>
+              <td><strong>Recibo JSON imutável com digest SHA-256</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="article-cta-box">
+        <h3 class="article-cta-title">Pare de Mesclar Alterações Cegas em Prompts e MCP</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; max-width: 620px; margin: 0 auto;">
+          Implante o <strong>Benni-OS/claude-code-eval</strong> para rodar benchmarks de <code>CLAUDE.md</code>, <code>.claude/commands/</code> e schemas MCP a <code>$0.00</code> no GitHub Actions com portões <code>pass@k</code> e recibos SHA-256.
+        </p>
+        <a href="https://github.com/Benni-OS/claude-code-eval" target="_blank" rel="noopener noreferrer" class="article-cta-btn">Explorar Benni-OS/claude-code-eval no GitHub &rarr;</a>
+      </div>
+
+      <section class="article-faq-section">
+        <h2 class="faq-main-heading">Perguntas Frequentes</h2>
+
+        <div class="faq-item-card">
+          <div class="faq-item-q">Por que edições em CLAUDE.md ou schemas MCP quebram o Claude Code silenciosamente?</div>
+          <div class="faq-item-a">Regras do <code>CLAUDE.md</code>, workflows em <code>.claude/commands/</code> e schemas JSON de ferramentas MCP funcionam como código executável do plano de controle do seu agente. Testes unitários e linters tradicionais não analisam instruções de prompt nem descrições de ferramentas, fazendo com que conflitos sutis de redação ou parâmetros renomeados causem desvio de escolha de ferramenta, pulos de portões de segurança ou inflação de 2&times; nos tokens em produção.</div>
+        </div>
+        <div class="faq-item-card">
+          <div class="faq-item-q">Como o claude-code-eval executa avaliações de trajetória offline a $0.00?</div>
+          <div class="faq-item-a">O <code>claude-code-eval</code> grava e reproduz fixtures determinísticas de trajetória em JSONL — capturando estado de prompt, sequências de chamadas de ferramentas, payloads MCP e diffs esperados no repositório — usando um runtime simulado local. No CI, ele valida conformidade de regras, ordenação de chamadas, invariantes de schema e eficiência de tokens sem realizar chamadas reais à API de LLM, mantendo o custo por PR em <code>$0.00</code>.</div>
+        </div>
+        <div class="faq-item-card">
+          <div class="faq-item-q">O que pass@k e --min-pass-rate medem no CI/CD?</div>
+          <div class="faq-item-a"><code>pass@k</code> mede a probabilidade de que pelo menos uma de <em>k</em> trajetórias amostradas do agente satisfaça todas as asserções determinísticas (testes passando, sequência esperada de ferramentas e teto de orçamento). Configurar <code>--min-pass-rate 0.95</code> no GitHub Actions bloqueia qualquer pull request que reduza a confiabilidade do agente abaixo de 95%.</div>
+        </div>
+        <div class="faq-item-card">
+          <div class="faq-item-q">Por que o claude-code-eval emite um recibo de avaliação SHA-256?</div>
+          <div class="faq-item-a">Cada execução de CI gera um recibo JSON canônico contendo o SHA do commit Git, hashes das entradas <code>CLAUDE.md</code> e schemas MCP, métricas de <code>pass@k</code>, delta de eficiência de tokens e um digest SHA-256 determinístico. As equipes podem arquivar ou verificar recibos para comprovar que uma alteração de prompt ou MCP mesclada passou exatamente pelo portão de avaliação.</div>
+        </div>
+      </section>
+    </article>
+  </main>
+
+  <footer class="magazine-footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>BENNI OS // SOVEREIGN AUTONOMY</h4>
+        <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; margin-top: 0.5rem;">
+          The Sovereign Autonomy System built from first principles. Eliminating agent hallucinations, loop explosions, and cloud vendor lock-in.
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>PLATFORM</h4>
+        <ul>
+          <li><a href="/blog/index.html">Technical Magazine</a></li>
+          <li><a href="/blog/academy.html">Academy &amp; Masterclass</a></li>
+          <li><a href="https://github.com/Benni-OS" target="_blank">Open Source Repos</a></li>
+          <li><a href="https://dev.to/bennialencar" target="_blank">Dev.to Series</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>OPEN SOURCE SUITE</h4>
+        <ul>
+          <li><a href="https://github.com/Benni-OS/claude-code-eval" target="_blank">claude-code-eval</a></li>
+          <li><a href="https://github.com/Benni-OS/claude-code-swarm" target="_blank">claude-code-swarm</a></li>
+          <li><a href="https://github.com/Benni-OS/claude-code-sovereign" target="_blank">claude-code-sovereign</a></li>
+          <li><a href="https://github.com/Benni-OS/agent-trace-replay" target="_blank">agent-trace-replay</a></li>
+          <li><a href="https://github.com/BenniAlencar/agent-cyber-sentinel" target="_blank">agent-cyber-sentinel</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>SOVEREIGN ACCESS</h4>
+        <ul>
+          <li><a href="/#monetizacao">Operator Mode Pass</a></li>
+          <li><a href="/#monetizacao">MCP Forge Playbook</a></li>
+          <li><a href="https://agensi.io/sell" target="_blank">Agensi.io Skills</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>&copy; 2026 Benni OS. Engineered by Benni Alencar. All rights reserved.</div>
+      <div style="display:flex; gap: 1rem;">
+        <a href="/blog/en/claude-code-eval-cicd-benchmarks-claudemd-mcp-regressions.html" style="color: var(--text-dim); text-decoration: none;">English</a>
+        <a href="/blog/claude-code-eval-benchmarks-cicd-claudemd-regressoes-mcp.html" style="color: var(--text-dim); text-decoration: none;">Português</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { darkMode: true, background: '#040507', primaryColor: '#00f0ff', edgeColor: '#3b82f6' } });
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+      document.getElementById('progressBar').style.width = scrolled + '%';
+    });
+  </script>
+  <script nomodule>!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",(function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()}),!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();</script>
+  <script nomodule crossorigin id="vite-legacy-polyfill" src="/assets/polyfills-legacy-Bj7NGYSK.js"></script>
+  <script nomodule crossorigin id="vite-legacy-entry" data-src="/assets/blog-claude-code-eval-benchmarks-cicd-claudemd-regressoes-mcp-legacy-CnvmjJHj.js">System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))</script>
+</body>
+</html>
