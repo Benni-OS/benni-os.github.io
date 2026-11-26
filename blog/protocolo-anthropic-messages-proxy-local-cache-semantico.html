@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6415277800729792" crossorigin="anonymous"></script>
+
+  <title>Por Dentro do Protocolo /v1/messages da Anthropic: Roteadores Proxy Locais de Latência Zero e Cache Semântico de Prefixos — Benni Alencar // Benni OS</title>
+  <meta name="description" content="Guia profundo de engenharia de sistemas sobre o protocolo de rede /v1/messages e /v1/messages/count_tokens da Anthropic: tradução de blocos tool_use e tool_result para servidores locais compatíveis com OpenAI (benni-inference-engine), máquina de estados SSE em streaming e cache semântico de prefixos em SQLite WAL no Benni-OS/claude-code-router." />
+  <link rel="canonical" href="https://benni-os.net/blog/protocolo-anthropic-messages-proxy-local-cache-semantico.html" />
+  <link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/protocolo-anthropic-messages-proxy-local-cache-semantico.html" />
+  <link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/anthropic-messages-wire-protocol-local-proxy-semantic-cache.html" />
+  <link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/anthropic-messages-wire-protocol-local-proxy-semantic-cache.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Por Dentro do Protocolo /v1/messages da Anthropic: Roteadores Proxy Locais de Latência Zero e Cache Semântico de Prefixos" />
+  <meta property="og:description" content="Traduza /v1/messages, count_tokens, blocos tool_use/tool_result e streams SSE para servidores locais com cache semântico de prefixos em SQLite WAL no Benni-OS/claude-code-router." />
+  <meta property="og:image" content="https://benni-os.net/blog/assets/flow_hero_inference-engine.jpg" />
+  <meta property="og:url" content="https://benni-os.net/blog/protocolo-anthropic-messages-proxy-local-cache-semantico.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:creator" content="@BenniAlencar" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": ["TechArticle", "BlogPosting"],
+        "@id": "https://benni-os.net/blog/protocolo-anthropic-messages-proxy-local-cache-semantico.html#article",
+        "isPartOf": {
+          "@type": "WebSite",
+          "@id": "https://benni-os.net/#website",
+          "name": "Benni OS",
+          "url": "https://benni-os.net"
+        },
+        "headline": "Por Dentro do Protocolo /v1/messages da Anthropic: Roteadores Proxy Locais de Latência Zero e Cache Semântico de Prefixos",
+        "description": "Guia profundo de engenharia de sistemas sobre o protocolo de rede /v1/messages e /v1/messages/count_tokens da Anthropic: tradução de blocos tool_use e tool_result para servidores locais compatíveis com OpenAI (benni-inference-engine), máquina de estados SSE em streaming e cache semântico de prefixos em SQLite WAL no Benni-OS/claude-code-router.",
+        "inLanguage": "pt-BR",
+        "mainEntityOfPage": "https://benni-os.net/blog/protocolo-anthropic-messages-proxy-local-cache-semantico.html",
+        "url": "https://benni-os.net/blog/protocolo-anthropic-messages-proxy-local-cache-semantico.html",
+        "image": "https://benni-os.net/blog/assets/flow_hero_inference-engine.jpg",
+        "datePublished": "2026-11-26T00:00:00Z",
+        "dateModified": "2026-11-26T00:00:00Z",
+        "keywords": "anthropic messages api, protocolo /v1/messages, count_tokens, tradução tool_use, proxy SSE streaming, cache semântico SQLite WAL, claude-code-router, benni-inference-engine, benni os",
+        "author": {
+          "@type": "Person",
+          "@id": "https://benni-os.net/#author",
+          "name": "Benni Alencar",
+          "jobTitle": "Chief AI Systems Architect & Founder",
+          "url": "https://benni-os.net",
+          "sameAs": [
+            "https://github.com/BenniAlencar",
+            "https://github.com/Benni-OS",
+            "https://dev.to/bennialencar",
+            "https://www.linkedin.com/in/benni-alencar/",
+            "https://benni-os.net"
+          ]
+        },
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://benni-os.net/#organization",
+          "name": "Benni OS",
+          "url": "https://benni-os.net",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://benni-os.net/blog/assets/benni_avatar.jpg"
+          }
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://benni-os.net/blog/protocolo-anthropic-messages-proxy-local-cache-semantico.html#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Por que clientes Anthropic como o Claude Code não falam diretamente com servidores locais compatíveis com OpenAI?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "O Claude Code utiliza o protocolo /v1/messages e /v1/messages/count_tokens da Anthropic, que emprega arrays system no topo do payload, blocos de conteúdo tipados (text, thinking, tool_use, tool_result) e um ciclo de vida com estado em Server-Sent Events (SSE) (message_start, content_block_start, content_block_delta, message_delta, message_stop). Servidores locais compatíveis com OpenAI esperam /v1/chat/completions com mensagens de sistema dentro do array messages, argumentos de tool_calls serializados como string e deltas sem estado."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Como o claude-code-router trata /v1/messages/count_tokens localmente?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "O Claude Code dispara requisições pre-flight POST /v1/messages/count_tokens para orçar a janela de contexto antes de enviar turnos. O claude-code-router intercepta esse endpoint localmente, serializa system prompts, schemas de ferramentas e blocos de mensagem em texto canônico e calcula a contagem determinística de tokens em menos de 1 milissegundo sem consultar nenhuma API na nuvem."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Como a tradução de streaming SSE preserva blocos tool_use sem bufferizar toda a resposta?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "O claude-code-router mantém uma máquina de estados finita por requisição que rastreia o content_block_index ativo. Conforme chegam chunks delta no formato OpenAI do benni-inference-engine, deltas de texto emitem eventos text_delta no índice 0, enquanto chunks incrementais de tool_calls abrem um bloco tool_use via content_block_start e transmitem JSON parcial como quadros input_json_delta até que finish_reason dispare content_block_stop e message_stop."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Por que usar SQLite WAL para cache semântico de prefixos em um roteador proxy local?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "O SQLite em modo Write-Ahead Logging (WAL) oferece um cache embutido de arquivo único, sem daemon externo, com leituras concorrentes não bloqueantes e consultas atômicas por hash de prefixo. Ao calcular hashes de system prompts normalizados, schemas de ferramentas e prefixos estáveis de conversa junto aos pontos de quebra cache_control, o claude-code-router responde turnos repetidos e pre-flight em menos de 1 ms com auditabilidade local completa."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #07080c;
+      --panel: #0e111a;
+      --panel-hover: #141824;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-border-hover: rgba(0, 240, 255, 0.35);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --cyan: #00f0ff;
+      --cyan-glow: rgba(0, 240, 255, 0.15);
+      --blue: #3b82f6;
+      --lime: #10b981;
+      --orange: #ff6b00;
+      --purple: #a855f7;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-title: 'DM Serif Display', Georgia, serif;
+      --font-code: 'IBM Plex Mono', monospace;
+      --badge-color: #00f0ff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.75;
+      font-size: 1.05rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59, 130, 246, 0.12), transparent),
+        radial-gradient(circle at 100% 40%, rgba(168, 85, 247, 0.06), transparent 50%),
+        radial-gradient(circle at 0% 70%, rgba(0, 240, 255, 0.05), transparent 50%);
+      background-attachment: fixed;
+    }
+    header.magazine-header {
+      background: rgba(7, 8, 12, 0.85);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--card-border);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 0.9rem 2rem;
+    }
+    .nav-container {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand-logo {
+      font-family: var(--font-code);
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--text-main);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      letter-spacing: 0.5px;
+    }
+    .brand-logo:hover { color: var(--cyan); }
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #10b981;
+    }
+    nav.nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.8rem;
+    }
+    nav.nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav.nav-links a:hover, nav.nav-links a.active { color: #fff; }
+    .lang-switcher-pill {
+      display: flex;
+      align-items: center;
+      background: rgba(14, 17, 26, 0.8);
+      border: 1px solid var(--card-border);
+      border-radius: 9999px;
+      padding: 3px;
+      gap: 2px;
+    }
+    .lang-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-family: var(--font-code);
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .lang-btn.active {
+      background: rgba(0, 240, 255, 0.15);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+    }
+    .lang-btn:hover:not(.active) {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .reading-progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #00f0ff, #3b82f6, #a855f7);
+      width: 0%;
+      z-index: 9999;
+      transition: width 0.1s ease;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.7);
+    }
+    main.article-layout {
+      max-width: 860px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      flex: 1;
+      width: 100%;
+    }
+    .breadcrumb-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-code);
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      margin-bottom: 1.2rem;
+    }
+    .breadcrumb-nav a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb-nav a:hover { color: var(--cyan); }
+    .breadcrumb-current { color: var(--cyan); }
+    .article-header { margin-bottom: 2.5rem; }
+    .article-meta-badges {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .category-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(10, 12, 18, 0.9);
+      border: 1px solid var(--badge-color);
+      color: var(--badge-color);
+      font-family: var(--font-code);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      letter-spacing: 0.5px;
+    }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .article-meta-text { color: var(--text-dim); font-size: 0.85rem; font-family: var(--font-code); }
+    .article-main-title {
+      font-family: var(--font-title);
+      font-size: clamp(2.3rem, 4.5vw, 3.6rem);
+      font-weight: normal;
+      line-height: 1.15;
+      color: #fff;
+      margin-bottom: 1.2rem;
+      letter-spacing: -0.5px;
+    }
+    .article-lead-paragraph {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1.65;
+      margin-bottom: 2rem;
+    }
+    .article-author-share-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1.2rem 0;
+      margin-bottom: 2rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .author-info-box {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+    .author-photo {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid var(--card-border);
+      object-fit: cover;
+    }
+    .author-name-title {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .author-subtitle {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      font-family: var(--font-code);
+    }
+    .article-hero-cover-figure {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      margin-bottom: 3rem;
+      background: var(--panel);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+    .article-hero-img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .article-prose {
+      color: #cbd5e1;
+      font-size: 1.08rem;
+      line-height: 1.8;
+    }
+    .article-prose h2 {
+      font-family: var(--font-title);
+      font-size: 1.95rem;
+      color: #fff;
+      margin: 2.8rem 0 1rem;
+      letter-spacing: -0.3px;
+    }
+    .article-prose h3 {
+      font-family: var(--font-title);
+      font-size: 1.45rem;
+      color: #f1f5f9;
+      margin: 2rem 0 0.8rem;
+    }
+    .article-prose p {
+      margin-bottom: 1.4rem;
+    }
+    .article-prose ul, .article-prose ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+    }
+    .article-prose li {
+      margin-bottom: 0.5rem;
+    }
+    .article-prose hr {
+      border: none;
+      border-top: 1px solid var(--card-border);
+      margin: 2.5rem 0;
+    }
+    .article-prose code {
+      font-family: var(--font-code);
+      background: rgba(255, 255, 255, 0.06);
+      padding: 0.2rem 0.45rem;
+      border-radius: 6px;
+      font-size: 0.9em;
+      color: var(--cyan);
+    }
+    .article-prose pre {
+      background: #040507;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      overflow-x: auto;
+      margin: 1.6rem 0;
+    }
+    .article-prose pre code {
+      background: transparent;
+      padding: 0;
+      color: #e2e8f0;
+      font-size: 0.88rem;
+    }
+    .callout-box {
+      background: rgba(0, 240, 255, 0.04);
+      border-left: 3px solid var(--cyan);
+      border-radius: 0 12px 12px 0;
+      padding: 1.2rem 1.5rem;
+      margin: 1.8rem 0;
+      color: var(--text-main);
+    }
+    .mermaid {
+      background: #040507;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      display: flex;
+      justify-content: center;
+    }
+    .table-container {
+      overflow-x: auto;
+      margin: 2rem 0;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+    th, td {
+      padding: 1rem 1.2rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+    th {
+      background: var(--panel);
+      color: #fff;
+      font-family: var(--font-code);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    .article-cta-box {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.05), rgba(59, 130, 246, 0.08));
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      border-radius: 16px;
+      padding: 2.2rem;
+      margin: 3.5rem 0;
+      text-align: center;
+    }
+    .article-cta-title {
+      font-family: var(--font-title);
+      font-size: 1.6rem;
+      color: #fff;
+      margin-bottom: 0.8rem;
+    }
+    .article-cta-btn {
+      display: inline-block;
+      background: var(--cyan);
+      color: #000;
+      font-weight: 700;
+      padding: 0.85rem 2rem;
+      border-radius: 9999px;
+      text-decoration: none;
+      font-family: var(--font-code);
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      transition: all 0.2s;
+    }
+    .article-cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 240, 255, 0.4);
+    }
+    .article-faq-section {
+      background: var(--panel);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      margin: 3.5rem 0;
+    }
+    .faq-main-heading {
+      font-family: var(--font-title);
+      font-size: 1.8rem;
+      color: #fff;
+      margin-bottom: 1.5rem;
+    }
+    .faq-item-card { border-bottom: 1px solid var(--card-border); padding: 1.2rem 0; }
+    .faq-item-card:last-child { border-bottom: none; }
+    .faq-item-q { font-weight: 700; font-size: 1.1rem; color: var(--cyan); margin-bottom: 0.5rem; }
+    .faq-item-a { color: var(--text-muted); font-size: 0.98rem; line-height: 1.65; }
+    footer.magazine-footer {
+      background: #050608;
+      border-top: 1px solid var(--card-border);
+      padding: 3.5rem 2rem 2rem;
+      margin-top: 5rem;
+    }
+    .footer-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 2.5rem;
+    }
+    @media (max-width: 900px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .footer-grid { grid-template-columns: 1fr; }
+      nav.nav-links { display: none; }
+    }
+    .footer-col h4 {
+      font-family: var(--font-code);
+      font-size: 0.85rem;
+      color: var(--cyan);
+      margin-bottom: 1.2rem;
+      letter-spacing: 1px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.6rem; }
+    .footer-col ul li a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .footer-col ul li a:hover { color: #fff; }
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 1.8rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-dim);
+      font-size: 0.82rem;
+      font-family: var(--font-code);
+    }
+  </style>
+  <link rel="stylesheet" href="/assets/editorial-theme.css" />
+  <script src="/assets/editorial-theme.js"></script>
+  <script defer src="/assets/blog-telemetry.js"></script>
+</head>
+<body>
+  <div class="reading-progress-bar" id="progressBar"></div>
+
+  <header class="magazine-header">
+    <div class="nav-container">
+      <a href="/" class="brand-logo">
+        <span class="status-dot"></span>
+        BENNI OS // MAGAZINE
+      </a>
+      <nav class="nav-links">
+        <a href="/">Home</a>
+        <a href="/blog/index.html" class="active">Magazine</a>
+        <a href="/blog/academy.html">Academy</a>
+        <a href="https://github.com/Benni-OS" target="_blank">GitHub</a>
+        <a href="https://dev.to/bennialencar" target="_blank">Dev.to</a>
+        <div class="lang-switcher-pill" role="navigation" aria-label="Language Selector">
+          <a href="/blog/en/anthropic-messages-wire-protocol-local-proxy-semantic-cache.html" class="lang-btn" title="Switch to English">
+            <span>🇺🇸</span> EN
+          </a>
+          <a href="/blog/protocolo-anthropic-messages-proxy-local-cache-semantico.html" class="lang-btn active" title="Português (Brasil) (Ativo)">
+            <span>🇧🇷</span> PT-BR
+          </a>
+        </div>
+        <a href="/#monetizacao" style="color: var(--cyan); font-weight: 700;">Operator Mode &rarr;</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-layout">
+    <nav class="breadcrumb-nav">
+      <a href="/blog/index.html">Magazine</a>
+      <span>/</span>
+      <span class="breadcrumb-current">PROTOCOLOS DE REDE &amp; ROTEAMENTO LOCAL</span>
+    </nav>
+
+    <header class="article-header">
+      <div class="article-meta-badges">
+        <span class="category-badge-pill">
+          <span class="badge-dot"></span>
+          PROTOCOLOS DE REDE &amp; ROTEAMENTO LOCAL
+        </span>
+        <span class="article-meta-text">14 min de leitura • 26 Nov, 2026</span>
+      </div>
+
+      <h1 class="article-main-title">Por Dentro do Protocolo /v1/messages da Anthropic: Roteadores Proxy Locais de Latência Zero e Cache Semântico de Prefixos</h1>
+      <p class="article-lead-paragraph">Como o <code>Benni-OS/claude-code-router</code> traduz <code>/v1/messages</code>, <code>/v1/messages/count_tokens</code>, blocos <code>tool_use</code>/<code>tool_result</code> e streams SSE com estado da Anthropic para payloads compatíveis com OpenAI no <code>benni-inference-engine</code> — apoiado por um cache semântico de prefixos em SQLite WAL abaixo de 1 ms.</p>
+
+      <div class="article-author-share-bar">
+        <div class="author-info-box">
+          <img src="/blog/assets/benni_avatar.jpg" alt="Benni Alencar" class="author-photo" />
+          <div>
+            <div class="author-name-title">Benni Alencar</div>
+            <div class="author-subtitle">Chief AI Systems Architect &amp; Founder</div>
+          </div>
+        </div>
+        <div class="lang-switcher-pill" role="navigation" aria-label="Language Selector">
+          <a href="/blog/en/anthropic-messages-wire-protocol-local-proxy-semantic-cache.html" class="lang-btn" title="Switch to English">
+            <span>🇺🇸</span> EN
+          </a>
+          <a href="/blog/protocolo-anthropic-messages-proxy-local-cache-semantico.html" class="lang-btn active" title="Português (Brasil) (Ativo)">
+            <span>🇧🇷</span> PT-BR
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <figure class="article-hero-cover-figure">
+      <img src="/blog/assets/flow_hero_inference-engine.jpg" alt="Por Dentro do Protocolo /v1/messages da Anthropic: Roteadores Proxy Locais de Latência Zero e Cache Semântico de Prefixos" width="1376" height="768" class="article-hero-img" />
+    </figure>
+
+    <article class="article-prose">
+      <hr />
+      <h2>1. A Lacuna de Protocolo Entre o Claude Code e a Inferência Local</h2>
+      <p>Apontar um agente de código nativo da Anthropic como o Claude Code para um servidor de inferência local — seja <code>benni-inference-engine</code>, llama.cpp ou vLLM — falha imediatamente na fronteira HTTP se você expõe apenas um endpoint <code>/v1/chat/completions</code> compatível com OpenAI. Mesmo quando servidores locais anunciam uma camada de compatibilidade Anthropic, divergências sutis de protocolo derrubam chamadas de ferramentas, quebram o cálculo de janela de contexto ou travam o streaming.</p>
+      <p>O protocolo de rede da Anthropic parte de quatro premissas estruturais que não possuem mapeamento 1:1 com o formato OpenAI Chat Completions:</p>
+      <ul>
+        <li><strong>Orçamento Pre-flight de Tokens (<code>POST /v1/messages/count_tokens</code>):</strong> Antes de enviar turnos pesados com múltiplos arquivos, o Claude Code chama <code>/v1/messages/count_tokens</code> com o payload exato de <code>system</code>, <code>tools</code> e <code>messages</code> para decidir se precisa compactar o histórico. Um 404 ou estimativa imprecisa quebra a compactação automática.</li>
+        <li><strong>Campo <code>system</code> no Topo e Arrays de Blocos Tipados:</strong> Ao contrário da string simples ou mensagem <code>role: "system"</code> da OpenAI, a Anthropic envia <code>system</code> no nível raiz como string ou lista de blocos com anotações de cache, e modela o <code>content</code> de cada turno como uma lista polimórfica de blocos <code>text</code>, <code>thinking</code>, <code>tool_use</code> e <code>tool_result</code>.</li>
+        <li><strong>Loops Intercalados de Execução de Ferramentas:</strong> Um turno do assistente pode emitir múltiplos blocos <code>tool_use</code> junto com texto de raciocínio, e o turno seguinte do usuário deve retornar blocos <code>tool_result</code> correspondentes vinculados por <code>tool_use_id</code> — algo que servidores OpenAI esperam como mensagens separadas com <code>role: "tool"</code>.</li>
+        <li><strong>Ciclo de Vida SSE com Estado:</strong> O streaming da Anthropic é uma máquina de estados explícita (<code>message_start</code> &rarr; <code>content_block_start</code> &rarr; <code>content_block_delta</code> &rarr; <code>content_block_stop</code> &rarr; <code>message_delta</code> &rarr; <code>message_stop</code>), e não apenas deltas sem estado em <code>data: {"choices":[{"delta":...}]}</code>.</li>
+      </ul>
+      <div class="callout-box">
+        <strong>Arquitetura de Roteamento Soberano:</strong> O <strong><a href="https://github.com/Benni-OS/claude-code-router" target="_blank" rel="noopener noreferrer" style="color: var(--cyan);">Benni-OS/claude-code-router</a></strong> opera em <code>127.0.0.1</code> como um proxy de protocolo com latência zero — terminando <code>/v1/messages</code> e <code>/v1/messages/count_tokens</code>, traduzindo grafos de blocos bidirecionalmente para o <code>benni-inference-engine</code> e respondendo prefixos repetidos diretamente via cache semântico em SQLite WAL.
+      </div>
+
+      <hr />
+      <h2>2. Fluxo Ponta a Ponta: Arquitetura de Sequência</h2>
+      <p>Quando o Claude Code dispara um turno com <code>ANTHROPIC_BASE_URL=http://127.0.0.1:8787</code>, cada requisição atravessa contagem local de tokens, consulta ao cache de prefixos, tradução de protocolo e síntese de quadros SSE com estado:</p>
+
+      <div class="mermaid">
+sequenceDiagram
+    autonumber
+    participant CC as Cliente Claude Code
+    participant PR as claude-code-router (Proxy)
+    participant DB as Cache SQLite WAL
+    participant IE as benni-inference-engine
+
+    CC-&gt;&gt;PR: POST /v1/messages/count_tokens
+    PR--&gt;&gt;CC: 200 OK {input_tokens: 4820} (&lt;1ms local)
+
+    CC-&gt;&gt;PR: POST /v1/messages (stream=true, tools, system)
+    PR-&gt;&gt;DB: Buscar SHA-256 do prefixo + similaridade cosseno
+    alt Cache Hit Semântico de Prefixo
+        DB--&gt;&gt;PR: Sequência de quadros SSE / dica KV em cache
+        PR--&gt;&gt;CC: Reproduzir stream SSE Anthropic (0ms inferência)
+    else Cache Miss
+        PR-&gt;&gt;PR: Traduzir system, tool_use, tool_result -&gt; JSON OpenAI
+        PR-&gt;&gt;IE: POST /v1/chat/completions (stream=true)
+        IE--&gt;&gt;PR: Chunks SSE OpenAI (delta.content / delta.tool_calls)
+        PR--&gt;&gt;CC: Emitir message_start -&gt; block_start -&gt; deltas -&gt; message_stop
+        PR-&gt;&gt;DB: Escrita assíncrona WAL (prefix_hash, response_blocks)
+    end
+      </div>
+
+      <hr />
+      <h2>3. Anatomia da Tradução de Protocolo: <code>tool_use</code>, <code>tool_result</code> e <code>count_tokens</code></h2>
+
+      <h3>Traduzindo <code>system</code> e <code>tools</code></h3>
+      <p>No schema de requisição da Anthropic, <code>system</code> pode ser uma string simples ou uma lista de objetos <code>{"type": "text", "text": "...", "cache_control": {"type": "ephemeral"}}</code>. O proxy achata todos os blocos de sistema em uma mensagem inicial <code>{"role": "system", "content": "..."}</code> enquanto extrai os limites de <code>cache_control</code> como checkpoints de hash de prefixo para o cache local.</p>
+      <p>Da mesma forma, cada definição de ferramenta Anthropic (<code>{"name", "description", "input_schema"}</code>) é convertida para o wrapper OpenAI <code>{"type": "function", "function": {"name", "description", "parameters"}}</code>, enquanto <code>tool_choice</code> mapeia <code>{"type": "auto"}</code>, <code>{"type": "any"}</code> (&rarr; <code>"required"</code>) e <code>{"type": "tool", "name": "..."}</code> (&rarr; <code>{"type": "function", "function": {"name": "..."}}</code>).</p>
+
+      <h3>Desmembrando Blocos <code>tool_use</code> e <code>tool_result</code></h3>
+      <p>O invariante estrutural mais crítico é preservar turnos com múltiplas ferramentas. Uma mensagem <code>assistant</code> da Anthropic pode conter um bloco <code>text</code> e dois blocos <code>tool_use</code>. O roteador empacota o texto em <code>content</code> e converte cada <code>tool_use</code> em uma entrada de <code>tool_calls</code> com <code>json.dumps(block["input"])</code>. No turno seguinte, uma mensagem <code>user</code> contendo blocos <code>tool_result</code> precisa ser explodida em mensagens individuais com <code>role: "tool"</code> indexadas por <code>tool_call_id</code> antes de qualquer bloco textual subsequente do usuário.</p>
+
+      <h3>Endpoint Local <code>/v1/messages/count_tokens</code></h3>
+      <p>Em vez de devolver um número fixo fictício — o que faz o Claude Code subutilizar o contexto ou estourar o limite de KV-cache local — o <code>claude-code-router</code> executa uma passagem rápida de tokenização local sobre o system prompt serializado, schemas JSON das ferramentas e blocos de mensagem, retornando <code>{"input_tokens": count}</code> em menos de 1 milissegundo.</p>
+
+      <hr />
+      <h2>4. Tradutor de Protocolo em Python: Requisição e Máquina de Estados SSE</h2>
+      <p>Abaixo está o núcleo bidirecional de tradução em Python utilizado dentro do <code>claude-code-router</code> — cobrindo a conversão de payload Anthropic para OpenAI e a máquina de estados SSE sem bufferização que converte chunks OpenAI de volta em quadros estritos da Anthropic:</p>
+
+<pre><code class="language-python">import hashlib
+import json
+from typing import Any, Iterator
+
+
+def flatten_system_prompt(system: str | list[dict[str, Any]] | None) -&gt; str:
+    """Normaliza o campo system da Anthropic (string ou lista de blocos) em texto."""
+    if not system:
+        return ""
+    if isinstance(system, str):
+        return system
+    return "\n".join(b.get("text", "") for b in system if b.get("type") == "text")
+
+
+def anthropic_to_openai_request(payload: dict[str, Any]) -&gt; dict[str, Any]:
+    """Traduz um payload /v1/messages da Anthropic para /v1/chat/completions OpenAI."""
+    oai_messages: list[dict[str, Any]] = []
+
+    sys_text = flatten_system_prompt(payload.get("system"))
+    if sys_text:
+        oai_messages.append({"role": "system", "content": sys_text})
+
+    for msg in payload.get("messages", []):
+        role = msg["role"]
+        content = msg["content"]
+
+        if isinstance(content, str):
+            oai_messages.append({"role": role, "content": content})
+            continue
+
+        text_parts: list[str] = []
+        tool_calls: list[dict[str, Any]] = []
+        tool_results: list[dict[str, Any]] = []
+
+        for block in content:
+            btype = block.get("type")
+            if btype == "text":
+                text_parts.append(block.get("text", ""))
+            elif btype == "tool_use":
+                tool_calls.append({
+                    "id": block["id"],
+                    "type": "function",
+                    "function": {
+                        "name": block["name"],
+                        "arguments": json.dumps(block.get("input", {}), separators=(",", ":")),
+                    },
+                })
+            elif btype == "tool_result":
+                raw = block.get("content", "")
+                serialized = raw if isinstance(raw, str) else json.dumps(raw)
+                tool_results.append({
+                    "role": "tool",
+                    "tool_call_id": block["tool_use_id"],
+                    "content": serialized,
+                })
+
+        if role == "assistant":
+            oai_messages.append({
+                "role": "assistant",
+                "content": "\n".join(text_parts) if text_parts else None,
+                **({"tool_calls": tool_calls} if tool_calls else {}),
+            })
+        else:
+            # A Anthropic envia tool_result dentro de user; a OpenAI exige role="tool" antes.
+            oai_messages.extend(tool_results)
+            if text_parts:
+                oai_messages.append({"role": "user", "content": "\n".join(text_parts)})
+
+    oai_tools = [
+        {
+            "type": "function",
+            "function": {
+                "name": t["name"],
+                "description": t.get("description", ""),
+                "parameters": t.get("input_schema", {"type": "object", "properties": {}}),
+            },
+        }
+        for t in payload.get("tools", [])
+    ]
+
+    return {
+        "model": payload["model"],
+        "messages": oai_messages,
+        "max_tokens": payload.get("max_tokens", 4096),
+        "temperature": payload.get("temperature", 0.0),
+        "stream": payload.get("stream", False),
+        **({"tools": oai_tools} if oai_tools else {}),
+    }
+
+
+def sse_frame(event: str, data: dict[str, Any]) -&gt; str:
+    return f"event: {event}\ndata: {json.dumps(data, separators=(',', ':'))}\n\n"
+
+
+def translate_openai_sse_to_anthropic(
+    chunks: Iterator[dict[str, Any]],
+    model: str,
+    msg_id: str = "msg_local_01",
+) -&gt; Iterator[str]:
+    """Máquina de estados sem bufferização de deltas OpenAI para quadros SSE Anthropic."""
+    yield sse_frame("message_start", {
+        "type": "message_start",
+        "message": {
+            "id": msg_id, "type": "message", "role": "assistant",
+            "model": model, "content": [], "stop_reason": None,
+            "usage": {"input_tokens": 0, "output_tokens": 0},
+        },
+    })
+
+    block_idx = -1
+    active_type: str | None = None
+    saw_tool_calls = False
+
+    for chunk in chunks:
+        choice = chunk["choices"][0]
+        delta = choice.get("delta", {})
+
+        if delta.get("content"):
+            if active_type != "text":
+                if block_idx &gt;= 0:
+                    yield sse_frame("content_block_stop", {"type": "content_block_stop", "index": block_idx})
+                block_idx += 1
+                active_type = "text"
+                yield sse_frame("content_block_start", {
+                    "type": "content_block_start", "index": block_idx,
+                    "content_block": {"type": "text", "text": ""},
+                })
+            yield sse_frame("content_block_delta", {
+                "type": "content_block_delta", "index": block_idx,
+                "delta": {"type": "text_delta", "text": delta["content"]},
+            })
+
+        for tc in delta.get("tool_calls", []):
+            saw_tool_calls = True
+            if tc.get("id"):
+                if block_idx &gt;= 0:
+                    yield sse_frame("content_block_stop", {"type": "content_block_stop", "index": block_idx})
+                block_idx += 1
+                active_type = "tool_use"
+                yield sse_frame("content_block_start", {
+                    "type": "content_block_start", "index": block_idx,
+                    "content_block": {
+                        "type": "tool_use", "id": tc["id"],
+                        "name": tc["function"]["name"], "input": {},
+                    },
+                })
+            args_part = tc.get("function", {}).get("arguments")
+            if args_part:
+                yield sse_frame("content_block_delta", {
+                    "type": "content_block_delta", "index": block_idx,
+                    "delta": {"type": "input_json_delta", "partial_json": args_part},
+                })
+
+        if choice.get("finish_reason"):
+            if block_idx &gt;= 0:
+                yield sse_frame("content_block_stop", {"type": "content_block_stop", "index": block_idx})
+            stop_reason = "tool_use" if saw_tool_calls else "end_turn"
+            yield sse_frame("message_delta", {
+                "type": "message_delta",
+                "delta": {"stop_reason": stop_reason, "stop_sequence": None},
+                "usage": {"output_tokens": chunk.get("usage", {}).get("completion_tokens", 0)},
+            })
+            yield sse_frame("message_stop", {"type": "message_stop"})
+            break
+</code></pre>
+
+      <hr />
+      <h2>5. Cache Semântico de Prefixos com SQLite WAL</h2>
+      <p>Loops agênticos de programação são altamente repetitivos no nível de prefixo: as instruções do <code>CLAUDE.md</code>, mais de 20 schemas de ferramentas MCP e os turnos iniciais de exploração do repositório permanecem idênticos byte a byte ao longo de dezenas de requisições. Mesmo quando o prompt final do usuário muda levemente (como reexecutar uma verificação de lint ou repetir uma pergunta diagnóstica), o hash do prefixo e o embedding semântico permanecem praticamente idênticos.</p>
+      <p>O <code>Benni-OS/claude-code-router</code> combina hashing exato SHA-256 de prefixos com um armazenamento local em <strong>SQLite Write-Ahead Logging (WAL)</strong>:</p>
+      <ul>
+        <li><strong>Leituras Concorrentes Sem Bloqueio:</strong> Habilitar <code>PRAGMA journal_mode=WAL;</code> e <code>PRAGMA synchronous=NORMAL;</code> permite que múltiplos subagentes em paralelo leiam o cache simultaneamente sem travamentos por lock de escrita.</li>
+        <li><strong>Busca em Dois Níveis:</strong> Primeiro, uma consulta indexada O(1) em <code>prefix_sha256</code> (calculado sobre <code>system + tools + prefix_messages</code> canonicalizados até o último ponto de quebra <code>cache_control</code>). Segundo, para consultas determinísticas com temperatura zero, uma checagem de similaridade por cosseno normalizada contra embeddings locais quantizados do prompt final.</li>
+        <li><strong>Alinhamento de KV-Cache no <code>benni-inference-engine</code>:</strong> Mesmo em um cache miss semântico, o roteador repassa o <code>prefix_sha256</code> correspondente como cabeçalho de dica de slot ao <code>benni-inference-engine</code>, maximizando o reaproveitamento de KV-cache na GPU entre slots locais de llama.cpp / vLLM.</li>
+      </ul>
+
+      <hr />
+      <h2>6. Comparativo de Protocolos: Anthropic vs. OpenAI vs. <code>claude-code-router</code></h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Dimensão do Protocolo</th>
+              <th>Anthropic <code>/v1/messages</code></th>
+              <th>OpenAI <code>/v1/chat/completions</code></th>
+              <th><code>Benni-OS/claude-code-router</code></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>System Prompt</strong></td>
+              <td>String no topo ou array de blocos com <code>cache_control</code></td>
+              <td>Mensagem <code>role: "system"</code> dentro de <code>messages[]</code></td>
+              <td><strong>Achata blocos e extrai pontos de quebra de cache</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Tool Calls &amp; Results</strong></td>
+              <td>Blocos de conteúdo <code>tool_use</code> e <code>tool_result</code></td>
+              <td><code>tool_calls[]</code> + turnos separados <code>role: "tool"</code></td>
+              <td><strong>Divisor bidirecional sem perdas de blocos para turnos</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Contagem de Tokens</strong></td>
+              <td><code>POST /v1/messages/count_tokens</code></td>
+              <td>Não padronizado em servidores locais</td>
+              <td><strong>Endpoint local com tokenização abaixo de 1 ms</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Streaming SSE</strong></td>
+              <td>Máquina de estados de 6 estágios (<code>content_block_delta</code>)</td>
+              <td>Chunks sem estado <code>choices[0].delta</code></td>
+              <td><strong>Máquina de estados SSE por índice sem bufferização</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Cache de Prefixos</strong></td>
+              <td><code>cache_control</code> efêmero na nuvem</td>
+              <td>Apenas KV-cache implícito no servidor</td>
+              <td><strong>Cache semântico SQLite WAL + dicas de KV-cache</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="article-cta-box">
+        <h3 class="article-cta-title">Roteie o Claude Code Localmente com Latência Zero</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; max-width: 620px; margin: 0 auto;">
+          Implante o <strong>Benni-OS/claude-code-router</strong> na frente do <code>benni-inference-engine</code> para traduzir <code>/v1/messages</code>, <code>count_tokens</code> e streams SSE de ferramentas com cache semântico de prefixos em SQLite WAL.
+        </p>
+        <a href="https://github.com/Benni-OS/claude-code-router" target="_blank" rel="noopener noreferrer" class="article-cta-btn">Explorar Benni-OS/claude-code-router no GitHub &rarr;</a>
+      </div>
+
+      <section class="article-faq-section">
+        <h2 class="faq-main-heading">Perguntas Frequentes</h2>
+
+        <div class="faq-item-card">
+          <div class="faq-item-q">Por que clientes Anthropic como o Claude Code não falam diretamente com servidores locais compatíveis com OpenAI?</div>
+          <div class="faq-item-a">O Claude Code utiliza o protocolo <code>/v1/messages</code> e <code>/v1/messages/count_tokens</code> da Anthropic, que emprega arrays <code>system</code> no topo do payload, blocos de conteúdo tipados (<code>text</code>, <code>thinking</code>, <code>tool_use</code>, <code>tool_result</code>) e um ciclo de vida com estado em Server-Sent Events (SSE). Servidores locais compatíveis com OpenAI esperam <code>/v1/chat/completions</code> com mensagens de sistema dentro de <code>messages[]</code>, argumentos de <code>tool_calls</code> serializados como string e deltas sem estado.</div>
+        </div>
+        <div class="faq-item-card">
+          <div class="faq-item-q">Como o claude-code-router trata /v1/messages/count_tokens localmente?</div>
+          <div class="faq-item-a">O Claude Code dispara requisições pre-flight <code>POST /v1/messages/count_tokens</code> para orçar a janela de contexto antes de enviar turnos. O <code>claude-code-router</code> intercepta esse endpoint localmente, serializa system prompts, schemas de ferramentas e blocos de mensagem em texto canônico e calcula a contagem determinística de tokens em menos de 1 milissegundo sem consultar nenhuma API na nuvem.</div>
+        </div>
+        <div class="faq-item-card">
+          <div class="faq-item-q">Como a tradução de streaming SSE preserva blocos tool_use sem bufferizar toda a resposta?</div>
+          <div class="faq-item-a">O <code>claude-code-router</code> mantém uma máquina de estados finita por requisição que rastreia o <code>content_block_index</code> ativo. Conforme chegam chunks delta no formato OpenAI do <code>benni-inference-engine</code>, deltas de texto emitem eventos <code>text_delta</code> no índice 0, enquanto chunks incrementais de <code>tool_calls</code> abrem um bloco <code>tool_use</code> via <code>content_block_start</code> e transmitem JSON parcial como quadros <code>input_json_delta</code> até que <code>finish_reason</code> dispare <code>content_block_stop</code> e <code>message_stop</code>.</div>
+        </div>
+        <div class="faq-item-card">
+          <div class="faq-item-q">Por que usar SQLite WAL para cache semântico de prefixos em um roteador proxy local?</div>
+          <div class="faq-item-a">O SQLite em modo Write-Ahead Logging (WAL) oferece um cache embutido de arquivo único, sem daemon externo, com leituras concorrentes não bloqueantes e consultas atômicas por hash de prefixo. Ao calcular hashes de system prompts normalizados, schemas de ferramentas e prefixos estáveis de conversa junto aos pontos de quebra <code>cache_control</code>, o <code>claude-code-router</code> responde turnos repetidos e pre-flight em menos de 1 ms com auditabilidade local completa.</div>
+        </div>
+      </section>
+    </article>
+  </main>
+
+  <footer class="magazine-footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>BENNI OS // SOVEREIGN AUTONOMY</h4>
+        <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; margin-top: 0.5rem;">
+          The Sovereign Autonomy System built from first principles. Eliminating agent hallucinations, loop explosions, and cloud vendor lock-in.
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>PLATFORM</h4>
+        <ul>
+          <li><a href="/blog/index.html">Technical Magazine</a></li>
+          <li><a href="/blog/academy.html">Academy &amp; Masterclass</a></li>
+          <li><a href="https://github.com/Benni-OS" target="_blank">Open Source Repos</a></li>
+          <li><a href="https://dev.to/bennialencar" target="_blank">Dev.to Series</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>OPEN SOURCE SUITE</h4>
+        <ul>
+          <li><a href="https://github.com/Benni-OS/claude-code-router" target="_blank">claude-code-router</a></li>
+          <li><a href="https://github.com/Benni-OS/claude-code-eval" target="_blank">claude-code-eval</a></li>
+          <li><a href="https://github.com/Benni-OS/claude-code-swarm" target="_blank">claude-code-swarm</a></li>
+          <li><a href="https://github.com/Benni-OS/claude-code-sovereign" target="_blank">claude-code-sovereign</a></li>
+          <li><a href="https://github.com/Benni-OS/agent-trace-replay" target="_blank">agent-trace-replay</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>SOVEREIGN ACCESS</h4>
+        <ul>
+          <li><a href="/#monetizacao">Operator Mode Pass</a></li>
+          <li><a href="/#monetizacao">MCP Forge Playbook</a></li>
+          <li><a href="https://agensi.io/sell" target="_blank">Agensi.io Skills</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>&copy; 2026 Benni OS. Engineered by Benni Alencar. All rights reserved.</div>
+      <div style="display:flex; gap: 1rem;">
+        <a href="/blog/en/anthropic-messages-wire-protocol-local-proxy-semantic-cache.html" style="color: var(--text-dim); text-decoration: none;">English</a>
+        <a href="/blog/protocolo-anthropic-messages-proxy-local-cache-semantico.html" style="color: var(--text-dim); text-decoration: none;">Português</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { darkMode: true, background: '#040507', primaryColor: '#00f0ff', edgeColor: '#3b82f6' } });
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+      document.getElementById('progressBar').style.width = scrolled + '%';
+    });
+  </script>
+</body>
+</html>
