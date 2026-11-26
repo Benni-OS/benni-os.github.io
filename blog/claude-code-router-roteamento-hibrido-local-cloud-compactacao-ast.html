@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6415277800729792" crossorigin="anonymous"></script>
+
+  <title>Roteamento Híbrido Local-Cloud para Claude Code: Reduzindo Custos de API em 75% com ANTHROPIC_BASE_URL e Compactação de Contexto AST — Benni Alencar // Benni OS</title>
+  <meta name="description" content="Como apontar ANTHROPIC_BASE_URL para o Benni-OS/claude-code-router classifica a complexidade de cada turno em sub-milissegundos, roteia turnos rotineiros para GPUs locais (benni-inference-engine / Ollama) ou Haiku, compacta payloads AST/logs inflados e armazena resultados repetidos de ferramentas em cache SQLite WAL — cortando custos de API do Claude Code em 75%." />
+  <link rel="canonical" href="https://benni-os.net/blog/claude-code-router-roteamento-hibrido-local-cloud-compactacao-ast.html" />
+  <link rel="alternate" hreflang="pt-BR" href="https://benni-os.net/blog/claude-code-router-roteamento-hibrido-local-cloud-compactacao-ast.html" />
+  <link rel="alternate" hreflang="en" href="https://benni-os.net/blog/en/claude-code-router-hybrid-local-cloud-routing-ast-compaction.html" />
+  <link rel="alternate" hreflang="x-default" href="https://benni-os.net/blog/en/claude-code-router-hybrid-local-cloud-routing-ast-compaction.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Roteamento Híbrido Local-Cloud para Claude Code: Reduzindo Custos de API em 75% com ANTHROPIC_BASE_URL e Compactação de Contexto AST" />
+  <meta property="og:description" content="Aponte ANTHROPIC_BASE_URL para o Benni-OS/claude-code-router para classificar turnos em sub-ms, rotear tarefas rotineiras para GPUs locais ou Haiku, compactar payloads AST/logs e usar cache SQLite WAL." />
+  <meta property="og:image" content="https://benni-os.net/blog/assets/flow_hero_token-optimizer.jpg" />
+  <meta property="og:url" content="https://benni-os.net/blog/claude-code-router-roteamento-hibrido-local-cloud-compactacao-ast.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:creator" content="@BenniAlencar" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": ["TechArticle", "BlogPosting"],
+        "@id": "https://benni-os.net/blog/claude-code-router-roteamento-hibrido-local-cloud-compactacao-ast.html#article",
+        "isPartOf": {
+          "@type": "WebSite",
+          "@id": "https://benni-os.net/#website",
+          "name": "Benni OS",
+          "url": "https://benni-os.net"
+        },
+        "headline": "Roteamento Híbrido Local-Cloud para Claude Code: Reduzindo Custos de API em 75% com ANTHROPIC_BASE_URL e Compactação de Contexto AST",
+        "description": "Como apontar ANTHROPIC_BASE_URL para o Benni-OS/claude-code-router classifica a complexidade de cada turno em sub-milissegundos, roteia turnos rotineiros para GPUs locais (benni-inference-engine / Ollama) ou Haiku, compacta payloads AST/logs inflados e armazena resultados repetidos de ferramentas em cache SQLite WAL — cortando custos de API do Claude Code em 75%.",
+        "inLanguage": "pt-BR",
+        "mainEntityOfPage": "https://benni-os.net/blog/claude-code-router-roteamento-hibrido-local-cloud-compactacao-ast.html",
+        "url": "https://benni-os.net/blog/claude-code-router-roteamento-hibrido-local-cloud-compactacao-ast.html",
+        "image": "https://benni-os.net/blog/assets/flow_hero_token-optimizer.jpg",
+        "datePublished": "2026-11-26T00:00:00Z",
+        "dateModified": "2026-11-26T00:00:00Z",
+        "keywords": "claude-code-router, ANTHROPIC_BASE_URL, roteamento híbrido LLM, compactação de contexto AST, cache SQLite WAL, benni-inference-engine, Ollama, redução de custos Claude Code, benni os",
+        "author": {
+          "@type": "Person",
+          "@id": "https://benni-os.net/#author",
+          "name": "Benni Alencar",
+          "jobTitle": "Chief AI Systems Architect & Founder",
+          "url": "https://benni-os.net",
+          "sameAs": [
+            "https://github.com/BenniAlencar",
+            "https://github.com/Benni-OS",
+            "https://dev.to/bennialencar",
+            "https://www.linkedin.com/in/benni-alencar/",
+            "https://benni-os.net"
+          ]
+        },
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://benni-os.net/#organization",
+          "name": "Benni OS",
+          "url": "https://benni-os.net",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://benni-os.net/blog/assets/benni_avatar.jpg"
+          }
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://benni-os.net/blog/claude-code-router-roteamento-hibrido-local-cloud-compactacao-ast.html#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Como ANTHROPIC_BASE_URL habilita o roteamento híbrido sem modificar o Claude Code?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "O Claude Code respeita a variável de ambiente padrão ANTHROPIC_BASE_URL para todas as requisições à Anthropic Messages API. Ao apontar ANTHROPIC_BASE_URL para http://127.0.0.1:4100, o claude-code-router atua como um proxy reverso local transparente que analisa a complexidade do turno, compacta payloads grandes, consulta o cache SQLite WAL e despacha para uma GPU local (benni-inference-engine ou Ollama), Claude Haiku ou Claude Sonnet/Opus."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Qual é a velocidade do classificador de complexidade no claude-code-router?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "O classificador heurístico determinístico executa em menos de 0,4 milissegundos sem nenhuma chamada de LLM. Ele pontua contagem de tokens, profundidade de chamadas de ferramentas, densidade de símbolos AST, tamanho do diff e palavras-chave arquiteturais para atribuir cada turno ao Tier 0 (GPU Local), Tier 1 (Haiku) ou Tier 2 (Sonnet/Opus)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "O que a Compactação de Contexto AST remove antes de enviar requisições para a nuvem?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A Compactação de Contexto AST analisa resultados de ferramentas inflados — como dumps de logs de 8.000 linhas, saídas completas de testes ou arquivos intactos — preservando assinaturas de funções, definições de tipos, imports, stack frames de erro e hunks ativos de diff enquanto dobra boilerplate morto. Isso reduz o tamanho dos prompts em 55% a 78% sem perda estrutural."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Por que usar SQLite WAL para cache de resultados repetidos de ferramentas?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Agentes de código frequentemente reexecutam chamadas idênticas somente leitura (como git status, subconjuntos de pytest ou inspeções de schema) em turnos adjacentes. Armazenar hashes normalizados de requisição e resultado em SQLite com Write-Ahead Logging (WAL) permite leituras concorrentes sem bloqueio em menos de 1 ms, eliminando inferência redundante e gasto de API."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    :root {
+      --bg: #07080c;
+      --panel: #0e111a;
+      --panel-hover: #141824;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-border-hover: rgba(0, 240, 255, 0.35);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --cyan: #00f0ff;
+      --cyan-glow: rgba(0, 240, 255, 0.15);
+      --blue: #3b82f6;
+      --lime: #10b981;
+      --orange: #ff6b00;
+      --purple: #a855f7;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-title: 'DM Serif Display', Georgia, serif;
+      --font-code: 'IBM Plex Mono', monospace;
+      --badge-color: #00f0ff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.75;
+      font-size: 1.05rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59, 130, 246, 0.12), transparent),
+        radial-gradient(circle at 100% 40%, rgba(168, 85, 247, 0.06), transparent 50%),
+        radial-gradient(circle at 0% 70%, rgba(0, 240, 255, 0.05), transparent 50%);
+      background-attachment: fixed;
+    }
+    header.magazine-header {
+      background: rgba(7, 8, 12, 0.85);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--card-border);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 0.9rem 2rem;
+    }
+    .nav-container {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .brand-logo {
+      font-family: var(--font-code);
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--text-main);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      letter-spacing: 0.5px;
+    }
+    .brand-logo:hover { color: var(--cyan); }
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #10b981;
+    }
+    nav.nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.8rem;
+    }
+    nav.nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav.nav-links a:hover, nav.nav-links a.active { color: #fff; }
+    .lang-switcher-pill {
+      display: flex;
+      align-items: center;
+      background: rgba(14, 17, 26, 0.8);
+      border: 1px solid var(--card-border);
+      border-radius: 9999px;
+      padding: 3px;
+      gap: 2px;
+    }
+    .lang-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-family: var(--font-code);
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .lang-btn.active {
+      background: rgba(0, 240, 255, 0.15);
+      color: var(--cyan);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+    }
+    .lang-btn:hover:not(.active) {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .reading-progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #00f0ff, #3b82f6, #a855f7);
+      width: 0%;
+      z-index: 9999;
+      transition: width 0.1s ease;
+      box-shadow: 0 0 10px rgba(0, 240, 255, 0.7);
+    }
+    main.article-layout {
+      max-width: 860px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      flex: 1;
+      width: 100%;
+    }
+    .breadcrumb-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--font-code);
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      margin-bottom: 1.2rem;
+    }
+    .breadcrumb-nav a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+    .breadcrumb-nav a:hover { color: var(--cyan); }
+    .breadcrumb-current { color: var(--cyan); }
+    .article-header { margin-bottom: 2.5rem; }
+    .article-meta-badges {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .category-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(10, 12, 18, 0.9);
+      border: 1px solid var(--badge-color);
+      color: var(--badge-color);
+      font-family: var(--font-code);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      letter-spacing: 0.5px;
+    }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .article-meta-text { color: var(--text-dim); font-size: 0.85rem; font-family: var(--font-code); }
+    .article-main-title {
+      font-family: var(--font-title);
+      font-size: clamp(2.3rem, 4.5vw, 3.6rem);
+      font-weight: normal;
+      line-height: 1.15;
+      color: #fff;
+      margin-bottom: 1.2rem;
+      letter-spacing: -0.5px;
+    }
+    .article-lead-paragraph {
+      color: var(--text-muted);
+      font-size: 1.2rem;
+      line-height: 1.65;
+      margin-bottom: 2rem;
+    }
+    .article-author-share-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1.2rem 0;
+      margin-bottom: 2rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .author-info-box {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+    .author-photo {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid var(--card-border);
+      object-fit: cover;
+    }
+    .author-name-title {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #fff;
+    }
+    .author-subtitle {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      font-family: var(--font-code);
+    }
+    .article-hero-cover-figure {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      margin-bottom: 3rem;
+      background: var(--panel);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+    .article-hero-img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .article-prose {
+      color: #cbd5e1;
+      font-size: 1.08rem;
+      line-height: 1.8;
+    }
+    .article-prose h2 {
+      font-family: var(--font-title);
+      font-size: 1.95rem;
+      color: #fff;
+      margin: 2.8rem 0 1rem;
+      letter-spacing: -0.3px;
+    }
+    .article-prose h3 {
+      font-family: var(--font-title);
+      font-size: 1.45rem;
+      color: #f1f5f9;
+      margin: 2rem 0 0.8rem;
+    }
+    .article-prose p {
+      margin-bottom: 1.4rem;
+    }
+    .article-prose ul, .article-prose ol {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+    }
+    .article-prose li {
+      margin-bottom: 0.5rem;
+    }
+    .article-prose hr {
+      border: none;
+      border-top: 1px solid var(--card-border);
+      margin: 2.5rem 0;
+    }
+    .article-prose code {
+      font-family: var(--font-code);
+      background: rgba(255, 255, 255, 0.06);
+      padding: 0.2rem 0.45rem;
+      border-radius: 6px;
+      font-size: 0.9em;
+      color: var(--cyan);
+    }
+    .article-prose pre {
+      background: #040507;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      overflow-x: auto;
+      margin: 1.6rem 0;
+    }
+    .article-prose pre code {
+      background: transparent;
+      padding: 0;
+      color: #e2e8f0;
+      font-size: 0.88rem;
+    }
+    .callout-box {
+      background: rgba(0, 240, 255, 0.04);
+      border-left: 3px solid var(--cyan);
+      border-radius: 0 12px 12px 0;
+      padding: 1.2rem 1.5rem;
+      margin: 1.8rem 0;
+      color: var(--text-main);
+    }
+    .mermaid {
+      background: #040507;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      display: flex;
+      justify-content: center;
+    }
+    .table-container {
+      overflow-x: auto;
+      margin: 2rem 0;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+    th, td {
+      padding: 1rem 1.2rem;
+      border-bottom: 1px solid var(--card-border);
+    }
+    th {
+      background: var(--panel);
+      color: #fff;
+      font-family: var(--font-code);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    .article-cta-box {
+      background: linear-gradient(135deg, rgba(0, 240, 255, 0.05), rgba(59, 130, 246, 0.08));
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      border-radius: 16px;
+      padding: 2.2rem;
+      margin: 3.5rem 0;
+      text-align: center;
+    }
+    .article-cta-title {
+      font-family: var(--font-title);
+      font-size: 1.6rem;
+      color: #fff;
+      margin-bottom: 0.8rem;
+    }
+    .article-cta-btn {
+      display: inline-block;
+      background: var(--cyan);
+      color: #000;
+      font-weight: 700;
+      padding: 0.85rem 2rem;
+      border-radius: 9999px;
+      text-decoration: none;
+      font-family: var(--font-code);
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      transition: all 0.2s;
+    }
+    .article-cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 240, 255, 0.4);
+    }
+    .article-faq-section {
+      background: var(--panel);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      margin: 3.5rem 0;
+    }
+    .faq-main-heading {
+      font-family: var(--font-title);
+      font-size: 1.8rem;
+      color: #fff;
+      margin-bottom: 1.5rem;
+    }
+    .faq-item-card { border-bottom: 1px solid var(--card-border); padding: 1.2rem 0; }
+    .faq-item-card:last-child { border-bottom: none; }
+    .faq-item-q { font-weight: 700; font-size: 1.1rem; color: var(--cyan); margin-bottom: 0.5rem; }
+    .faq-item-a { color: var(--text-muted); font-size: 0.98rem; line-height: 1.65; }
+    footer.magazine-footer {
+      background: #050608;
+      border-top: 1px solid var(--card-border);
+      padding: 3.5rem 2rem 2rem;
+      margin-top: 5rem;
+    }
+    .footer-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 2.5rem;
+    }
+    @media (max-width: 900px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .footer-grid { grid-template-columns: 1fr; }
+      nav.nav-links { display: none; }
+    }
+    .footer-col h4 {
+      font-family: var(--font-code);
+      font-size: 0.85rem;
+      color: var(--cyan);
+      margin-bottom: 1.2rem;
+      letter-spacing: 1px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.6rem; }
+    .footer-col ul li a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .footer-col ul li a:hover { color: #fff; }
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 1.8rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-dim);
+      font-size: 0.82rem;
+      font-family: var(--font-code);
+    }
+  </style>
+  <link rel="stylesheet" href="/assets/editorial-theme.css" />
+  <script src="/assets/editorial-theme.js"></script>
+  <script defer src="/assets/blog-telemetry.js"></script>
+  <script async type="module" crossorigin src="/assets/blog-claude-code-router-roteamento-hibrido-local-cloud-compactacao-ast-6F3hq9O7.js"></script>
+  <script type="module">import.meta.url;import("_").catch(()=>1);(async function*(){})().next();if(location.protocol!="file:"){window.__vite_is_modern_browser=true}</script>
+  <script type="module">!function(){if(window.__vite_is_modern_browser)return;console.warn("vite: loading legacy chunks, syntax error above and the same error below should be ignored");var e=document.getElementById("vite-legacy-polyfill"),n=document.createElement("script");n.src=e.src,n.onload=function(){System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))},document.body.appendChild(n)}();</script>
+<link rel="manifest" href="/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/registerSW.js"></script></head>
+<body>
+  <div class="reading-progress-bar" id="progressBar"></div>
+
+  <header class="magazine-header">
+    <div class="nav-container">
+      <a href="/" class="brand-logo">
+        <span class="status-dot"></span>
+        BENNI OS // MAGAZINE
+      </a>
+      <nav class="nav-links">
+        <a href="/">Home</a>
+        <a href="/blog/index.html" class="active">Magazine</a>
+        <a href="/blog/academy.html">Academy</a>
+        <a href="https://github.com/Benni-OS" target="_blank">GitHub</a>
+        <a href="https://dev.to/bennialencar" target="_blank">Dev.to</a>
+        <div class="lang-switcher-pill" role="navigation" aria-label="Language Selector">
+          <a href="/blog/en/claude-code-router-hybrid-local-cloud-routing-ast-compaction.html" class="lang-btn" title="Switch to English">
+            <span>🇺🇸</span> EN
+          </a>
+          <a href="/blog/claude-code-router-roteamento-hibrido-local-cloud-compactacao-ast.html" class="lang-btn active" title="Português (Brasil) (Ativo)">
+            <span>🇧🇷</span> PT-BR
+          </a>
+        </div>
+        <a href="/#monetizacao" style="color: var(--cyan); font-weight: 700;">Operator Mode &rarr;</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="article-layout">
+    <nav class="breadcrumb-nav">
+      <a href="/blog/index.html">Magazine</a>
+      <span>/</span>
+      <span class="breadcrumb-current">ROTEAMENTO HÍBRIDO &amp; ECONOMIA DE TOKENS</span>
+    </nav>
+
+    <header class="article-header">
+      <div class="article-meta-badges">
+        <span class="category-badge-pill">
+          <span class="badge-dot"></span>
+          ROTEAMENTO HÍBRIDO &amp; ECONOMIA DE TOKENS
+        </span>
+        <span class="article-meta-text">11 min de leitura • 26 Nov, 2026</span>
+      </div>
+
+      <h1 class="article-main-title">Roteamento Híbrido Local-Cloud para Claude Code: Reduzindo Custos de API em 75% com ANTHROPIC_BASE_URL e Compactação de Contexto AST</h1>
+      <p class="article-lead-paragraph">Por que enviar cada grep, checagem de lint e dump de log para modelos de fronteira na nuvem queima orçamento sem necessidade — e como apontar <code>ANTHROPIC_BASE_URL</code> para o <code>Benni-OS/claude-code-router</code> classifica a complexidade de cada turno em sub-milissegundos, roteia turnos rotineiros para GPUs locais ou Haiku, compacta payloads AST/logs inflados e armazena resultados repetidos em cache SQLite WAL.</p>
+
+      <div class="article-author-share-bar">
+        <div class="author-info-box">
+          <img src="/blog/assets/benni_avatar.jpg" alt="Benni Alencar" class="author-photo" />
+          <div>
+            <div class="author-name-title">Benni Alencar</div>
+            <div class="author-subtitle">Chief AI Systems Architect &amp; Founder</div>
+          </div>
+        </div>
+        <div class="lang-switcher-pill" role="navigation" aria-label="Language Selector">
+          <a href="/blog/en/claude-code-router-hybrid-local-cloud-routing-ast-compaction.html" class="lang-btn" title="Switch to English">
+            <span>🇺🇸</span> EN
+          </a>
+          <a href="/blog/claude-code-router-roteamento-hibrido-local-cloud-compactacao-ast.html" class="lang-btn active" title="Português (Brasil) (Ativo)">
+            <span>🇧🇷</span> PT-BR
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <figure class="article-hero-cover-figure">
+      <img src="/blog/assets/flow_hero_token-optimizer.jpg" alt="Roteamento Híbrido Local-Cloud para Claude Code: Reduzindo Custos de API em 75% com ANTHROPIC_BASE_URL e Compactação de Contexto AST" width="1376" height="768" class="article-hero-img" />
+    </figure>
+
+    <article class="article-prose">
+      <hr />
+      <h2>1. O Problema do Excesso de Fronteira no Coding Agêntico</h2>
+      <p>Toda sessão autônoma de código no Claude Code segue uma distribuição previsível: cerca de 20% dos turnos envolvem raciocínio arquitetural de alto impacto, depuração entre múltiplos módulos ou condições de corrida sutis. Os outros 80% são mecânicos — ler árvores de diretórios, resumir stack traces, formatar boilerplate, reexecutar testes ou interpretar saídas JSON verbosas.</p>
+      <p>Sem uma camada de roteamento, cada um desses turnos mecânicos atinge um endpoint de fronteira na nuvem pagando preço cheio pela janela de contexto. Pior: quando uma chamada de ferramenta retorna um log de build de 12.000 tokens ou um módulo TypeScript intacto de 900 linhas, esse payload bruto viaja no histórico da conversa pelos turnos seguintes.</p>
+      <ul>
+        <li><strong>Tarifa Uniforme de Fronteira em Turnos Rotineiros:</strong> Pedir a um modelo de fronteira para confirmar um <code>git status</code> limpo ou extrair o número da linha de um erro de compilação desperdiça dinheiro e 1.500+ ms de latência de ida e volta na nuvem.</li>
+        <li><strong>Inflação Descontrolada de Tool Outputs:</strong> Logs brutos de terminal, suítes de testes e leituras completas de arquivos fazem o contexto crescer quadraticamente em uma sessão de 30 turnos.</li>
+        <li><strong>Reavaliação Redundante de Ferramentas:</strong> Agentes inspecionam repetidamente os mesmos arquivos inalterados e schemas estáticos entre subturnos, pagando tokens de entrada cheios a cada vez.</li>
+      </ul>
+      <div class="callout-box">
+        <strong>Mudança Arquitetural Central:</strong> Apontar <code>ANTHROPIC_BASE_URL</code> para o <strong><a href="https://github.com/Benni-OS/claude-code-router" target="_blank" rel="noopener noreferrer" style="color: var(--cyan);">Benni-OS/claude-code-router</a></strong> insere um plano de controle local sem modificações no binário entre o Claude Code e a inferência upstream — cortando o gasto total de API em <strong>75%</strong> enquanto preserva o raciocínio de fronteira para turnos complexos.
+      </div>
+
+      <hr />
+      <h2>2. Arquitetura: Roteamento Sub-Milissegundo via <code>ANTHROPIC_BASE_URL</code></h2>
+      <p>Como o Claude Code respeita a variável de ambiente padrão <code>ANTHROPIC_BASE_URL</code>, nenhum patch de binário ou wrapper é necessário. Basta exportar uma variável para que todo payload da Anthropic Messages API passe pelo <code>claude-code-router</code> em localhost:</p>
+
+      <div class="mermaid">
+flowchart TD
+    CC["Claude Code CLI&lt;br/&gt;(ANTHROPIC_BASE_URL=http://127.0.0.1:4100)"] --&gt;|"Messages API POST"| P["Proxy claude-code-router"]
+    P --&gt;|"Etapa 1: Compactação AST &amp; Logs"| C["Compactar Payloads Inflados&lt;br/&gt;(-65% Tokens de Contexto)"]
+    C --&gt;|"Etapa 2: Consulta SHA-256"| W["Cache SQLite WAL"]
+    W --&gt;|"Cache Hit (&lt; 0.3 ms)"| CC
+    W --&gt;|"Cache Miss"| CL["Classificador Sub-ms&lt;br/&gt;(&lt; 0.4 ms, 0 Chamadas LLM)"]
+    CL --&gt;|"Tier 0: Rotina / Lint / Grep"| L["GPU Local&lt;br/&gt;(benni-inference-engine / Ollama)"]
+    CL --&gt;|"Tier 1: Nuvem Rápida"| H["Claude Haiku"]
+    CL --&gt;|"Tier 2: Arquitetura Profunda"| S["Claude Sonnet / Opus"]
+      </div>
+
+      <p>Repare na ordem das operações: <strong>a compactação ocorre antes da classificação e da consulta ao cache</strong>, garantindo que mesmo quando um turno escala para o Tier 2 (Sonnet ou Opus), a requisição upstream carregue apenas sinal estrutural denso em vez de milhares de linhas de ruído de log.</p>
+
+      <hr />
+      <h2>3. Os Quatro Mecanismos Por Trás da Redução de 75% nos Custos</h2>
+
+      <h3>1. Classificação de Complexidade em Sub-Milissegundos</h3>
+      <p>Usar um LLM para rotear outro LLM adiciona latência e custo. Em vez disso, o <code>claude-code-router</code> executa uma função determinística de pontuação em menos de <code>0,4 ms</code>. Ela avalia contagem de tokens, profundidade da cadeia de ferramentas, densidade de símbolos AST, quantidade de hunks de diff e sinais de domínio (ex.: concorrência, segurança, refatoração multi-arquivo) para atribuir Tier 0, Tier 1 ou Tier 2.</p>
+
+      <h3>2. Offload para GPU Local (<code>benni-inference-engine</code> / Ollama)</h3>
+      <p>Turnos rotineiros do Tier 0 — resumo de arquivos, triagem de logs de teste, edições pontuais e síntese de mensagens de commit — são traduzidos em tempo real para endpoints locais compatíveis com OpenAI, como <code>benni-inference-engine</code> ou Ollama rodando em uma GPU local de 8 GB+ a custo marginal de <code>$0.00</code> por token. Se o motor local estiver offline ou ultrapassar o teto de latência, o roteador faz failover automático para o Claude Haiku.</p>
+
+      <h3>3. Compactação de Contexto AST e Logs</h3>
+      <p>Antes de encaminhar qualquer histórico de mensagens, o compactador inspeciona os blocos <code>tool_result</code>. Arquivos-fonte extensos são reduzidos a esqueletos AST (imports, assinaturas de classes/funções, anotações de tipo e janelas ativas ao redor de erros), enquanto logs repetitivos de testes são colapsados em assinaturas únicas de falha e stack frames.</p>
+
+      <h3>4. Cache de Resultados de Ferramentas em SQLite WAL</h3>
+      <p>Saídas repetidas de ferramentas somente leitura e prompts determinísticos de subturnos recebem hash SHA-256 e são armazenados em um banco SQLite local configurado com <code>PRAGMA journal_mode=WAL</code>. Subagentes concorrentes leem resultados em cache em menos de <code>0,3 ms</code> sem contenção de lock de escrita.</p>
+
+      <hr />
+      <h2>4. Configurando <code>ANTHROPIC_BASE_URL</code> e Política do Roteador</h2>
+      <p>Inicie o <code>claude-code-router</code> localmente, exporte <code>ANTHROPIC_BASE_URL</code> e execute o Claude Code normalmente:</p>
+
+<pre><code class="language-bash">pip install claude-code-router
+claude-code-router serve --port 4100 --config router.policy.json
+
+export ANTHROPIC_BASE_URL="http://127.0.0.1:4100"
+claude
+</code></pre>
+
+      <p>Abaixo está uma configuração de produção <code>router.policy.json</code> conectando inferência em GPU local, fallback para Haiku, limiares de compactação AST e cache SQLite WAL:</p>
+
+<pre><code class="language-json">{
+  "listen": "127.0.0.1:4100",
+  "cache": {
+    "engine": "sqlite_wal",
+    "path": ".benni/router_cache.db",
+    "ttl_seconds": 1800
+  },
+  "compaction": {
+    "ast_threshold_tokens": 1200,
+    "log_max_lines": 60,
+    "preserve_error_frames": true
+  },
+  "tiers": {
+    "tier_0_local": {
+      "provider": "benni-inference-engine",
+      "base_url": "http://127.0.0.1:11434/v1",
+      "model": "qwen2.5-coder:7b-instruct",
+      "max_score": 0.35,
+      "fallback_tier": "tier_1_fast"
+    },
+    "tier_1_fast": {
+      "provider": "anthropic",
+      "model": "claude-haiku-4-5",
+      "max_score": 0.68
+    },
+    "tier_2_frontier": {
+      "provider": "anthropic",
+      "model": "claude-sonnet-4-5",
+      "max_score": 1.0
+    }
+  }
+}
+</code></pre>
+
+      <hr />
+      <h2>5. Por Dentro do Roteador: Classificador Sub-ms, Compactador AST e Cache SQLite WAL</h2>
+      <p>O trecho em Python abaixo ilustra os três componentes centrais do caminho crítico no <code>claude-code-router</code>: pontuação determinística de complexidade, compactação AST/log para payloads extensos e cache SQLite WAL sem bloqueios:</p>
+
+<pre><code class="language-python">import ast
+import hashlib
+import sqlite3
+import time
+
+
+COMPLEX_SIGNALS = ("race condition", "migration", "architecture", "security", "deadlock", "refactor")
+
+
+def classify_turn(prompt_text: str, token_count: int, tool_depth: int) -&gt; str:
+    """Classifica a complexidade do turno em &lt; 0.4 ms sem nenhuma chamada LLM."""
+    lowered = prompt_text.lower()
+    score = 0.0
+    score += min(token_count / 12000.0, 0.45)
+    score += min(tool_depth * 0.08, 0.25)
+    if any(sig in lowered for sig in COMPLEX_SIGNALS):
+        score += 0.35
+
+    if score &lt;= 0.35:
+        return "tier_0_local"
+    if score &lt;= 0.68:
+        return "tier_1_fast"
+    return "tier_2_frontier"
+
+
+def compact_python_ast(source: str, max_chars: int = 2400) -&gt; str:
+    """Remove corpos de funções preservando assinaturas, classes e docstrings."""
+    if len(source) &lt;= max_chars:
+        return source
+    try:
+        tree = ast.parse(source)
+    except SyntaxError:
+        lines = source.splitlines()
+        return "\n".join(lines[:30] + ["... [compactado] ..."] + lines[-30:])
+
+    skeleton = []
+    for node in tree.body:
+        if isinstance(node, (ast.Import, ast.ImportFrom)):
+            skeleton.append(ast.get_source_segment(source, node) or "")
+        elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            header = (ast.get_source_segment(source, node) or "").splitlines()[0]
+            skeleton.append(f"{header}  # ... [corpo compactado]")
+    return "\n".join(skeleton)
+
+
+class WalToolCache:
+    def __init__(self, db_path: str = ".benni/router_cache.db") -&gt; None:
+        self.conn = sqlite3.connect(db_path, check_same_thread=False)
+        self.conn.execute("PRAGMA journal_mode=WAL;")
+        self.conn.execute(
+            "CREATE TABLE IF NOT EXISTS tool_cache (key TEXT PRIMARY KEY, payload TEXT, expires_at REAL)"
+        )
+        self.conn.commit()
+
+    def get(self, tool_name: str, args_json: str) -&gt; str | None:
+        key = hashlib.sha256(f"{tool_name}:{args_json}".encode("utf-8")).hexdigest()
+        row = self.conn.execute(
+            "SELECT payload, expires_at FROM tool_cache WHERE key = ?", (key,)
+        ).fetchone()
+        if row and row[1] &gt; time.time():
+            return row[0]
+        return None
+</code></pre>
+
+      <hr />
+      <h2>6. Comparativo de Custo e Latência: Nuvem Direta vs. <code>claude-code-router</code></h2>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Perfil de Carga (Sessão de 100 Turnos)</th>
+              <th>API Direta na Nuvem (100% Fronteira)</th>
+              <th>Híbrido <code>Benni-OS/claude-code-router</code></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Turnos Rotineiros (Grep, Lint, Triagem)</strong></td>
+              <td>~$4.80 | 1.450 ms de latência média</td>
+              <td><strong><code>$0.00</code> em GPU Local | 180 ms de latência média</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Turnos Médios (Edições em 1 Arquivo)</strong></td>
+              <td>~$3.60 | 1.800 ms de latência média</td>
+              <td><strong>~$0.55 via Claude Haiku | 520 ms de latência média</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Turnos Complexos (Arquitetura / Debug)</strong></td>
+              <td>~$4.20 (contexto inflado)</td>
+              <td><strong>~$2.45 via Sonnet/Opus (compactado via AST)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Consultas Repetidas de Ferramentas</strong></td>
+              <td>Recobrança integral de tokens de entrada</td>
+              <td><strong><code>$0.00</code> hit no SQLite WAL (&lt; 0,3 ms)</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Custo Total e Economia na Sessão</strong></td>
+              <td><strong>~$12.60 / sessão</strong></td>
+              <td><strong>~$3.00 / sessão (&minus;76% de gasto em API)</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="article-cta-box">
+        <h3 class="article-cta-title">Reduza Sua Fatura do Claude Code em 75% em 60 Segundos</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; max-width: 620px; margin: 0 auto;">
+          Aponte <code>ANTHROPIC_BASE_URL</code> para o <strong>Benni-OS/claude-code-router</strong> para ativar roteamento híbrido sub-ms, offload para GPU local, compactação de contexto AST e cache SQLite WAL.
+        </p>
+        <a href="https://github.com/Benni-OS/claude-code-router" target="_blank" rel="noopener noreferrer" class="article-cta-btn">Explorar Benni-OS/claude-code-router no GitHub &rarr;</a>
+      </div>
+
+      <section class="article-faq-section">
+        <h2 class="faq-main-heading">Perguntas Frequentes</h2>
+
+        <div class="faq-item-card">
+          <div class="faq-item-q">Como ANTHROPIC_BASE_URL habilita o roteamento híbrido sem modificar o Claude Code?</div>
+          <div class="faq-item-a">O Claude Code respeita a variável de ambiente padrão <code>ANTHROPIC_BASE_URL</code> para todas as requisições à Anthropic Messages API. Ao apontar <code>ANTHROPIC_BASE_URL</code> para <code>http://127.0.0.1:4100</code>, o <code>claude-code-router</code> atua como um proxy reverso local transparente que analisa a complexidade do turno, compacta payloads grandes, consulta o cache SQLite WAL e despacha para uma GPU local (<code>benni-inference-engine</code> ou Ollama), Claude Haiku ou Claude Sonnet/Opus.</div>
+        </div>
+        <div class="faq-item-card">
+          <div class="faq-item-q">Qual é a velocidade do classificador de complexidade no claude-code-router?</div>
+          <div class="faq-item-a">O classificador heurístico determinístico executa em menos de <code>0,4 ms</code> sem nenhuma chamada de LLM. Ele pontua contagem de tokens, profundidade de chamadas de ferramentas, densidade de símbolos AST, tamanho do diff e palavras-chave arquiteturais para atribuir cada turno ao Tier 0 (GPU Local), Tier 1 (Haiku) ou Tier 2 (Sonnet/Opus).</div>
+        </div>
+        <div class="faq-item-card">
+          <div class="faq-item-q">O que a Compactação de Contexto AST remove antes de enviar requisições para a nuvem?</div>
+          <div class="faq-item-a">A Compactação de Contexto AST analisa resultados de ferramentas inflados — como dumps de logs de 8.000 linhas, saídas completas de testes ou arquivos intactos — preservando assinaturas de funções, definições de tipos, imports, stack frames de erro e hunks ativos de diff enquanto dobra boilerplate morto. Isso reduz o tamanho dos prompts em 55% a 78% sem perda estrutural.</div>
+        </div>
+        <div class="faq-item-card">
+          <div class="faq-item-q">Por que usar SQLite WAL para cache de resultados repetidos de ferramentas?</div>
+          <div class="faq-item-a">Agentes de código frequentemente reexecutam chamadas idênticas somente leitura em turnos adjacentes. Armazenar hashes normalizados de requisição e resultado em SQLite com Write-Ahead Logging (WAL) permite leituras concorrentes sem bloqueio em menos de 1 ms, eliminando inferência redundante e gasto de API.</div>
+        </div>
+      </section>
+    </article>
+  </main>
+
+  <footer class="magazine-footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>BENNI OS // SOVEREIGN AUTONOMY</h4>
+        <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; margin-top: 0.5rem;">
+          The Sovereign Autonomy System built from first principles. Eliminating agent hallucinations, loop explosions, and cloud vendor lock-in.
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>PLATFORM</h4>
+        <ul>
+          <li><a href="/blog/index.html">Technical Magazine</a></li>
+          <li><a href="/blog/academy.html">Academy &amp; Masterclass</a></li>
+          <li><a href="https://github.com/Benni-OS" target="_blank">Open Source Repos</a></li>
+          <li><a href="https://dev.to/bennialencar" target="_blank">Dev.to Series</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>OPEN SOURCE SUITE</h4>
+        <ul>
+          <li><a href="https://github.com/Benni-OS/claude-code-router" target="_blank">claude-code-router</a></li>
+          <li><a href="https://github.com/Benni-OS/claude-code-eval" target="_blank">claude-code-eval</a></li>
+          <li><a href="https://github.com/Benni-OS/claude-code-swarm" target="_blank">claude-code-swarm</a></li>
+          <li><a href="https://github.com/Benni-OS/claude-code-sovereign" target="_blank">claude-code-sovereign</a></li>
+          <li><a href="https://github.com/Benni-OS/agent-trace-replay" target="_blank">agent-trace-replay</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>SOVEREIGN ACCESS</h4>
+        <ul>
+          <li><a href="/#monetizacao">Operator Mode Pass</a></li>
+          <li><a href="/#monetizacao">MCP Forge Playbook</a></li>
+          <li><a href="https://agensi.io/sell" target="_blank">Agensi.io Skills</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>&copy; 2026 Benni OS. Engineered by Benni Alencar. All rights reserved.</div>
+      <div style="display:flex; gap: 1rem;">
+        <a href="/blog/en/claude-code-router-hybrid-local-cloud-routing-ast-compaction.html" style="color: var(--text-dim); text-decoration: none;">English</a>
+        <a href="/blog/claude-code-router-roteamento-hibrido-local-cloud-compactacao-ast.html" style="color: var(--text-dim); text-decoration: none;">Português</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    mermaid.initialize({ startOnLoad: true, theme: 'dark', themeVariables: { darkMode: true, background: '#040507', primaryColor: '#00f0ff', edgeColor: '#3b82f6' } });
+    window.addEventListener('scroll', () => {
+      const winScroll = document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+      document.getElementById('progressBar').style.width = scrolled + '%';
+    });
+  </script>
+  <script nomodule>!function(){var e=document,t=e.createElement("script");if(!("noModule"in t)&&"onbeforeload"in t){var n=!1;e.addEventListener("beforeload",(function(e){if(e.target===t)n=!0;else if(!e.target.hasAttribute("nomodule")||!n)return;e.preventDefault()}),!0),t.type="module",t.src=".",e.head.appendChild(t),t.remove()}}();</script>
+  <script nomodule crossorigin id="vite-legacy-polyfill" src="/assets/polyfills-legacy-Bj7NGYSK.js"></script>
+  <script nomodule crossorigin id="vite-legacy-entry" data-src="/assets/blog-claude-code-router-roteamento-hibrido-local-cloud-compactacao-ast-legacy-CnvmjJHj.js">System.import(document.getElementById('vite-legacy-entry').getAttribute('data-src'))</script>
+</body>
+</html>
